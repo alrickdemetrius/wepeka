@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HeadquartersController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
@@ -28,21 +29,22 @@ use App\Http\Controllers\ClientProfileController;
 
 // Auth::routes();
 
-//pertama
-Route::get('/', [HomeController::class, 'index'])->name('home');
+// tanpa login
+Route::middleware('guest')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('index');
 
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
-Route::post('/login', [AuthController::class, 'login']);
+    Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+    Route::post('/login', [AuthController::class, 'login']);
+});
 
-Route::get('/register', [AuthController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [AuthController::class, 'register']);
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+// login client
 Route::middleware(['auth', 'role:client'])->prefix('client')->as('client.')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
 
-    // Route::get('/profile', function () {
-    //     return view('headquarters.profile.index');
-    // });
-
-    Route::get('/profile',[ClientProfileController::class,'index'])->name('profile');
+    Route::get('headquarters',[HeadquartersController::class, 'index'])->name('headquarters');
+    Route::get('/profile', [ClientProfileController::class, 'index'])->name('profile');
 });
+
+// login admin
