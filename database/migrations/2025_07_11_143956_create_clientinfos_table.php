@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('clientinfos', function (Blueprint $table) {
             $table->id();
+            $table->string("event_name");
             $table->string("qr");
             $table->string("qrlink");
             $table->foreignId('iduser')->constrained('users')->onDelete('cascade');

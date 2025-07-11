@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ClientLinkController;
 use App\Http\Controllers\HeadquartersController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -44,7 +45,13 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->as('client.')->gro
     Route::get('/', [HomeController::class, 'index'])->name('index');
 
     Route::get('/headquarters',[HeadquartersController::class, 'index'])->name('headquarters');
+
+    Route::get('/link', [ClientLinkController::class, 'index'])->name('link');
+
     Route::get('/profile', [ClientProfileController::class, 'index'])->name('profile');
+    Route::put('/profile/update', [ClientProfileController::class, 'updateProfile'])->name('profile.update');
+    Route::put('/profile/update-email', [ClientProfileController::class, 'updateEmail'])->name('profile.update-email');
+    Route::put('/profile/update-password', [ClientProfileController::class, 'updatePassword'])->name('profile.update-password');
 });
 
 // login admin

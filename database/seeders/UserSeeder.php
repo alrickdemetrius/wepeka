@@ -21,6 +21,8 @@ class UserSeeder extends Seeder
                 'name'=>'client1',
                 'email' => "client1@gmail.com",
                 'password'=> Hash::make('client1'),
+                'contact_name'=> 'Cody',
+                'contact_number'=> '0811111111111',
                 'role'=> 'client',
                 'created_at'=> Carbon::now(),
                 'updated_at'=> Carbon::now()
