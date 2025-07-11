@@ -5,43 +5,8 @@
         <div class="container">
             <div class="row">
                 <!-- Left Sidebar -->
-                <div class="col-lg-3 col-md-4 mb-4">
-                    <div class="bg-light rounded p-3 shadow">
-                        <!-- Active Page - User Profile -->
-                        <div class="mb-3">
-                            <a href="#" class="btn btn-warning w-100 text-start fw-semibold">
-                                User Profile
-                            </a>
-                        </div>
-
-                        <!-- Other Profile Pages -->
-                        <div class="mb-3">
-                            <a href="#" class="btn btn-outline-secondary w-100 text-start">
-                                Products & Retailers
-                            </a>
-                        </div>
-
-                        <div class="mb-3">
-                            <a href="#" class="btn btn-outline-secondary w-100 text-start">
-                                Withdrawal
-                            </a>
-                        </div>
-
-                        <hr class="my-3">
-
-                        <!-- Sign Out -->
-                        <div>
-                            <a href="#" class="btn btn-outline-danger w-100 text-start">
-                                <i class="fas fa-sign-out-alt me-2"></i>Sign Out
-                            </a>
-                        </div>
-
-                        <!-- Wepeka Logo -->
-                        <div class="text-center mt-4">
-                            
-                        </div>
-                    </div>
-                </div>
+                 @include("client.partials.profile-sidebar")
+                
 
                 <!-- Main Content -->
                 <div class="col-lg-9 col-md-8">
@@ -61,7 +26,7 @@
                                 <div class="border rounded p-3 text-center">
                                     <div class="bg-secondary rounded-circle mx-auto mb-3"
                                         style="width: 120px; height: 120px;"></div>
-                                    <h6 class="fw-semibold text-dark">Name</h6>
+                                    <h6 class="fw-semibold text-dark">{{$cur_user->name}}</h6>
                                 </div>
                             </div>
 
@@ -83,7 +48,7 @@
                             <div class="row">
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-semibold text-dark">E-mail</label>
-                                    <p class="text-muted small">email.pengguna@gmail.com</p>
+                                    <p class="text-muted small">{{ $cur_user->email }}</p>
                                 </div>
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label fw-semibold text-dark">Password</label>

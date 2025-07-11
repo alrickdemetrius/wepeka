@@ -103,10 +103,10 @@
         <!--begin::Brand Link-->
         <a href="./index.html" class="brand-link">
           <!--begin::Brand Image-->
-          <img src="../../dist/assets/img/AdminLTELogo.png" alt="Logo Here" class="brand-image opacity-75 shadow" />
+          <img src="{{ asset("images/logowepeka_ed.png") }}" alt="Logo Here" class="brand-image opacity-100" />
           <!--end::Brand Image-->
           <!--begin::Brand Text-->
-          <span class="brand-text fw-light">Wepeka</span>
+          <!-- <span class="brand-text fw-light">Wepeka</span> -->
           <!--end::Brand Text-->
         </a>
         <!--end::Brand Link-->

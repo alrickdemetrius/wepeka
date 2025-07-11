@@ -43,7 +43,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth', 'role:client'])->prefix('client')->as('client.')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
 
-    Route::get('headquarters',[HeadquartersController::class, 'index'])->name('headquarters');
+    Route::get('/headquarters',[HeadquartersController::class, 'index'])->name('headquarters');
     Route::get('/profile', [ClientProfileController::class, 'index'])->name('profile');
 });
 
