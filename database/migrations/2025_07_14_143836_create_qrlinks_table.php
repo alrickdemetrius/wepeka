@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('clientinfos', function (Blueprint $table) {
+        Schema::create('qrlinks', function (Blueprint $table) {
             $table->id();
             $table->string("event_name");
             $table->string("qr");
-            $table->string("qrlink");
+            $table->string("url");
             $table->foreignId('iduser')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });
@@ -26,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('clientinfos');
+        Schema::dropIfExists('qrlinks');
     }
 };
