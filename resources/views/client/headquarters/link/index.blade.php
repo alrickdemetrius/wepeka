@@ -61,6 +61,61 @@
                                 <button type="submit" class="btn btn-dark px-4 py-2 fw-semibold">Save Changes</button>
                             </div>
                         </form>
+
+                        <div class="container py-4">
+                            <h4 class="mb-4 fw-bold">Your QR Links</h4>
+
+                            @if($links->isEmpty())
+                                <div class="alert alert-warning">You haven't created any QR links yet.</div>
+                            @else
+                                <table class="table table-bordered bg-white shadow-sm">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th>Event Name</th>
+                                            <th>Type</th>
+                                            <th>Link / File</th>
+                                            <th>QR Code</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach($links as $link)
+                                            <tr>
+                                                <td>{{ $link->event_name }}</td>
+                                                <td>{{ strtoupper($link->file_type) }}</td>
+                                                <td>
+                                                    @if($link->file_type === 'link')
+                                                        <a href="{{ $link->file_data }}" target="_blank">{{ $link->file_data }}</a>
+                                                    @else
+                                                        <a href="{{ url('/download/' . basename($link->file_data)) }}"
+                                                            target="_blank">Download PDF</a>
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    <div style="width: 60px;">
+                                                        <div class="qr-small">
+                                                            {!! $link->qr_code_svg !!}
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('client.link.edit', $link->id) }}"
+                                                        class="btn btn-sm btn-warning">Edit</a>
+
+                                                    <form action="{{ route('client.link.destroy', $link->id) }}" method="POST"
+                                                        class="d-inline"
+                                                        onsubmit="return confirm('Are you sure to delete this link?')">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button class="btn btn-sm btn-danger">Delete</button>
+                                                    </form>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>
@@ -80,6 +135,11 @@
         .upload-area.drag-over {
             border-color: #007bff !important;
             background-color: #e7f3ff !important;
+        }
+
+        .qr-small svg {
+            width: 100%;
+            height: auto;
         }
     </style>
 @endsection
@@ -155,10 +215,10 @@
 
                 // valid file
                 uploadPlaceholder.innerHTML = `
-                <i class="fas fa-file-pdf fa-2x mb-2 text-danger"></i>
-                <div class="fw-semibold text-dark">${file.name}</div>
-                <small class="text-muted">Click to change file</small>
-            `;
+                    <i class="fas fa-file-pdf fa-2x mb-2 text-danger"></i>
+                    <div class="fw-semibold text-dark">${file.name}</div>
+                    <small class="text-muted">Click to change file</small>
+                `;
             }
 
             // Drag & Drop events

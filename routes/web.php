@@ -56,9 +56,13 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // login client
 Route::middleware(['auth', 'role:client'])->prefix('client')->as('client.')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
-    Route::get('/headquarters',[HeadquartersController::class, 'index'])->name('headquarters');
+    Route::get('/headquarters', [HeadquartersController::class, 'index'])->name('headquarters');
+
     Route::get('/link', [ClientLinkController::class, 'index'])->name('link');
     Route::post('/link/store', [ClientLinkController::class, 'store'])->name('link.store');
+    Route::get('/link/edit/{id}', [ClientLinkController::class, 'edit'])->name('link.edit');
+    Route::post('/link/update/{id}', [ClientLinkController::class, 'update'])->name('link.update');
+    Route::delete('/link/delete/{id}', [ClientLinkController::class, 'destroy'])->name('link.destroy');
 
     Route::get('/profile', [ClientProfileController::class, 'index'])->name('profile');
     Route::put('/profile/update', [ClientProfileController::class, 'updateProfile'])->name('profile.update');
