@@ -31,9 +31,22 @@ use App\Http\Controllers\ClientProfileController;
 // Auth::routes();
 
 // tanpa login
+Route::get('/download/{filename}', function ($filename) {
+    $path = storage_path('app/public/pdfs/' . $filename);
+
+    if (!file_exists($path)) {
+        abort(404);
+    }
+
+    return response()->download($path, $filename, [
+        'Content-Type' => 'application/pdf',
+        'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+    ]);
+})->name('file.download');
+
+// tanpa login
 Route::middleware('guest')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
-
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
 });
@@ -43,10 +56,9 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 // login client
 Route::middleware(['auth', 'role:client'])->prefix('client')->as('client.')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
-
     Route::get('/headquarters',[HeadquartersController::class, 'index'])->name('headquarters');
-
     Route::get('/link', [ClientLinkController::class, 'index'])->name('link');
+    Route::post('/link/store', [ClientLinkController::class, 'store'])->name('link.store');
 
     Route::get('/profile', [ClientProfileController::class, 'index'])->name('profile');
     Route::put('/profile/update', [ClientProfileController::class, 'updateProfile'])->name('profile.update');

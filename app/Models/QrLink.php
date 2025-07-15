@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class QrLink extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'event_name',
+        'file_type',
+        'file_data',
+        'qr_code_svg',
+        'user_id',
+    ];
 }
