@@ -1,42 +1,29 @@
 <?php
 
-use App\Http\Controllers\ClientLinkController;
-use App\Http\Controllers\HeadquartersController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\HeadquartersController;
+use App\Http\Controllers\Admin\UserController as AdminUserController;
+use App\Http\Controllers\Admin\QrLinkController as AdminQrLinkController;
+use App\Http\Controllers\Client\QrLinkController as ClientQrLinkController;
 use App\Http\Controllers\ClientProfileController;
 
 /*
 |--------------------------------------------------------------------------
-| Web Routes
+| Public Routes (Tanpa Login)
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+// Redirect default /home ke login
+Route::get('/home', function () {
+    return redirect()->route('login');
+});
 
-// Route::get('/', function () {
-//     return view('client.headquarters.index');
-// });
-
-
-
-// Auth::routes();
-
-// tanpa login
+// File download
 Route::get('/download/{filename}', function ($filename) {
     $path = storage_path('app/public/pdfs/' . $filename);
-
-    if (!file_exists($path)) {
-        abort(404);
-    }
+    if (!file_exists($path)) abort(404);
 
     return response()->download($path, $filename, [
         'Content-Type' => 'application/pdf',
@@ -44,30 +31,58 @@ Route::get('/download/{filename}', function ($filename) {
     ]);
 })->name('file.download');
 
-// tanpa login
+// Guest (Login)
 Route::middleware('guest')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
 });
 
+/*
+|--------------------------------------------------------------------------
+| Logout
+|--------------------------------------------------------------------------
+*/
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-// login client
+/*
+|--------------------------------------------------------------------------
+| Client Routes
+|--------------------------------------------------------------------------
+*/
 Route::middleware(['auth', 'role:client'])->prefix('client')->as('client.')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
     Route::get('/headquarters', [HeadquartersController::class, 'index'])->name('headquarters');
 
-    Route::get('/link', [ClientLinkController::class, 'index'])->name('link');
-    Route::post('/link/store', [ClientLinkController::class, 'store'])->name('link.store');
-    Route::get('/link/edit/{id}', [ClientLinkController::class, 'edit'])->name('link.edit');
-    Route::post('/link/update/{id}', [ClientLinkController::class, 'update'])->name('link.update');
-    Route::delete('/link/delete/{id}', [ClientLinkController::class, 'destroy'])->name('link.destroy');
-
+    // Profile
     Route::get('/profile', [ClientProfileController::class, 'index'])->name('profile');
     Route::put('/profile/update', [ClientProfileController::class, 'updateProfile'])->name('profile.update');
     Route::put('/profile/update-email', [ClientProfileController::class, 'updateEmail'])->name('profile.update-email');
     Route::put('/profile/update-password', [ClientProfileController::class, 'updatePassword'])->name('profile.update-password');
+
+    // QR (Client hanya bisa update)
+    Route::get('/link', [ClientQrLinkController::class, 'index'])->name('link.index');
+    Route::get('/link/edit', [ClientQrLinkController::class, 'edit'])->name('link.edit');
+    Route::put('/link/update', [ClientQrLinkController::class, 'update'])->name('link.update');
+
 });
 
-// login admin
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->as('admin.')->group(function () {
+    Route::get('/', [AdminUserController::class, 'index'])->name('index');
+
+    // User Management
+    Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
+    Route::get('/users/create', [AdminUserController::class, 'create'])->name('users.create');
+    Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
+
+    // QR Management
+    Route::get('/clients', [AdminUserController::class, 'index'])->name('clients.index');
+    Route::get('/clients/{user}/qr/create', [AdminQrLinkController::class, 'create'])->name('qr.create');
+    Route::post('/clients/{user}/qr/store', [AdminQrLinkController::class, 'store'])->name('qr.store');
+    Route::get('/clients/{user}/qr/show', [AdminQrLinkController::class, 'show'])->name('qr.show');
+});

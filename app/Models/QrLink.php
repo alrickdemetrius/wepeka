@@ -16,4 +16,9 @@ class QrLink extends Model
         'qr_code_svg',
         'user_id',
     ];
+
+    public function user()
+{
+    return $this->belongsTo(User::class);
+}
 }

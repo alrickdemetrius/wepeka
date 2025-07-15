@@ -10,6 +10,8 @@ use App\Models\User;
 class AuthController extends Controller
 {
     //
+
+
     public function showLoginForm()
     {
         if (auth()->check()) {
@@ -37,10 +39,10 @@ class AuthController extends Controller
 
         if (Auth::attempt($credentials, $request->remember)) {
             $request->session()->regenerate();
-            
+
             // Redirect berdasarkan peran pengguna
             if (Auth::user()->isAdmin()) {
-                // return redirect()->route('admin.index');
+                return redirect()->route('admin.index'); // dari 'admin.dashboard'
             } else {
                 return redirect()->route('client.index');
             }
@@ -61,4 +63,5 @@ class AuthController extends Controller
 
         return redirect('/');
     }
+
 }

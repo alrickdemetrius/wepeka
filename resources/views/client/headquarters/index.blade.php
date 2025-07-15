@@ -12,7 +12,7 @@
                         <a href="{{ route("client.profile") }}" class="btn btn-light btn-lg rounded-pill py-3 px-5 text-dark fw-semibold shadow">
                             Profile
                         </a>
-                        <a href="{{ route("client.link") }}" class="btn btn-light btn-lg rounded-pill py-3 px-5 text-dark fw-semibold shadow">
+                        <a href="{{ route("client.link.index") }}" class="btn btn-light btn-lg rounded-pill py-3 px-5 text-dark fw-semibold shadow">
                             Link Management
                         </a>
                     </div>

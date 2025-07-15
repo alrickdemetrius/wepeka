@@ -11,16 +11,18 @@
                             <h3 class="fw-bold text-dark mb-1">Edit QR Link</h3>
                         </div>
 
-                        <form action="{{ route('client.link.update', $link->id) }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('client.link.update', $link->id) }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
-                            @method('POST')
-                            <input type="hidden" name="file_type" id="fileTypeInput" value="{{ old('file_type', $link->file_type) }}">
+                            @method('PUT')
+                            <input type="hidden" name="file_type" id="fileTypeInput"
+                                value="{{ old('file_type', $link->file_type) }}">
 
                             <div class="mb-4">
                                 <label class="form-label fw-semibold text-dark mb-2">Event Name</label>
                                 <input type="text" class="form-control form-control-lg" name="event_name"
-                                    value="{{ old('event_name', $link->event_name) }}"
-                                    placeholder="Enter event name" required>
+                                    value="{{ old('event_name', $link->event_name) }}" placeholder="Enter event name"
+                                    required>
                             </div>
 
                             <div class="mb-4">
@@ -49,7 +51,7 @@
                                 @if($link->file_type === 'pdf')
                                     <p>
                                         Current file:
-                                        <a href="{{ url('/download/' . basename($link->file_data)) }}" target="_blank">
+                                        <a href="{{ route('file.download', basename($link->file_data)) }}" target="_blank">
                                             Download PDF
                                         </a>
                                     </p>
@@ -65,7 +67,8 @@
                             </div>
 
                             <div class="d-flex gap-3">
-                                <a href="{{ route('client.link') }}" class="btn btn-secondary px-4 py-2 fw-semibold">Cancel</a>
+                                <a href="{{ route('client.link.index') }}"
+                                    class="btn btn-secondary px-4 py-2 fw-semibold">Cancel</a>
                                 <button type="submit" class="btn btn-dark px-4 py-2 fw-semibold">Update</button>
                             </div>
                         </form>
@@ -98,100 +101,115 @@
 @endsection
 
 @push('scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const fileTypeBtns = document.querySelectorAll('.file-type-btn');
-        const fileTypeInput = document.getElementById('fileTypeInput');
-        const linkWrapper = document.getElementById('linkWrapper');
-        const pdfWrapper = document.getElementById('pdfWrapper');
-        const fileInput = document.getElementById('fileInput');
-        const uploadPlaceholder = document.getElementById('uploadPlaceholder');
-        const uploadArea = document.querySelector('.upload-area');
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const fileTypeBtns = document.querySelectorAll('.file-type-btn');
+            const fileTypeInput = document.getElementById('fileTypeInput');
+            const linkWrapper = document.getElementById('linkWrapper');
+            const pdfWrapper = document.getElementById('pdfWrapper');
+            const fileInput = document.getElementById('fileInput');
+            const uploadPlaceholder = document.getElementById('uploadPlaceholder');
+            const uploadArea = document.querySelector('.upload-area');
 
-        function toggleUploadType(type) {
-            if (type === 'link') {
-                linkWrapper.classList.remove('d-none');
-                pdfWrapper.classList.add('d-none');
-            } else {
-                linkWrapper.classList.add('d-none');
-                pdfWrapper.classList.remove('d-none');
+            function toggleUploadType(type) {
+                if (type === 'link') {
+                    linkWrapper.classList.remove('d-none');
+                    pdfWrapper.classList.add('d-none');
+                } else {
+                    linkWrapper.classList.add('d-none');
+                    pdfWrapper.classList.remove('d-none');
+                }
             }
-        }
 
-        toggleUploadType(fileTypeInput.value);
+            toggleUploadType(fileTypeInput.value);
 
-        fileTypeBtns.forEach(btn => {
-            btn.addEventListener('click', function () {
-                fileTypeBtns.forEach(b => {
-                    b.classList.remove('active', 'btn-warning');
-                    b.classList.add('btn-outline-secondary');
+            fileTypeBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    fileTypeBtns.forEach(b => {
+                        b.classList.remove('active', 'btn-warning');
+                        b.classList.add('btn-outline-secondary');
+                    });
+
+                    this.classList.add('active', 'btn-warning');
+                    this.classList.remove('btn-outline-secondary');
+
+                    const selectedType = this.dataset.type;
+                    fileTypeInput.value = selectedType;
+                    toggleUploadType(selectedType);
                 });
-
-                this.classList.add('active', 'btn-warning');
-                this.classList.remove('btn-outline-secondary');
-
-                const selectedType = this.dataset.type;
-                fileTypeInput.value = selectedType;
-                toggleUploadType(selectedType);
             });
-        });
 
-        uploadArea.addEventListener('click', () => {
-            if (fileTypeInput.value === 'pdf') {
-                fileInput.click();
+            uploadArea.addEventListener('click', () => {
+                if (fileTypeInput.value === 'pdf') {
+                    fileInput.click();
+                }
+            });
+
+            fileInput.addEventListener('change', function (e) {
+                handleFileUpload(e.target.files[0]);
+            });
+
+            function handleFileUpload(file) {
+                if (!file) return;
+
+                const maxSize = 2 * 1024 * 1024;
+                if (file.type !== 'application/pdf') {
+                    alert('Only PDF files are allowed.');
+                    fileInput.value = '';
+                    return;
+                }
+
+                if (file.size > maxSize) {
+                    alert('PDF file size must be 2MB or less.');
+                    fileInput.value = '';
+                    return;
+                }
+
+                uploadPlaceholder.innerHTML = `
+                    <i class="fas fa-file-pdf fa-2x mb-2 text-danger"></i>
+                    <div class="fw-semibold text-dark">${file.name}</div>
+                    <small class="text-muted">Click to change file</small>
+                `;
             }
-        });
 
-        fileInput.addEventListener('change', function (e) {
-            handleFileUpload(e.target.files[0]);
-        });
+            // Drag & Drop support
+            ['dragenter', 'dragover'].forEach(event => {
+                uploadArea.addEventListener(event, e => {
+                    e.preventDefault();
+                    uploadArea.classList.add('drag-over');
+                });
+            });
 
-        function handleFileUpload(file) {
-            if (!file) return;
+            ['dragleave', 'drop'].forEach(event => {
+                uploadArea.addEventListener(event, e => {
+                    e.preventDefault();
+                    uploadArea.classList.remove('drag-over');
+                });
+            });
 
-            const maxSize = 2 * 1024 * 1024;
-            if (file.type !== 'application/pdf') {
-                alert('Only PDF files are allowed.');
-                fileInput.value = '';
-                return;
-            }
-
-            if (file.size > maxSize) {
-                alert('PDF file size must be 2MB or less.');
-                fileInput.value = '';
-                return;
-            }
-
-            uploadPlaceholder.innerHTML = `
-                <i class="fas fa-file-pdf fa-2x mb-2 text-danger"></i>
-                <div class="fw-semibold text-dark">${file.name}</div>
-                <small class="text-muted">Click to change file</small>
-            `;
-        }
-
-        // Drag & Drop support
-        ['dragenter', 'dragover'].forEach(event => {
-            uploadArea.addEventListener(event, e => {
+            uploadArea.addEventListener('drop', function (e) {
                 e.preventDefault();
-                uploadArea.classList.add('drag-over');
+                const file = e.dataTransfer.files[0];
+                if (file) {
+                    fileInput.files = e.dataTransfer.files;
+                    handleFileUpload(file);
+                }
+            });
+
+            fileTypeBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    const selectedType = this.dataset.type;
+
+                    if (selectedType === 'pdf') {
+                        // Kosongkan input file saat user ganti tipe ke PDF
+                        fileInput.value = '';
+                        uploadPlaceholder.innerHTML = `
+                    <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
+                    <div class="fw-semibold">Drag & drop PDF here or click to browse</div>
+                `;
+                    }
+                });
             });
         });
-
-        ['dragleave', 'drop'].forEach(event => {
-            uploadArea.addEventListener(event, e => {
-                e.preventDefault();
-                uploadArea.classList.remove('drag-over');
-            });
-        });
-
-        uploadArea.addEventListener('drop', function (e) {
-            e.preventDefault();
-            const file = e.dataTransfer.files[0];
-            if (file) {
-                fileInput.files = e.dataTransfer.files;
-                handleFileUpload(file);
-            }
-        });
-    });
-</script>
+    </script>
 @endpush
