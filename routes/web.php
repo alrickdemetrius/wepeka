@@ -33,7 +33,9 @@ Route::get('/download/{filename}', function ($filename) {
 
 // Guest (Login)
 Route::middleware('guest')->group(function () {
-    Route::get('/', [HomeController::class, 'index'])->name('index');
+    Route::get('/', function () {
+        return redirect()->route('client.headquarters');
+    })->name('index');
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
 });

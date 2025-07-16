@@ -9,21 +9,21 @@ use Illuminate\Support\Facades\Auth;
 class CheckRole
 {
     public function handle(Request $request, Closure $next, $role)
-    {
-        if (!Auth::check()) {
-            return redirect()->route('login');
-        }
-
-        $user = Auth::user();
-
-        if ($role === 'admin' && $user->role !== 'admin') {
-            // return redirect()->route('admin.index');
-        }
-
-        if ($role === 'client' && $user->role !== 'client') {
-            return redirect()->route('client.index');
-        }
-
-        return $next($request);
+{
+    if (!Auth::check()) {
+        return redirect()->route('login');
     }
+
+    $user = Auth::user();
+
+    if ($role === 'admin' && $user->role !== 'admin') {
+        return abort(403, 'Unauthorized'); // Atau redirect ke halaman umum jika mau
+    }
+
+    if ($role === 'client' && $user->role !== 'client') {
+        return abort(403, 'Unauthorized'); // Jangan redirect ke client.index!
+    }
+
+    return $next($request);
+}
 }

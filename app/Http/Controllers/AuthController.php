@@ -11,25 +11,24 @@ class AuthController extends Controller
 {
     //
 
-
     public function showLoginForm()
     {
         if (auth()->check()) {
             $user = auth()->user();
 
-            // Cek berdasarkan role
             if ($user->role === 'admin') {
-                // return redirect()->route('admin.index');
+                return redirect()->route('admin.index');
             } else {
-                return redirect()->route('client.index');
+                return redirect()->route('client.headquarters'); // arahkan langsung ke HQ
             }
         }
 
         return view('auth.login');
     }
 
+
     // Proses login
-   // Proses login
+    // Proses login
     public function login(Request $request)
     {
         $credentials = $request->validate([
@@ -44,7 +43,7 @@ class AuthController extends Controller
             if (Auth::user()->isAdmin()) {
                 return redirect()->route('admin.index'); // dari 'admin.dashboard'
             } else {
-                return redirect()->route('client.index');
+                return redirect()->route('client.headquarters');
             }
         }
 
@@ -63,5 +62,4 @@ class AuthController extends Controller
 
         return redirect('/');
     }
-
 }
