@@ -66,6 +66,9 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->as('client.')->gro
     Route::get('/link', [ClientQrLinkController::class, 'index'])->name('link.index');
     Route::get('/link/edit', [ClientQrLinkController::class, 'edit'])->name('link.edit');
     Route::put('/link/update', [ClientQrLinkController::class, 'update'])->name('link.update');
+    Route::get('/link/download-qr', [ClientQrLinkController::class, 'downloadQr'])->name('link.download_qr');
+
+
 
 });
 

@@ -25,6 +25,11 @@
                                 <div class="qr-small">
                                     {!! $link->qr_code_svg !!}
                                 </div>
+                                <div class="mt-3">
+                                    <a href="{{ route('client.link.download_qr') }}" class="btn btn-outline-primary fw-semibold">
+                                        Download QR Code
+                                    </a>
+                                </div>
                                 <p class="text-muted mt-2 mb-0">Scan this QR to access:
                                     @if ($link->file_type === 'link')
 

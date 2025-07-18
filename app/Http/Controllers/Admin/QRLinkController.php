@@ -57,13 +57,13 @@ class QrLinkController extends Controller
     }
 
     public function show($userId)
-{
-    $user = User::with('qrLink')->findOrFail($userId);
+    {
+        $user = User::with('qrLink')->findOrFail($userId);
 
-    if (!$user->qrLink) {
-        return back()->with('error', 'QR not found for this client.');
+        if (!$user->qrLink) {
+            return back()->with('error', 'QR not found for this client.');
+        }
+
+        return view('admin.qr.show', compact('user'));
     }
-
-    return view('admin.qr.show', compact('user'));
-}
 }

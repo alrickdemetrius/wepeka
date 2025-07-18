@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Response;
 
 class QrLinkController extends Controller
 {
@@ -69,4 +70,21 @@ class QrLinkController extends Controller
 
         return view('client.headquarters.link.edit', compact('link'));
     }
+
+    public function downloadQr()
+{
+    $user = auth()->user();
+    $link = $user->qrLink; // gunakan relasi 'qrLink', bukan 'link'
+
+    if (!$link || !$link->qr_code_svg) {
+        return redirect()->route('client.link.index')->with('error', 'QR Code not available.');
+    }
+
+    $svgContent = $link->qr_code_svg;
+
+    return Response::make($svgContent, 200, [
+        'Content-Type' => 'image/svg+xml',
+        'Content-Disposition' => 'attachment; filename="qr-code-' . $user->id . '.svg"',
+    ]);
+}
 }
