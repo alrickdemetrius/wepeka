@@ -31,11 +31,11 @@ class UserSeeder extends Seeder
 
         DB::table('users')->insert([
             [
-                'name'=>'michael',
-                'email' => "michaelsin04@gmail.com",
-                'password'=> Hash::make('akuadminnya'),
-                'contact_name'=> 'Michael',
-                'contact_number'=> '0811111111111',
+                'name'=>'ADMIN',
+                'email' => "wepekapparel@gmail.com",
+                'password'=> Hash::make('wepekaapparelflytothemoon'),
+                'contact_name'=> 'ADMIN',
+                'contact_number'=> '082331577750',
                 'role'=> 'admin',
                 'created_at'=> Carbon::now(),
                 'updated_at'=> Carbon::now()
