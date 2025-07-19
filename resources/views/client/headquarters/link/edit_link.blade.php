@@ -4,19 +4,34 @@
     <div class="min-vh-100 py-4"
         style="background: url('{{ asset('images/background4_brown.jpg') }}') no-repeat center center fixed; background-size: cover;">
         <div class="container">
-            <div class="row">
-                <div class="col-lg-9 col-md-8">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10 mx-auto">
                     <div class="bg-white rounded p-4 shadow">
                         <div class="mb-4">
                             <h3 class="fw-bold text-dark mb-1">Edit QR Link</h3>
                         </div>
 
                         <form action="{{ route('client.link.update', $link->id) }}" method="POST"
-                            enctype="multipart/form-data">
+                            onsubmit="return validateForm();" enctype="multipart/form-data">
+
+                            @if (session('error'))
+                                <div class="alert alert-danger">{{ session('error') }}</div>
+                            @endif
+
+                            @if ($errors->any())
+                                <div class="alert alert-danger">
+                                    <ul class="mb-0">
+                                        @foreach ($errors->all() as $err)
+                                            <li>{{ $err }}</li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            @endif
+
                             @csrf
                             @method('PUT')
-                            <input type="hidden" name="file_type" id="fileTypeInput"
-                                value="{{ old('file_type', $link->file_type) }}">
+                            <input type="hidden" name="file_type" id="fileTypeInput" value="{{ old('file_type', $link->file_type) }}">
+                            <input type="hidden" name="file_data" value="{{ old('file_data', $link->file_data) }}">
 
                             <div class="mb-4">
                                 <label class="form-label fw-semibold text-dark mb-2">Event Name</label>
@@ -41,8 +56,7 @@
                             <div class="mb-4 {{ $link->file_type === 'link' ? '' : 'd-none' }}" id="linkWrapper">
                                 <label class="form-label fw-semibold text-dark mb-2">Link</label>
                                 <input type="url" class="form-control form-control-lg" id="linkInput" name="file_data"
-                                    value="{{ old('file_data', $link->file_type === 'link' ? $link->file_data : '') }}"
-                                    placeholder="Enter your link here">
+                                    value="{{ old('file_data', $link->file_data) }}" placeholder="Enter your link here">
                             </div>
 
                             <div class="mb-4 {{ $link->file_type === 'pdf' ? '' : 'd-none' }}" id="pdfWrapper">
@@ -102,6 +116,41 @@
 
 @push('scripts')
     <script>
+        function validateForm() {
+            const fileType = document.getElementById('fileTypeInput').value;
+
+            if (fileType === 'link') {
+                const linkInput = document.getElementById('linkInput').value;
+                if (!linkInput.trim()) {
+                    alert('Please enter a valid link.');
+                    return false;
+                }
+            } else if (fileType === 'pdf') {
+                const fileInput = document.getElementById('fileInput');
+                const isReplacing = fileInput.files.length > 0;
+
+                // Kalau user ingin ganti file, harus validasi ukuran dan tipe
+                if (isReplacing) {
+                    const file = fileInput.files[0];
+                    const maxSize = 2 * 1024 * 1024;
+                    const isPDF = file.name.toLowerCase().endsWith('.pdf');
+
+                    if (!isPDF) {
+                        alert('Only PDF files are allowed.');
+                        return false;
+                    }
+
+                    if (file.size > maxSize) {
+                        alert('PDF file size must be 2MB or less.');
+                        return false;
+                    }
+                }
+                // kalau tidak upload baru, tetap lolos validasi
+            }
+
+            return true;
+        }
+
         document.addEventListener('DOMContentLoaded', function () {
             const fileTypeBtns = document.querySelectorAll('.file-type-btn');
             const fileTypeInput = document.getElementById('fileTypeInput');
@@ -153,7 +202,9 @@
                 if (!file) return;
 
                 const maxSize = 2 * 1024 * 1024;
-                if (file.type !== 'application/pdf') {
+                const isPDF = file.name.toLowerCase().endsWith('.pdf');
+
+                if (!isPDF) {
                     alert('Only PDF files are allowed.');
                     fileInput.value = '';
                     return;
@@ -166,13 +217,12 @@
                 }
 
                 uploadPlaceholder.innerHTML = `
-                    <i class="fas fa-file-pdf fa-2x mb-2 text-danger"></i>
-                    <div class="fw-semibold text-dark">${file.name}</div>
-                    <small class="text-muted">Click to change file</small>
-                `;
+                            <i class="fas fa-file-pdf fa-2x mb-2 text-danger"></i>
+                            <div class="fw-semibold text-dark">${file.name}</div>
+                            <small class="text-muted">Click to change file</small>
+                        `;
             }
 
-            // Drag & Drop support
             ['dragenter', 'dragover'].forEach(event => {
                 uploadArea.addEventListener(event, e => {
                     e.preventDefault();
@@ -201,15 +251,15 @@
                     const selectedType = this.dataset.type;
 
                     if (selectedType === 'pdf') {
-                        // Kosongkan input file saat user ganti tipe ke PDF
                         fileInput.value = '';
                         uploadPlaceholder.innerHTML = `
-                    <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
-                    <div class="fw-semibold">Drag & drop PDF here or click to browse</div>
-                `;
+                                    <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
+                                    <div class="fw-semibold">Drag & drop PDF here or click to browse</div>
+                                `;
                     }
                 });
             });
         });
     </script>
+
 @endpush

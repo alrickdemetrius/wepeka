@@ -15,6 +15,7 @@ class QrLink extends Model
         'file_data',
         'qr_code_svg',
         'user_id',
+        'slug',
     ];
 
     public function user()

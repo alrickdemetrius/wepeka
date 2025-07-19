@@ -5,86 +5,95 @@ namespace App\Http\Controllers\Client;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Str;
+use App\Models\QrLink;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class QrLinkController extends Controller
 {
     public function index()
     {
         $link = Auth::user()->qrLink;
-        return view('client.headquarters.link.view_link', compact('link'));
-    }
-
-    public function update(Request $request)
-    {
-        $link = Auth::user()->qrLink;
 
         if (!$link) {
-            abort(404);
+            abort(404, 'QR link belum tersedia.');
         }
 
-        $validated = $request->validate([
-            'event_name' => 'required|string|max:255',
-            'file_type' => 'required|in:link,pdf',
-            'file_data' => 'nullable|string',
-            'file' => 'nullable|file|mimes:pdf|max:2048',
-        ]);
-
-        $filePath = $link->file_data;
-        $qrData = '';
-
-        if ($validated['file_type'] === 'link') {
-            $qrData = $validated['file_data'];
-        } elseif ($validated['file_type'] === 'pdf') {
-            if ($request->hasFile('file')) {
-                $file = $request->file('file');
-                $filePath = $file->store('pdfs', 'public');
-            }
-
-            // QR tetap generate dari URL download meskipun file tidak berubah
-            $qrData = route('file.download', basename($filePath));
+        if (!$link->slug) {
+            $link->slug = Str::random(8);
+            $link->save();
         }
 
-        // Generate ulang QR code
-        $qrCodeSvg = \QrCode::format('svg')->size(300)->generate($qrData);
+        $qrData = url(route('client.link.redirect', $link->slug, false));
+        $qrCodeSvg = QrCode::format('svg')->size(300)->generate($qrData);
 
-        $link->update([
-            'event_name' => $validated['event_name'],
-            'file_type' => $validated['file_type'],
-            'file_data' => $filePath,
-            'qr_code_svg' => $qrCodeSvg,
-        ]);
-
-        return redirect()->route('client.link.view_link')->with('success', 'QR updated successfully.');
+        return view('client.headquarters.link.view_link', compact('link', 'qrData', 'qrCodeSvg'));
     }
-
-
 
     public function edit()
     {
         $link = Auth::user()->qrLink;
-
         if (!$link) {
-            abort(404);
+            abort(404, 'QR link belum tersedia.');
         }
-
         return view('client.headquarters.link.edit_link', compact('link'));
     }
 
-    // public function downloadQr()
-    // {
-    //     $user = auth()->user();
-    //     $link = $user->qrLink; // gunakan relasi 'qrLink', bukan 'link'
+    public function update(Request $request)
+    {
+        $request->validate([
+            'event_name' => 'required|string|max:255',
+            'file_type' => 'required|in:link,pdf',
+            'file_data' => 'required_if:file_type,link|nullable|string',
+            'file' => 'nullable|file|mimes:pdf|max:2048',
+        ]);
 
-    //     if (!$link || !$link->qr_code_svg) {
-    //         return redirect()->route('client.link.view_link')->with('error', 'QR Code not available.');
-    //     }
+        $link = Auth::user()->qrLink;
 
-    //     $svgContent = $link->qr_code_svg;
+        if (!$link->slug) {
+            $link->slug = Str::random(8);
+        }
 
-    //     return Response::make($svgContent, 200, [
-    //         'Content-Type' => 'image/svg+xml',
-    //         'Content-Disposition' => 'attachment; filename="qr-code-' . $user->id . '.svg"',
-    //     ]);
-    // }
+        if ($request->file_type === 'pdf') {
+            if ($request->hasFile('file')) {
+                // Hapus file lama
+                if ($link->file_data && file_exists(storage_path("app/{$link->file_data}"))) {
+                    unlink(storage_path("app/{$link->file_data}"));
+                }
+
+                // Simpan file baru
+                $pdfPath = $request->file('file')->store('public/pdfs');
+                $link->file_data = $pdfPath;
+            }
+            // Jika tidak ada file baru, file_data tetap
+        } elseif ($request->file_type === 'link') {
+            $link->file_data = $request->file_data;
+        }
+
+        $link->update([
+            'event_name' => $request->event_name,
+            'file_type' => $request->file_type,
+            'slug' => $link->slug,
+            'file_data' => $link->file_data,
+        ]);
+
+        return redirect()->route('client.link.view_link')->with('success', 'Link berhasil diperbarui.');
+    }
+
+    public function redirect($slug)
+    {
+        $link = QrLink::where('slug', $slug)->firstOrFail();
+
+        if ($link->file_type === 'link') {
+            return redirect()->away($link->file_data);
+        } elseif ($link->file_type === 'pdf') {
+            $filePath = storage_path("app/{$link->file_data}");
+            if (!file_exists($filePath)) {
+                abort(404, 'File tidak ditemukan.');
+            }
+            return response()->file($filePath);
+        }
+
+        abort(404);
+    }
 }

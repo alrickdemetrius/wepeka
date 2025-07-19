@@ -29,7 +29,7 @@
 
                                     <!-- Tempelkan QR Code -->
                                     <div class="qr-overlay" id="qr-overlay">
-                                        {!! $link->qr_code_svg !!}
+                                        {!! $qrCodeSvg !!}
                                     </div>
                                 </div>
                                 <div class="mt-3">
@@ -40,6 +40,17 @@
                                         Download Tag
                                     </button>
                                 </div>
+
+                                <div class="mt-3">
+                                    @if ($qrData)
+                                        <div class="text-center mt-4">
+                                            <p><strong>Dynamic QR Link:</strong></p>
+                                            <a href="{{ $qrData }}" target="_blank">{{ $qrData }}</a>
+
+                                        </div>
+                                    @endif
+                                </div>
+
                                 <p class="text-muted mt-2 mb-0">Scan this QR to access:
                                     @if ($link->file_type === 'link')
 
