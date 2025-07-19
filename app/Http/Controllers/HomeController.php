@@ -14,8 +14,9 @@ class HomeController extends Controller
     public function index()
     {
         if (auth()->check() && auth()->user()->isAdmin()) {
-            //proses ke halaman admin
+            return view('admin.dashboard');
+        } else {
+            return view('client.index');
         }
-        return view('client.index');
     }
 }

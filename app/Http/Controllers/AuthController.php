@@ -41,7 +41,7 @@ class AuthController extends Controller
 
             // Redirect berdasarkan peran pengguna
             if (Auth::user()->isAdmin()) {
-                return redirect()->route('admin.index'); // dari 'admin.dashboard'
+                return redirect()->route('admin.dashboard'); // dari 'admin.dashboard'
             } else {
                 return redirect()->route('client.headquarters');
             }

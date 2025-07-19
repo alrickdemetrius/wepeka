@@ -11,16 +11,28 @@ use App\Http\Controllers\ClientProfileController;
 
 /*
 |--------------------------------------------------------------------------
-| Public Routes (Tanpa Login)
+| Universal Route (Redirect Root)
 |--------------------------------------------------------------------------
 */
 
-// Redirect default /home ke login
-Route::get('/home', function () {
+Route::get('/', function () {
+    if (auth()->check()) {
+        // Cek role user
+        if (auth()->user()->isClient()) {
+            return redirect()->route('client.headquarters');
+        } elseif (auth()->user()->isAdmin()) {
+            return redirect()->route('admin.dashboard');
+        }
+    }
     return redirect()->route('login');
 });
 
-// File download
+/*
+|--------------------------------------------------------------------------
+| File Download (Tanpa Login)
+|--------------------------------------------------------------------------
+*/
+
 Route::get('/download/{filename}', function ($filename) {
     $path = storage_path('app/public/pdfs/' . $filename);
     if (!file_exists($path)) abort(404);
@@ -31,11 +43,13 @@ Route::get('/download/{filename}', function ($filename) {
     ]);
 })->name('file.download');
 
-// Guest (Login)
+/*
+|--------------------------------------------------------------------------
+| Guest Routes (Login)
+|--------------------------------------------------------------------------
+*/
+
 Route::middleware('guest')->group(function () {
-    Route::get('/', function () {
-        return redirect()->route('client.headquarters');
-    })->name('index');
     Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthController::class, 'login']);
 });
@@ -45,6 +59,7 @@ Route::middleware('guest')->group(function () {
 | Logout
 |--------------------------------------------------------------------------
 */
+
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 /*
@@ -52,6 +67,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 | Client Routes
 |--------------------------------------------------------------------------
 */
+
 Route::middleware(['auth', 'role:client'])->prefix('client')->as('client.')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('index');
     Route::get('/headquarters', [HeadquartersController::class, 'index'])->name('headquarters');
@@ -62,14 +78,11 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->as('client.')->gro
     Route::put('/profile/update-email', [ClientProfileController::class, 'updateEmail'])->name('profile.update-email');
     Route::put('/profile/update-password', [ClientProfileController::class, 'updatePassword'])->name('profile.update-password');
 
-    // QR (Client hanya bisa update)
+    // QR Link (Client)
     Route::get('/link', [ClientQrLinkController::class, 'index'])->name('link.index');
     Route::get('/link/edit', [ClientQrLinkController::class, 'edit'])->name('link.edit');
     Route::put('/link/update', [ClientQrLinkController::class, 'update'])->name('link.update');
     Route::get('/link/download-qr', [ClientQrLinkController::class, 'downloadQr'])->name('link.download_qr');
-
-
-
 });
 
 /*
@@ -77,8 +90,9 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->as('client.')->gro
 | Admin Routes
 |--------------------------------------------------------------------------
 */
+
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->as('admin.')->group(function () {
-    Route::get('/', [AdminUserController::class, 'index'])->name('index');
+    Route::get('/', [AdminUserController::class, 'index'])->name('dashboard');
 
     // User Management
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');

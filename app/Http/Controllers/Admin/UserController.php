@@ -12,7 +12,7 @@ class UserController extends Controller
     public function index()
     {
         $users = User::where('role', 'client')->latest()->get();
-        return view('admin.index', compact('users'));
+        return view('admin.dashboard', compact('users'));
     }
 
     public function create()
