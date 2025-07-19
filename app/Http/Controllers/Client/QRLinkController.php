@@ -12,7 +12,7 @@ class QrLinkController extends Controller
     public function index()
     {
         $link = Auth::user()->qrLink;
-        return view('client.headquarters.link.index', compact('link'));
+        return view('client.headquarters.link.view_link', compact('link'));
     }
 
     public function update(Request $request)
@@ -55,7 +55,7 @@ class QrLinkController extends Controller
             'qr_code_svg' => $qrCodeSvg,
         ]);
 
-        return redirect()->route('client.link.index')->with('success', 'QR updated successfully.');
+        return redirect()->route('client.link.view_link')->with('success', 'QR updated successfully.');
     }
 
 
@@ -68,23 +68,23 @@ class QrLinkController extends Controller
             abort(404);
         }
 
-        return view('client.headquarters.link.edit', compact('link'));
+        return view('client.headquarters.link.edit_link', compact('link'));
     }
 
-    public function downloadQr()
-{
-    $user = auth()->user();
-    $link = $user->qrLink; // gunakan relasi 'qrLink', bukan 'link'
+    // public function downloadQr()
+    // {
+    //     $user = auth()->user();
+    //     $link = $user->qrLink; // gunakan relasi 'qrLink', bukan 'link'
 
-    if (!$link || !$link->qr_code_svg) {
-        return redirect()->route('client.link.index')->with('error', 'QR Code not available.');
-    }
+    //     if (!$link || !$link->qr_code_svg) {
+    //         return redirect()->route('client.link.view_link')->with('error', 'QR Code not available.');
+    //     }
 
-    $svgContent = $link->qr_code_svg;
+    //     $svgContent = $link->qr_code_svg;
 
-    return Response::make($svgContent, 200, [
-        'Content-Type' => 'image/svg+xml',
-        'Content-Disposition' => 'attachment; filename="qr-code-' . $user->id . '.svg"',
-    ]);
-}
+    //     return Response::make($svgContent, 200, [
+    //         'Content-Type' => 'image/svg+xml',
+    //         'Content-Disposition' => 'attachment; filename="qr-code-' . $user->id . '.svg"',
+    //     ]);
+    // }
 }

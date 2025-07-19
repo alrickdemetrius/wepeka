@@ -67,7 +67,7 @@
                             </div>
 
                             <div class="d-flex gap-3">
-                                <a href="{{ route('client.link.index') }}"
+                                <a href="{{ route('client.link.view_link') }}"
                                     class="btn btn-secondary px-4 py-2 fw-semibold">Cancel</a>
                                 <button type="submit" class="btn btn-dark px-4 py-2 fw-semibold">Update</button>
                             </div>

@@ -50,10 +50,10 @@
 
                 <!-- Kiri -->
                 <div class="d-flex align-items-center justify-content-start flex-grow-1">
-    <a class="nav-link me-4" href="{{ url('/') }}">Home</a>
-    <a class="nav-link me-4" href="{{ url('/headquarters') }}">Headquarter</a>
-    <a class="nav-link" href="#">About</a>
-</div>
+                    <a class="nav-link me-4" href="{{ url('/') }}">Home</a>
+                    <a class="nav-link me-4" href="{{ url('/client/headquarters') }}">Headquarter</a>
+                    <a class="nav-link" href="#">About</a>
+                </div>
 
                 <!-- Tengah (Logo) -->
                 <div class="d-flex justify-content-center flex-grow-0">
