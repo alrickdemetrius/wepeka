@@ -4,7 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-
+    <!-- SEO -->
+    <meta name="keywords" content="Wepeka, Apparel, Clothing, Baju, Brand, Kaos, Seragam, Custom, Sablon, Bordir, Tag, QR">
+    <meta name="description" content="Wepeka is the best option for your branding kit.">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
