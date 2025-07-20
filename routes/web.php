@@ -16,21 +16,20 @@ use App\Http\Controllers\ClientProfileController;
 */
 
 Route::get('/', function () {
-    if (auth()->check()) {
-        if (auth()->user()->isClient()) {
-            return redirect()->route('client.headquarters');
-        } elseif (auth()->user()->isAdmin()) {
-            return redirect()->route('admin.dashboard');
-        }
-    }
-
-    // Untuk tamu (belum login), tampilkan halaman home
     return view('home');
 })->name('home');
 
 /*
 |--------------------------------------------------------------------------
-| File Download (Tanpa Login)
+| Public Route for QR Redirection (Tanpa Login)
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/qr/{slug}', [ClientQrLinkController::class, 'redirect'])->name('client.qr.redirect');
+
+/*
+|--------------------------------------------------------------------------
+| Public File Download (Tanpa Login)
 |--------------------------------------------------------------------------
 */
 
@@ -79,12 +78,11 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->as('client.')->gro
     Route::put('/profile/update-email', [ClientProfileController::class, 'updateEmail'])->name('profile.update-email');
     Route::put('/profile/update-password', [ClientProfileController::class, 'updatePassword'])->name('profile.update-password');
 
-    // QR Link (Client)
+    // QR Link (Client View & Management)
     Route::get('/link', [ClientQrLinkController::class, 'index'])->name('link.view_link');
     Route::get('/link/edit', [ClientQrLinkController::class, 'edit'])->name('link.edit_link');
     Route::put('/link/update', [ClientQrLinkController::class, 'update'])->name('link.update');
     Route::get('/r/{slug}', [ClientQrLinkController::class, 'redirect'])->name('link.redirect');
-
     // Route::get('/link/download-qr', [ClientQrLinkController::class, 'downloadQr'])->name('link.download_qr');
 });
 

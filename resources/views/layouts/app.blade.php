@@ -29,8 +29,14 @@
         font-size: 16px;
         color: #000;
         text-decoration: none;
+        padding: 0 50px;
+        /* spacing antar link */
     }
 
+
+    .logo-img {
+        height: 35px;
+    }
 
     @media (max-width: 768px) {
         .nav-link {
@@ -41,31 +47,49 @@
             height: 24px;
         }
     }
+
+    .nav-link.active {
+        color: #ffc107 !important;
+        /* kuning */
+        font-weight: bold;
+    }
 </style>
 
 <body>
     <div id="app">
         <nav class="navbar navbar-light bg-white shadow-sm">
             <div class="container d-flex justify-content-between align-items-center">
-
                 <!-- Kiri -->
-                <div class="d-flex align-items-center justify-content-start flex-grow-1">
-                    <a class="nav-link me-4" href="{{ url('/') }}">Home</a>
-                    <a class="nav-link me-4" href="{{ url('/client/headquarters') }}">Headquarter</a>
-                    <a class="nav-link" href="#">About</a>
+                <div class="d-flex align-items-center gap-5">
+                    <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Home</a>
+                    @auth
+                        @if (Auth::user()->role === 'admin')
+                            <a class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}"
+                                href="{{ url('/admin') }}">Dashboard</a>
+                        @else
+                            <a class="nav-link {{ request()->is('client/headquarters') ? 'active' : '' }}"
+                                href="{{ url('/client/headquarters') }}">Headquarter</a>
+                        @endif
+                    @else
+                        <a class="nav-link {{ request()->is('client/headquarters') ? 'active' : '' }}"
+                            href="{{ url('/client/headquarters') }}">Headquarter</a>
+                    @endauth
+                    <a class="nav-link {{ request()->is('about') ? 'active' : '' }}"
+                        href="{{ url('/about') }}">About</a>
                 </div>
 
                 <!-- Tengah (Logo) -->
-                <div class="d-flex justify-content-center flex-grow-0">
+                <div class="d-flex justify-content-center">
                     <a class="navbar-brand mx-auto" href="{{ url('/') }}">
                         <img src="{{ asset('images/logowepeka_ed.png') }}" alt="Wepeka Logo" class="logo-img">
                     </a>
                 </div>
 
                 <!-- Kanan -->
-                <div class="d-flex align-items-center justify-content-end flex-grow-1 gap-5">
-                    <a class="nav-link" href="#">FaQ</a>
-                    <a class="nav-link" href="#">Socials</a>
+                <div class="d-flex align-items-center gap-5">
+                    <a class="nav-link {{ request()->is('faq') ? 'active' : '' }}" href="{{ url('/faq') }}">FaQ</a>
+                    <a class="nav-link {{ request()->is('socials') ? 'active' : '' }}"
+                        href="{{ url('/socials') }}">Socials</a>
 
                     @guest
                         @if (Route::has('login'))
@@ -95,7 +119,7 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main>
             @yield('content')
         </main>
     </div>

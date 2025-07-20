@@ -40,6 +40,6 @@ class UserController extends Controller
             'role' => 'client',
         ]);
 
-        return redirect()->route('admin.index')->with('success', 'Client created successfully');
+        return redirect()->route('admin.dashboard')->with('success', 'Client created successfully');
     }
 }

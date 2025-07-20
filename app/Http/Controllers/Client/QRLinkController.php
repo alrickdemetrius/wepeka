@@ -24,7 +24,7 @@ class QrLinkController extends Controller
             $link->save();
         }
 
-        $qrData = url(route('client.link.redirect', $link->slug, false));
+        $qrData = route('client.qr.redirect', $link->slug);
         $qrCodeSvg = QrCode::format('svg')->size(300)->generate($qrData);
 
         return view('client.headquarters.link.view_link', compact('link', 'qrData', 'qrCodeSvg'));
@@ -81,19 +81,23 @@ class QrLinkController extends Controller
     }
 
     public function redirect($slug)
-    {
-        $link = QrLink::where('slug', $slug)->firstOrFail();
+{
+    $link = QrLink::where('slug', $slug)->firstOrFail();
 
-        if ($link->file_type === 'link') {
-            return redirect()->away($link->file_data);
-        } elseif ($link->file_type === 'pdf') {
-            $filePath = storage_path("app/{$link->file_data}");
-            if (!file_exists($filePath)) {
-                abort(404, 'File tidak ditemukan.');
-            }
-            return response()->file($filePath);
+    if ($link->file_type === 'link') {
+        // Redirect ke link luar (misalnya Google Form, dll)
+        return redirect()->away($link->file_data);
+    } elseif ($link->file_type === 'pdf') {
+        // Redirect untuk membuka file PDF di server
+        $filePath = storage_path("app/public/{$link->file_data}");
+
+        if (!file_exists($filePath)) {
+            abort(404, 'File tidak ditemukan.');
         }
 
-        abort(404);
+        return response()->file($filePath); // Bisa juga pakai ->download() jika ingin diunduh
     }
+
+    abort(404);
+}
 }

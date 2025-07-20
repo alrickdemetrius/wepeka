@@ -30,8 +30,11 @@
 
                             @csrf
                             @method('PUT')
-                            <input type="hidden" name="file_type" id="fileTypeInput" value="{{ old('file_type', $link->file_type) }}">
-                            <input type="hidden" name="file_data" value="{{ old('file_data', $link->file_data) }}">
+                            <input type="hidden" name="file_type" id="fileTypeInput"
+                                value="{{ old('file_type', $link->file_type) }}">
+                            @if(old('file_type', $link->file_type) === 'link')
+                                <input type="hidden" name="file_data" value="{{ old('file_data', $link->file_data) }}">
+                            @endif
 
                             <div class="mb-4">
                                 <label class="form-label fw-semibold text-dark mb-2">Event Name</label>
@@ -217,10 +220,10 @@
                 }
 
                 uploadPlaceholder.innerHTML = `
-                            <i class="fas fa-file-pdf fa-2x mb-2 text-danger"></i>
-                            <div class="fw-semibold text-dark">${file.name}</div>
-                            <small class="text-muted">Click to change file</small>
-                        `;
+                                <i class="fas fa-file-pdf fa-2x mb-2 text-danger"></i>
+                                <div class="fw-semibold text-dark">${file.name}</div>
+                                <small class="text-muted">Click to change file</small>
+                            `;
             }
 
             ['dragenter', 'dragover'].forEach(event => {
@@ -253,9 +256,9 @@
                     if (selectedType === 'pdf') {
                         fileInput.value = '';
                         uploadPlaceholder.innerHTML = `
-                                    <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
-                                    <div class="fw-semibold">Drag & drop PDF here or click to browse</div>
-                                `;
+                                        <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
+                                        <div class="fw-semibold">Drag & drop PDF here or click to browse</div>
+                                    `;
                     }
                 });
             });

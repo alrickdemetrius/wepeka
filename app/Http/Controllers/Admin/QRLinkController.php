@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\QrLink;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
@@ -45,12 +46,17 @@ class QrLinkController extends Controller
 
         $qrCodeSvg = QrCode::format('svg')->size(300)->generate($qrData);
 
+        $slug = \Str::uuid(); // atau bisa pakai \Str::random(10)
+
+        $qrData = route('client.qr.redirect', ['slug' => $slug]); // Link tujuan via slug
+
         QrLink::create([
             'user_id' => $user->id,
             'event_name' => $validated['event_name'],
             'file_type' => $validated['file_type'],
             'file_data' => $filePath ?? $validated['file_data'],
-            'qr_code_svg' => $qrCodeSvg,
+            'qr_code_svg' => QrCode::format('svg')->size(300)->generate($qrData),
+            'slug' => $slug, // save to DB
         ]);
 
         return redirect()->route('admin.clients.index')->with('success', 'QR created successfully.');
