@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->string('password');
             $table->string("contact_name");
             $table->string("contact_number");
+            $table->string('logo_file')->nullable();
             $table->enum('role', ['client', 'admin'])->default('client');
             $table->rememberToken();
             $table->timestamps();

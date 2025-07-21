@@ -18,6 +18,7 @@ class User extends Authenticatable
         'password',
         'contact_name',
         'contact_number',
+        'logo_file',
         'role',
     ];
 

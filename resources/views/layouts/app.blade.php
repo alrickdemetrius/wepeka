@@ -73,14 +73,14 @@
                                 href="{{ url('/admin') }}">Dashboard</a>
                         @else
                             <a class="nav-link {{ request()->is('client/headquarters') ? 'active' : '' }}"
-                                href="{{ url('/client/headquarters') }}">Headquarter</a>
+                                href="{{ route('client.headquarters') }}">Headquarter</a>
                         @endif
                     @else
                         <a class="nav-link {{ request()->is('client/headquarters') ? 'active' : '' }}"
-                            href="{{ url('/client/headquarters') }}">Headquarter</a>
+                            href="{{ route('client.headquarters') }}">Headquarter</a>
                     @endauth
                     <a class="nav-link {{ request()->is('about') ? 'active' : '' }}"
-                        href="{{ url('/about') }}">About</a>
+                        href="{{ route('about') }}">About</a>
                 </div>
 
                 <!-- Tengah (Logo) -->
