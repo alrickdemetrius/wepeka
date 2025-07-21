@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- SEO -->
-    <meta name="keywords" content="Wepeka, Apparel, Clothing, Baju, Brand, Kaos, Seragam, Custom, Sablon, Bordir, Tag, QR">
+    <meta name="keywords"
+        content="Wepeka, Apparel, Clothing, Baju, Brand, Kaos, Seragam, Custom, Sablon, Bordir, Tag, QR">
     <meta name="description" content="Wepeka is the best option for your branding kit.">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -18,6 +19,8 @@
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
 
     <!-- Scripts -->
+    <script async src="https://www.instagram.com/embed.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     @vite(['resources/sass/app.scss', 'resources/js/app.js'])
 </head>
 
@@ -89,9 +92,9 @@
 
                 <!-- Kanan -->
                 <div class="d-flex align-items-center gap-5">
-                    <a class="nav-link {{ request()->is('faq') ? 'active' : '' }}" href="{{ url('/faq') }}">FaQ</a>
+                    <a class="nav-link {{ request()->is('faq') ? 'active' : '' }}" href="{{ route('faq') }}">FAQ</a>
                     <a class="nav-link {{ request()->is('socials') ? 'active' : '' }}"
-                        href="{{ url('/socials') }}">Socials</a>
+                        href="{{ route('socials') }}">Socials</a>
 
                     @guest
                         @if (Route::has('login'))

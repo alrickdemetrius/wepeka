@@ -19,6 +19,13 @@ Route::get('/', function () {
     return view('home');
 })->name('home');
 
+Route::get('/socials', function () {
+    return view('socials');
+})->name('socials');
+
+Route::get('/faq', function () {
+    return view('faq');
+})->name('faq');
 /*
 |--------------------------------------------------------------------------
 | Public Route for QR Redirection (Tanpa Login)
