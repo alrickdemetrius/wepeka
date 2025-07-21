@@ -7,24 +7,34 @@
     }
 
     .glass-card {
-        background: rgba(255, 255, 255, 0.8);
+        background: rgba(255, 255, 255, 0.85);
         backdrop-filter: blur(12px);
-        border-radius: 16px;
-        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     }
 
     .custom-table thead {
+        position: sticky;
+        top: 0;
         background-color: #343a40;
         color: #fff;
+        z-index: 1;
+    }
+
+    .custom-table th,
+    .custom-table td {
+        vertical-align: middle;
+        padding: 12px 14px;
     }
 
     .custom-table tbody tr:hover {
-        background-color: rgba(52, 58, 64, 0.05);
+        background-color: rgba(0, 0, 0, 0.03);
     }
 
     .custom-btn {
-        border-radius: 8px;
+        border-radius: 6px;
         font-weight: 500;
+        font-size: 0.875rem;
     }
 
     .custom-btn-add {
@@ -43,12 +53,12 @@
     }
 
     .custom-btn-view:hover {
-        background: #146c43;
+        background: #157347;
         color: white;
     }
 
     .custom-btn-generate {
-        border: 2px solid #0d6efd;
+        border: 1.5px solid #0d6efd;
         color: #0d6efd;
         background: transparent;
     }
@@ -56,6 +66,20 @@
     .custom-btn-generate:hover {
         background: #0d6efd;
         color: white;
+    }
+
+    .logo-thumb {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (max-width: 768px) {
+        .table-responsive {
+            overflow-x: auto;
+        }
     }
 </style>
 
@@ -73,6 +97,7 @@
                 <thead>
                     <tr>
                         <th>#</th>
+                        <th>Logo</th>
                         <th>Name</th>
                         <th>Email</th>
                         <th>Password</th>
@@ -85,6 +110,13 @@
                     @forelse($users as $user)
                         <tr>
                             <td>{{ $loop->iteration }}</td>
+                            <td>
+                                @if ($user->logo)
+                                    <img src="{{ asset('storage/' . $user->logo) }}" alt="Logo" class="logo-thumb">
+                                @else
+                                    <span class="text-muted small">No logo</span>
+                                @endif
+                            </td>
                             <td>{{ $user->name }}</td>
                             <td>{{ $user->email }}</td>
                             <td><span class="text-muted font-monospace">••••••••</span></td>
@@ -94,24 +126,32 @@
                             </td>
                             <td>{{ $user->created_at->format('d M Y') }}</td>
                             <td>
-                                <div class="d-flex gap-1 flex-column flex-md-row">
+                                <div class="d-flex flex-wrap gap-1">
                                     @if($user->qrLink)
-                                        <a href="{{ route('admin.qr.show', $user->id) }}" class="btn btn-sm custom-btn custom-btn-view w-100">
-                                            <i class="fas fa-qrcode me-1 d-md-none"></i>
-                                            <span class="d-none d-md-inline">View QR</span>
+                                        <a href="{{ route('admin.qr.show', $user->id) }}" class="btn btn-sm custom-btn custom-btn-view">
+                                            View QR
                                         </a>
                                     @else
-                                        <a href="{{ route('admin.qr.create', $user->id) }}" class="btn btn-sm custom-btn custom-btn-generate w-100">
-                                            <i class="fas fa-plus me-1 d-md-none"></i>
-                                            <span class="d-none d-md-inline">Generate QR</span>
+                                        <a href="{{ route('admin.qr.create', $user->id) }}" class="btn btn-sm custom-btn custom-btn-generate">
+                                            Generate QR
                                         </a>
                                     @endif
+
+                                    <a href="{{ route('admin.users.edit', $user->id) }}" class="btn btn-sm btn-warning">
+                                        ✏️ Edit
+                                    </a>
+
+                                    <form action="{{ route('admin.users.destroy', $user->id) }}" method="POST" onsubmit="return confirm('Are you sure?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button class="btn btn-sm btn-danger">🗑 Delete</button>
+                                    </form>
                                 </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="7" class="text-center py-4 text-muted">No clients found.</td>
+                            <td colspan="8" class="text-center py-4 text-muted">No clients found.</td>
                         </tr>
                     @endforelse
                 </tbody>

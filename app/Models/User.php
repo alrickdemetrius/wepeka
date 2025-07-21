@@ -18,8 +18,9 @@ class User extends Authenticatable
         'password',
         'contact_name',
         'contact_number',
-        'logo_file',
+        'logo', // pakai "logo" agar sesuai view
         'role',
+        'plain_password',
     ];
 
     protected $hidden = [
@@ -44,5 +45,10 @@ class User extends Authenticatable
     public function qrLink()
     {
         return $this->hasOne(QRLink::class);
+    }
+
+    public function getLogoUrlAttribute()
+    {
+        return $this->logo ? asset('storage/' . $this->logo) : null;
     }
 }

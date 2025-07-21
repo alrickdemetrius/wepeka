@@ -12,23 +12,19 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 class QrLinkController extends Controller
 {
     public function index()
-    {
-        $link = Auth::user()->qrLink;
+{
+    $link = Auth::user()->qrLink;
 
-        if (!$link) {
-            abort(404, 'QR link belum tersedia.');
-        }
+    $qrData = null;
+    $qrCodeSvg = null;
 
-        if (!$link->slug) {
-            $link->slug = Str::random(8);
-            $link->save();
-        }
-
+    if ($link && $link->slug) {
         $qrData = route('client.qr.redirect', $link->slug);
-        $qrCodeSvg = QrCode::format('svg')->size(300)->generate($qrData);
-
-        return view('client.headquarters.link.view_link', compact('link', 'qrData', 'qrCodeSvg'));
+        $qrCodeSvg = \QrCode::format('svg')->size(300)->generate($qrData);
     }
+
+    return view('client.headquarters.link.view_link', compact('link', 'qrData', 'qrCodeSvg'));
+}
 
     public function edit()
     {

@@ -38,39 +38,43 @@
                         <!-- Profile Information Section -->
                         <div class="border rounded p-4 mb-4">
                             <h5 class="fw-semibold text-dark mb-3">Profile Information</h5>
-                            <form action="{{ route('client.profile.update') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                @method('PUT')
 
-                                <div class="row">
-                                    <!-- Logo Section -->
-                                    <div class="col-md-3 mb-3">
-                                        <label class="form-label fw-semibold text-dark">Company Logo</label>
-                                        <div class="text-center">
-                                            <div class="border rounded p-3 mb-2"
-                                                style="min-height: 120px; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa;">
-                                                @if(isset($cur_user->logo) && $cur_user->logo)
-                                                    <img src="{{ asset('storage/' . $cur_user->logo) }}" alt="Company Logo"
-                                                        class="img-fluid rounded" style="max-height: 100px; max-width: 100px;">
-                                                @else
-                                                    <div class="text-muted">
-                                                        <i class="fas fa-image fa-2x mb-2"></i>
-                                                        <div>No Logo</div>
-                                                    </div>
-                                                @endif
-                                            </div>
-                                            <input type="file"
-                                                class="form-control form-control-sm @error('logo') is-invalid @enderror"
-                                                name="logo" accept="image/*">
-                                            @error('logo')
-                                                <div class="invalid-feedback">{{ $message }}</div>
-                                            @enderror
-                                            <small class="text-muted">Max size: 2MB</small>
+                            <div class="row">
+                                <!-- Logo Section -->
+                                <div class="col-md-3 mb-3">
+                                    <label class="form-label fw-semibold text-dark">Company Logo</label>
+                                    <div class="text-center">
+                                        <div class="border rounded p-3 mb-2"
+                                            style="min-height: 120px; display: flex; align-items: center; justify-content: center; background-color: #f8f9fa;">
+                                            @if(isset($cur_user->logo) && $cur_user->logo)
+                                                <img src="{{ asset('storage/' . $cur_user->logo) }}" alt="Company Logo"
+                                                    class="img-fluid rounded" style="max-height: 100px; max-width: 100px;">
+                                            @else
+                                                <div class="text-muted">
+                                                    <i class="fas fa-image fa-2x mb-2"></i>
+                                                    <div>No Logo</div>
+                                                </div>
+                                            @endif
                                         </div>
-                                    </div>
 
-                                    <!-- Company Info Section -->
-                                    <div class="col-md-9">
+                                        <!-- Form Delete Logo: harus DI LUAR form update -->
+                                        @if(isset($cur_user->logo) && $cur_user->logo)
+                                            <form action="{{ route('client.profile.delete-logo') }}" method="POST" class="mb-2"
+                                                onsubmit="return confirm('Delete current logo?')">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-sm btn-danger">Delete Logo</button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </div>
+
+                                <!-- Company Info + Form Update (DI SINI) -->
+                                <div class="col-md-9">
+                                    <form action="{{ route('client.profile.update') }}" method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        @method('PUT')
+
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label fw-semibold text-dark">Company Name</label>
@@ -82,10 +86,8 @@
                                             </div>
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label fw-semibold text-dark">Contact Name</label>
-                                                <input type="text"
-                                                    class="form-control @error('contact_name') is-invalid @enderror"
-                                                    name="contact_name"
-                                                    value="{{ old('contact_name', $cur_user->contact_name) }}" required>
+                                                <input type="text" class="form-control @error('contact_name') is-invalid @enderror"
+                                                    name="contact_name" value="{{ old('contact_name', $cur_user->contact_name) }}" required>
                                                 @error('contact_name')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
@@ -95,20 +97,28 @@
                                         <div class="row">
                                             <div class="col-md-6 mb-3">
                                                 <label class="form-label fw-semibold text-dark">Contact Number</label>
-                                                <input type="text"
-                                                    class="form-control @error('contact_number') is-invalid @enderror"
-                                                    name="contact_number"
-                                                    value="{{ old('contact_number', $cur_user->contact_number) }}" required>
+                                                <input type="text" class="form-control @error('contact_number') is-invalid @enderror"
+                                                    name="contact_number" value="{{ old('contact_number', $cur_user->contact_number) }}" required>
                                                 @error('contact_number')
                                                     <div class="invalid-feedback">{{ $message }}</div>
                                                 @enderror
                                             </div>
+                                            <div class="col-md-6 mb-3">
+                                                <label class="form-label fw-semibold text-dark">Upload New Logo</label>
+                                                <input type="file" name="logo"
+                                                    class="form-control form-control-sm @error('logo') is-invalid @enderror"
+                                                    accept="image/*">
+                                                @error('logo')
+                                                    <div class="invalid-feedback">{{ $message }}</div>
+                                                @enderror
+                                                <small class="text-muted">Max size: 2MB</small>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
 
-                                <button type="submit" class="btn btn-primary px-4">Save Changes</button>
-                            </form>
+                                        <button type="submit" class="btn btn-primary px-4">Save Changes</button>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Separator Line -->
@@ -171,6 +181,6 @@
                 var passwordModal = new bootstrap.Modal(document.getElementById('changePasswordModal'));
                 passwordModal.show();
             @endif
-                });
+                            });
     </script>
 @endpush

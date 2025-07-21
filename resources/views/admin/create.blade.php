@@ -16,7 +16,7 @@
             </div>
         @endif
 
-        <form action="{{ route('admin.users.store') }}" method="POST" autocomplete="off">
+        <form action="{{ route('admin.users.store') }}" method="POST" enctype="multipart/form-data" autocomplete="off">
             @csrf
 
             {{-- Autofill bait --}}
@@ -42,6 +42,11 @@
             <div class="mb-3">
                 <label>Contact Number</label>
                 <input type="text" name="contact_number" class="form-control" required autocomplete="off">
+            </div>
+
+            <div class="mb-3">
+                <label for="logo" class="form-label">Company Logo</label>
+                <input type="file" class="form-control" name="logo" accept="image/*">
             </div>
 
             <div class="mb-3">

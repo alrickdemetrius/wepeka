@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use Illuminate\Support\Facades\Response;
 
 class QrLinkController extends Controller
 {
@@ -71,5 +72,37 @@ class QrLinkController extends Controller
         }
 
         return view('admin.qr.show', compact('user'));
+    }
+
+    public function destroy($userId)
+    {
+        $user = User::with('qrLink')->findOrFail($userId);
+
+        if (!$user->qrLink) {
+            return back()->with('error', 'QR not found for this client.');
+        }
+
+        // Delete file if QR type is PDF
+        if ($user->qrLink->file_type === 'pdf' && $user->qrLink->file_data) {
+            Storage::disk('public')->delete($user->qrLink->file_data);
+        }
+
+        // Delete the QRLink record
+        $user->qrLink->delete();
+
+        return redirect()->route('admin.clients.index')->with('success', 'QR deleted successfully.');
+    }
+
+    public function downloadSvg($id)
+    {
+        $qrLink = QrLink::where('user_id', $id)->firstOrFail();
+
+        $svgContent = $qrLink->qr_code_svg;
+        $fileName = 'qr_' . $qrLink->user->name . '.svg';
+
+        return Response::make($svgContent, 200, [
+            'Content-Type' => 'image/svg+xml',
+            'Content-Disposition' => 'attachment; filename="' . $fileName . '"',
+        ]);
     }
 }

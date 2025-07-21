@@ -88,6 +88,8 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->as('client.')->gro
     Route::put('/profile/update', [ClientProfileController::class, 'updateProfile'])->name('profile.update');
     Route::put('/profile/update-email', [ClientProfileController::class, 'updateEmail'])->name('profile.update-email');
     Route::put('/profile/update-password', [ClientProfileController::class, 'updatePassword'])->name('profile.update-password');
+    Route::delete('/profile/delete-logo', [ClientProfileController::class, 'deleteLogo'])->name('profile.delete-logo');
+
 
     // QR Link (Client View & Management)
     Route::get('/link', [ClientQrLinkController::class, 'index'])->name('link.view_link');
@@ -110,10 +112,15 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->as('admin.')->group(
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
     Route::get('/users/create', [AdminUserController::class, 'create'])->name('users.create');
     Route::post('/users', [AdminUserController::class, 'store'])->name('users.store');
+    Route::get('/users/{user}/edit', [AdminUserController::class, 'edit'])->name('users.edit');
+    Route::put('/users/{user}', [AdminUserController::class, 'update'])->name('users.update');
+    Route::delete('/users/{user}', [AdminUserController::class, 'destroy'])->name('users.destroy');
 
     // QR Management
     Route::get('/clients', [AdminUserController::class, 'index'])->name('clients.index');
     Route::get('/clients/{user}/qr/create', [AdminQrLinkController::class, 'create'])->name('qr.create');
     Route::post('/clients/{user}/qr/store', [AdminQrLinkController::class, 'store'])->name('qr.store');
     Route::get('/clients/{user}/qr/show', [AdminQrLinkController::class, 'show'])->name('qr.show');
+    Route::delete('/clients/{user}/qr/delete', [AdminQrLinkController::class, 'destroy'])->name('qr.destroy');
+    Route::get('/qr/{id}/download', [AdminQrLinkController::class, 'downloadSvg'])->name('qr.download');
 });
