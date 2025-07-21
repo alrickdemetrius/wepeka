@@ -1,4 +1,4 @@
-@extends("client.layouts.app")
+@extends('layouts.app')
 
 @section('content')
     <div class="min-vh-100 py-4"
