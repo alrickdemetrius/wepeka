@@ -188,7 +188,7 @@
                 </div>
 
                 <div class="d-flex justify-content-center">
-                    <a class="navbar-brand mx-auto wepeka-logo-link" href="javascript:void(0)" onclick="toggleSidebar()">
+                    <a class="navbar-brand mx-auto wepeka-logo-link" href="{{ route("home") }}">
                         <img src="{{ asset('images/logowepeka_ed.png') }}" alt="Wepeka Logo" class="logo-img">
                     </a>
                 </div>
