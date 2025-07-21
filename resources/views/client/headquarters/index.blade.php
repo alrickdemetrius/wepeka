@@ -8,15 +8,14 @@
             top: 50%;
             right: 0px;
             /* Geser sedikit ke kanan dari ujung kanan */
-            transform: translateY(-50%);
+            transform: translateY(-52%);
             z-index: 10;
             padding: 0;
             border-top-left-radius: 8px;
             border-bottom-left-radius: 8px;
-            box-shadow: -5px 0 10px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             height: 1000px;
-            width: 440px;
+            width: 450px;
             display: flex;
             align-items: center;
             justify-content: flex-start;
@@ -27,9 +26,21 @@
             width: auto;
             object-fit: cover;
             object-position: left center;
-            transform: scale(10) translateX(-5.5px);
+            transform: scale(10) translateX(-4.8px);
             /* Kurangi geser kanan, agar sisi kiri gambar lebih terlihat */
             transform-origin: left center;
+        }
+
+        @media (max-width: 1700px) {
+            .logo-half-right {
+                display: none;
+            }
+        }
+
+        @media (max-height: 900px) {
+            .logo-half-right {
+                display: none;
+            }
         }
     </style>
 
