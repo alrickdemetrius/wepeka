@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="min-vh-100 py-4"
-    style="background: url('{{ asset('images/background4_brown.jpg') }}') no-repeat center center fixed; background-size: cover;">
+    style="background: url('{{ asset('images/blur_proflink.jpg') }}') no-repeat center center fixed; background-size: cover;">
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-9 col-md-8">

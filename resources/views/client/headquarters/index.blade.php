@@ -42,10 +42,12 @@
                 display: none;
             }
         }
+
+        
     </style>
 
-    <div class="bg-dark text-white d-flex align-items-center justify-content-center position-relative"
-        style="min-height: 100vh;">
+<div class="bg-dark text-white d-flex align-items-center justify-content-center position-relative"
+style="min-height: 100vh; background: url('{{ asset('images/blur_headquarters.jpg') }}') no-repeat center center fixed; background-size: cover;">
         <!-- Logo setengah kiri, ditempelkan di kanan -->
         @if(Auth::user()->logo)
             <div class="logo-half-right">
