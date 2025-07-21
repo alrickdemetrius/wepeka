@@ -73,7 +73,7 @@
                                 href="{{ url('/admin') }}">Dashboard</a>
                         @else
                             <a class="nav-link {{ request()->is('client/headquarters') ? 'active' : '' }}"
-                                href="{{ route('client.headquarters') }}">Headquarter</a>
+                                href="{{ route('client.headquarters') }}">Headquarters</a>
                         @endif
                     @else
                         <a class="nav-link {{ request()->is('client/headquarters') ? 'active' : '' }}"
