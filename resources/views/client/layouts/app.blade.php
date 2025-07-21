@@ -112,7 +112,7 @@
 
           <!-- Navigation Links -->
           <li class="nav-item d-none d-md-block">
-            <a href="#" class="nav-link">Home</a>
+            <a href="{{ route('home') }}" class="nav-link">Home</a>
           </li>
           <li class="nav-item d-none d-md-block">
             <a href="{{ route('client.headquarters') }}" class="nav-link">Headquarters</a>

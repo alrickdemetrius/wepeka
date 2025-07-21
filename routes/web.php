@@ -23,6 +23,10 @@ Route::get('/socials', function () {
     return view('socials');
 })->name('socials');
 
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
+
 Route::get('/faq', function () {
     return view('faq');
 })->name('faq');
