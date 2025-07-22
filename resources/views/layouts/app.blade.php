@@ -5,7 +5,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- SEO -->
-    <meta name="keywords" content="Wepeka, Apparel, Clothing, Baju, Brand, Kaos, Seragam, Custom, Sablon, Bordir, Tag, QR">
+    <meta name="keywords"
+        content="Wepeka, Apparel, Clothing, Baju, Brand, Kaos, Seragam, Custom, Sablon, Bordir, Tag, QR">
     <meta name="description" content="Wepeka is the best option for your branding kit.">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -139,6 +140,12 @@
         <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
         <div id="mobileSidebar" class="mobile-sidebar">
+
+            <div class="text-center mb-4">
+                <a href="{{ url('/') }}">
+                    <img src="{{ asset('images/logowepeka_ed.png') }}" alt="Wepeka Logo" class="logo-img">
+                </a>
+            </div>
             <a href="{{ url('/') }}" class="nav-link">Home</a>
             @auth
                 @if (Auth::user()->role === 'admin')
@@ -157,7 +164,7 @@
                 <a class="btn btn-primary mt-3" href="{{ route('login') }}">Sign In</a>
             @else
                 <a class="nav-link text-danger" href="{{ route('logout') }}"
-                   onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <i class="fas fa-sign-out-alt me-2"></i>Sign Out
                 </a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -169,21 +176,26 @@
         <nav class="navbar navbar-light bg-white shadow-sm">
             <div class="container d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
-                    <button class="btn d-block d-xxl-none me-3" onclick="toggleSidebar()" style="font-size: 24px; border: none; background: none;">
+                    <button class="btn d-block d-xxl-none me-3" onclick="toggleSidebar()"
+                        style="font-size: 24px; border: none; background: none;">
                         <i class="fas fa-bars"></i>
                     </button>
                     <div class="d-none d-xxl-flex align-items-center gap-5">
                         <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Home</a>
                         @auth
                             @if (Auth::user()->role === 'admin')
-                                <a class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}" href="{{ url('/admin') }}">Dashboard</a>
+                                <a class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}"
+                                    href="{{ url('/admin') }}">Dashboard</a>
                             @else
-                                <a class="nav-link {{ request()->is('client/headquarters') ? 'active' : '' }}" href="{{ route('client.headquarters') }}">Headquarters</a>
+                                <a class="nav-link {{ request()->is('client/headquarters') ? 'active' : '' }}"
+                                    href="{{ route('client.headquarters') }}">Headquarters</a>
                             @endif
                         @else
-                            <a class="nav-link {{ request()->is('client/headquarters') ? 'active' : '' }}" href="{{ route('client.headquarters') }}">Headquarter</a>
+                            <a class="nav-link {{ request()->is('client/headquarters') ? 'active' : '' }}"
+                                href="{{ route('client.headquarters') }}">Headquarter</a>
                         @endauth
-                        <a class="nav-link {{ request()->is('about') ? 'active' : '' }}" href="{{ route('about') }}">About</a>
+                        <a class="nav-link {{ request()->is('about') ? 'active' : '' }}"
+                            href="{{ route('about') }}">About</a>
                     </div>
                 </div>
 
@@ -196,26 +208,32 @@
                 @auth
                     @if(Auth::user()->role === 'client' && Auth::user()->logo)
                         <div class="d-block d-md-none">
-                            <img src="{{ asset('storage/' . Auth::user()->logo) }}" alt="Client Logo" class="client-logo mobile-disabled" onclick="toggleClientSidebar()">
+                            <img src="{{ asset('storage/' . Auth::user()->logo) }}" alt="Client Logo"
+                                class="client-logo mobile-disabled" onclick="toggleClientSidebar()">
                         </div>
                     @endif
                 @endauth
 
                 <div class="d-flex align-items-center gap-5 d-none d-md-flex">
                     <a class="nav-link {{ request()->is('faq') ? 'active' : '' }}" href="{{ route('faq') }}">FAQ</a>
-                    <a class="nav-link {{ request()->is('socials') ? 'active' : '' }}" href="{{ route('socials') }}">Socials</a>
+                    <a class="nav-link {{ request()->is('socials') ? 'active' : '' }}"
+                        href="{{ route('socials') }}">Socials</a>
                     @guest
-                        <a class="btn text-white fw-semibold px-3 py-2" style="background-color: #87a9c4; border-radius: 999px;" href="{{ route('login') }}">Sign In</a>
+                        <a class="btn text-white fw-semibold px-3 py-2"
+                            style="background-color: #87a9c4; border-radius: 999px;" href="{{ route('login') }}">Sign In</a>
                     @else
                         @if(Auth::user()->role === 'client' && Auth::user()->logo)
-                            <img src="{{ asset('storage/' . Auth::user()->logo) }}" alt="Client Logo" class="client-logo d-none d-lg-block" onclick="toggleClientSidebar()">
+                            <img src="{{ asset('storage/' . Auth::user()->logo) }}" alt="Client Logo"
+                                class="client-logo d-none d-lg-block" onclick="toggleClientSidebar()">
                         @else
                             <div class="dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }}
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
@@ -235,9 +253,15 @@
     <div id="clientSidebarOverlay" onclick="toggleClientSidebar()"></div>
 
     <div id="clientSidebar" class="client-sidebar">
+        <div class="text-center mb-4">
+            <a href="{{ url('/') }}">
+                <img src="{{ asset('images/logowepeka_ed.png') }}" alt="Wepeka Logo" class="logo-img">
+            </a>
+        </div>
         <a href="{{ route('client.profile') }}" class="nav-link">Profile</a>
         <a href="{{ route('client.link.view_link') }}" class="nav-link">Link Management</a>
-        <a href="#" class="nav-link mt-3 text-danger d-flex align-items-center" onclick="event.preventDefault(); document.getElementById('logout-form-client').submit();">
+        <a href="#" class="nav-link mt-3 text-danger d-flex align-items-center"
+            onclick="event.preventDefault(); document.getElementById('logout-form-client').submit();">
             <i class="fas fa-sign-out-alt me-2"></i> Sign Out
         </a>
         <form id="logout-form-client" action="{{ route('logout') }}" method="POST" class="d-none">
