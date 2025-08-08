@@ -20,6 +20,7 @@
 
     <!-- Scripts -->
     <script async src="https://www.instagram.com/embed.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
@@ -132,6 +133,109 @@
             pointer-events: none;
             opacity: 0.6;
         }
+
+        /* Modal Card Styling */
+        .logout-card {
+            background-color: white;
+            padding: 2rem;
+            width: 100%;
+            max-width: 430px;
+            height: 300px;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .logout-title {
+            font-size: 22px;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 12px;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 1024px) {
+            .logout-title {
+                font-size: 1.2rem;
+                /* kecilkan font */
+            }
+        }
+
+        @media (max-width: 768px) {
+            .logout-title {
+                font-size: 1rem;
+                padding: 0 10px;
+                /* beri jarak kiri-kanan */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logout-title {
+                font-size: 0.9rem;
+            }
+        }
+
+        .logo-container {
+            background: white;
+            border-radius: 50%;
+            padding: 20px;
+            position: absolute;
+            top: -50px;
+            inset-inline: 0;
+            margin-inline: auto;
+            width: 100px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+
+        .logo-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: block;
+            border-radius: 50%;
+        }
+
+        /* Responsive adjustments for small screens */
+        @media (max-width: 576px) {
+            .logout-card {
+                padding: 1.5rem 1rem;
+                max-width: 90%;
+            }
+
+            .logo-container {
+                top: -35px;
+                width: 80px;
+                height: 80px;
+                padding: 15px;
+            }
+
+            .logout-title {
+                font-size: 18px;
+            }
+        }
+
+        /* Ensure modal above sidebar */
+        .modal {
+            z-index: 9999 !important;
+        }
+
+        .modal.fade .modal-dialog {
+            transform: translateY(-10px) scale(0.95);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+
+        .modal.fade.show .modal-dialog {
+            transform: translateY(0) scale(1);
+            opacity: 1;
+        }
     </style>
 </head>
 
@@ -140,7 +244,6 @@
         <div id="sidebarOverlay" class="sidebar-overlay" onclick="toggleSidebar()"></div>
 
         <div id="mobileSidebar" class="mobile-sidebar">
-
             <div class="text-center mb-4">
                 <a href="{{ url('/') }}">
                     <img src="{{ asset('images/logowepeka_ed.png') }}" alt="Wepeka Logo" class="logo-img">
@@ -163,8 +266,7 @@
             @guest
                 <a class="btn btn-primary mt-3" href="{{ route('login') }}">Sign In</a>
             @else
-                <a class="nav-link text-danger" href="{{ route('logout') }}"
-                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <a href="#" class="nav-link text-danger" onclick="event.preventDefault(); showLogoutModal();">
                     <i class="fas fa-sign-out-alt me-2"></i>Sign Out
                 </a>
                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -200,7 +302,7 @@
                 </div>
 
                 <div class="d-flex justify-content-center">
-                    <a class="navbar-brand mx-auto wepeka-logo-link" href="{{ route("home") }}">
+                    <a class="navbar-brand mx-auto wepeka-logo-link" href="{{ route('home') }}">
                         <img src="{{ asset('images/logowepeka_ed.png') }}" alt="Wepeka Logo" class="logo-img">
                     </a>
                 </div>
@@ -232,8 +334,8 @@
                                     {{ Auth::user()->name }}
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a>
+                                    <a href="#" class="dropdown-item text-danger"
+                                        onclick="event.preventDefault(); showLogoutModal();">Logout</a>
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                                     </form>
@@ -261,12 +363,37 @@
         <a href="{{ route('client.profile') }}" class="nav-link">Profile</a>
         <a href="{{ route('client.link.view_link') }}" class="nav-link">Link Management</a>
         <a href="#" class="nav-link mt-3 text-danger d-flex align-items-center"
-            onclick="event.preventDefault(); document.getElementById('logout-form-client').submit();">
+            onclick="event.preventDefault(); showLogoutModal();">
             <i class="fas fa-sign-out-alt me-2"></i> Sign Out
         </a>
         <form id="logout-form-client" action="{{ route('logout') }}" method="POST" class="d-none">
             @csrf
         </form>
+    </div>
+
+    <!-- Logout Confirmation Modal -->
+    <div class="modal fade" id="logoutConfirmModal" tabindex="-1" aria-labelledby="logoutConfirmLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div
+                class="modal-content bg-transparent border-0 shadow-none d-flex justify-content-center align-items-center">
+                <div class="logout-card bg-white">
+                    <div class="logo-container">
+                        <img src="{{ asset('images/logowepeka_ed.png') }}" alt="Logo" class="logo-img">
+                    </div>
+                    <div class="logout-title">Are you sure you want to log out?</div>
+                    <div class="text-center text-muted" style="margin-bottom: 30px;">
+                        All unsaved changes will be lost.
+                    </div>
+                    <div class="d-flex justify-content-center gap-3">
+                        <button type="button" class="btn btn-secondary rounded-pill px-4"
+                            data-bs-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-danger rounded-pill px-4"
+                            id="confirmLogoutBtn">Yes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
@@ -279,6 +406,22 @@
             document.getElementById("clientSidebar").classList.toggle("show");
             document.getElementById("clientSidebarOverlay").classList.toggle("show");
         }
+
+        function showLogoutModal() {
+            // Tutup semua sidebar saat modal muncul
+            document.getElementById("mobileSidebar")?.classList.remove("show");
+            document.getElementById("sidebarOverlay")?.classList.remove("show");
+            document.getElementById("clientSidebar")?.classList.remove("show");
+            document.getElementById("clientSidebarOverlay")?.classList.remove("show");
+
+            let modal = new bootstrap.Modal(document.getElementById('logoutConfirmModal'));
+            modal.show();
+        }
+
+        document.getElementById('confirmLogoutBtn').addEventListener('click', function () {
+            document.getElementById('logout-form')?.submit();
+            document.getElementById('logout-form-client')?.submit();
+        });
     </script>
 </body>
 

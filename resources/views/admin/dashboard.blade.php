@@ -3,7 +3,7 @@
 @section('content')
 <style>
     body {
-        background: linear-gradient(135deg, #f0f4ff, #dfe9f3);
+        background: linear-gradi ent(135deg, #f0f4ff, #dfe9f3);
     }
 
     .glass-card {

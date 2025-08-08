@@ -48,8 +48,8 @@
         .login-card {
             background: white;
             border-radius: 20px;
-            width: 100%;
-            max-width: 450px;
+            width: 500px; /* fix size */
+            max-width: 90%; /* biar responsif */
             padding: 3rem 2.5rem 2.5rem;
             text-align: center;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -90,13 +90,14 @@
         }
 
         .form-control {
+           
             border-radius: 12px;
             background-color: #89c1c1;
             color: #ffffff;
             font-size: 1rem;
             border: none;
             margin-bottom: 1.2rem;
-            padding: 0.75rem;
+            padding: 1rem;
             transition: background-color 0.3s ease;
         }
 
