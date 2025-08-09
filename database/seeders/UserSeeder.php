@@ -16,6 +16,7 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        //CLIENT TEST
         DB::table('users')->insert([
             [
                 'name'=>'client1',
@@ -28,7 +29,59 @@ class UserSeeder extends Seeder
                 'updated_at'=> Carbon::now()
             ],
         ]);
+        //CLIENT REAL
+        //TONEETOS
+        DB::table('users')->insert([
+            [
+                'name'=>'Toneetos',
+                'email' => "toneetos@gmail.com",
+                'password'=> Hash::make(''), //sesuaikan
+                'contact_name'=> '', //sesuaikan
+                'contact_number'=> '', //sesuaikan
+                'role'=> 'client',
+                'created_at'=> Carbon::now(),
+                'updated_at'=> Carbon::now()
+            ],
+        ]);
+        //TAROMA
+        DB::table('users')->insert([
+            [
+                'name'=>'Taroma',
+                'email' => "", //sesuaikan
+                'password'=> Hash::make(''), //sesuaikan
+                'contact_name'=> 'Nico', //sesuaikan
+                'contact_number'=> '', //sesuaikan
+                'role'=> 'client',
+                'created_at'=> Carbon::now(),
+                'updated_at'=> Carbon::now()
+            ],
+        ]);
+        DB::table('users')->insert([
+            [
+                'name'=>'English House',
+                'email' => "", //sesuaikan
+                'password'=> Hash::make(''), //sesuaikan
+                'contact_name'=> '', //sesuaikan
+                'contact_number'=> '', //sesuaikan
+                'role'=> 'client',
+                'created_at'=> Carbon::now(),
+                'updated_at'=> Carbon::now()
+            ],
+        ]);
+        DB::table('users')->insert([
+            [
+                'name'=>'Taroma',
+                'email' => "",
+                'password'=> Hash::make(''),
+                'contact_name'=> '',
+                'contact_number'=> '',
+                'role'=> 'client',
+                'created_at'=> Carbon::now(),
+                'updated_at'=> Carbon::now()
+            ],
+        ]);
 
+        //ADMIN
         DB::table('users')->insert([
             [
                 'name'=>'ADMIN',

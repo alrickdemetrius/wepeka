@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('file_type', ['link', 'pdf']);
             $table->text('file_data')->nullable(); // url or file path
             $table->text('qr_code_svg')->nullable();
+            $table->text('temp_image_file')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
