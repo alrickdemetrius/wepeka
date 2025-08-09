@@ -324,23 +324,14 @@
                         <a class="btn text-white fw-semibold px-3 py-2"
                             style="background-color: #87a9c4; border-radius: 999px;" href="{{ route('login') }}">Sign In</a>
                     @else
-                        @if(Auth::user()->role === 'client' && Auth::user()->logo)
-                            <img src="{{ asset('storage/' . Auth::user()->logo) }}" alt="Client Logo"
-                                class="client-logo d-none d-lg-block" onclick="toggleClientSidebar()">
-                        @else
-                            <div class="dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    <a href="#" class="dropdown-item text-danger"
-                                        onclick="event.preventDefault(); showLogoutModal();">Logout</a>
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
-                            </div>
+                        @if(Auth::user()->role === 'client' || Auth::user()->role === 'admin')
+                            @if(Auth::user()->logo)
+                                <img src="{{ asset('storage/' . Auth::user()->logo) }}" alt="Client Logo"
+                                    class="client-logo d-none d-lg-block" onclick="toggleClientSidebar()">
+                            @else
+                                <i class="fas fa-user-circle fa-2x client-logo" style="cursor:pointer"
+                                    onclick="toggleClientSidebar()"></i>
+                            @endif
                         @endif
                     @endguest
                 </div>
@@ -396,6 +387,10 @@
         </div>
     </div>
 
+    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+        @csrf
+    </form>
+
     <script>
         function toggleSidebar() {
             document.getElementById("mobileSidebar").classList.toggle("show");
@@ -420,7 +415,7 @@
 
         document.getElementById('confirmLogoutBtn').addEventListener('click', function () {
             document.getElementById('logout-form')?.submit();
-            document.getElementById('logout-form-client')?.submit();
+
         });
     </script>
 </body>
