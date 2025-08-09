@@ -275,7 +275,7 @@
             @endguest
         </div>
 
-        <nav class="navbar navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-light bg-white shadow-sm sticky-top">
             <div class="container d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center">
                     <button class="btn d-block d-xxl-none me-3" onclick="toggleSidebar()"
