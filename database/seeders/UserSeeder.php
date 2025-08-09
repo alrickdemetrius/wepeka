@@ -24,6 +24,7 @@ class UserSeeder extends Seeder
                 'password'=> Hash::make('client1'),
                 'contact_name'=> 'Cody',
                 'contact_number'=> '0811111111111',
+                'logo_file'=>'',
                 'role'=> 'client',
                 'created_at'=> Carbon::now(),
                 'updated_at'=> Carbon::now()
@@ -38,6 +39,7 @@ class UserSeeder extends Seeder
                 'password'=> Hash::make(''), //sesuaikan
                 'contact_name'=> '', //sesuaikan
                 'contact_number'=> '', //sesuaikan
+                'logo_file'=>'',
                 'role'=> 'client',
                 'created_at'=> Carbon::now(),
                 'updated_at'=> Carbon::now()
@@ -51,6 +53,7 @@ class UserSeeder extends Seeder
                 'password'=> Hash::make(''), //sesuaikan
                 'contact_name'=> 'Nico', //sesuaikan
                 'contact_number'=> '', //sesuaikan
+                'logo_file'=>'',
                 'role'=> 'client',
                 'created_at'=> Carbon::now(),
                 'updated_at'=> Carbon::now()
@@ -59,10 +62,11 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'name'=>'English House',
-                'email' => "", //sesuaikan
+                'email' => "englishhouse@gmail.com", //sesuaikan
                 'password'=> Hash::make(''), //sesuaikan
                 'contact_name'=> '', //sesuaikan
                 'contact_number'=> '', //sesuaikan
+                'logo_file'=>'',
                 'role'=> 'client',
                 'created_at'=> Carbon::now(),
                 'updated_at'=> Carbon::now()
@@ -71,10 +75,11 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'name'=>'Taroma',
-                'email' => "",
+                'email' => "taroma@gmail.com",
                 'password'=> Hash::make(''),
                 'contact_name'=> '',
                 'contact_number'=> '',
+                'logo_file'=>'',
                 'role'=> 'client',
                 'created_at'=> Carbon::now(),
                 'updated_at'=> Carbon::now()
@@ -89,6 +94,7 @@ class UserSeeder extends Seeder
                 'password'=> Hash::make('wepekaapparelflytothemoon'),
                 'contact_name'=> 'ADMIN',
                 'contact_number'=> '082331577750',
+                'logo_file'=>'',
                 'role'=> 'admin',
                 'created_at'=> Carbon::now(),
                 'updated_at'=> Carbon::now()
