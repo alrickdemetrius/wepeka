@@ -30,6 +30,7 @@ class UserSeeder extends Seeder
                 'updated_at'=> Carbon::now()
             ],
         ]);
+        
         //CLIENT REAL
         //TONEETOS
         DB::table('users')->insert([
@@ -45,33 +46,8 @@ class UserSeeder extends Seeder
                 'updated_at'=> Carbon::now()
             ],
         ]);
+        
         //TAROMA
-        DB::table('users')->insert([
-            [
-                'name'=>'Taroma',
-                'email' => "", //sesuaikan
-                'password'=> Hash::make(''), //sesuaikan
-                'contact_name'=> 'Nico', //sesuaikan
-                'contact_number'=> '', //sesuaikan
-                'logo_file'=>'',
-                'role'=> 'client',
-                'created_at'=> Carbon::now(),
-                'updated_at'=> Carbon::now()
-            ],
-        ]);
-        DB::table('users')->insert([
-            [
-                'name'=>'English House',
-                'email' => "englishhouse@gmail.com", //sesuaikan
-                'password'=> Hash::make(''), //sesuaikan
-                'contact_name'=> '', //sesuaikan
-                'contact_number'=> '', //sesuaikan
-                'logo_file'=>'',
-                'role'=> 'client',
-                'created_at'=> Carbon::now(),
-                'updated_at'=> Carbon::now()
-            ],
-        ]);
         DB::table('users')->insert([
             [
                 'name'=>'Taroma',
@@ -85,6 +61,23 @@ class UserSeeder extends Seeder
                 'updated_at'=> Carbon::now()
             ],
         ]);
+
+        //ENGLISH HOUSE
+        DB::table('users')->insert([
+            [
+                'name'=>'English House',
+                'email' => "englishhouse@gmail.com", //sesuaikan
+                'password'=> Hash::make(''), //sesuaikan
+                'contact_name'=> '', //sesuaikan
+                'contact_number'=> '', //sesuaikan
+                'logo_file'=>'',
+                'role'=> 'client',
+                'created_at'=> Carbon::now(),
+                'updated_at'=> Carbon::now()
+            ],
+        ]);
+
+        
 
         //ADMIN
         DB::table('users')->insert([
