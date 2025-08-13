@@ -6,7 +6,6 @@
             height: 100vh;
             margin: 0;
             overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: linear-gradient(to bottom right, #b4d4d4, #497993);
             transition: background 0.8s ease, filter 0.6s ease;
         }
@@ -90,7 +89,7 @@
         }
 
         .form-control {
-           
+
             border-radius: 12px;
             background-color: #89c1c1;
             color: #ffffff;
