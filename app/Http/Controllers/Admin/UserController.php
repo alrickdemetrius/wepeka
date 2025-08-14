@@ -58,36 +58,45 @@ class UserController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        $user = User::findOrFail($id);
+{
+    $user = User::findOrFail($id);
 
-        $request->validate([
-            'name' => 'required',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'contact_name' => 'required',
-            'contact_number' => 'required',
-            'logo' => 'nullable|image|max:2048',
-        ]);
+    $request->validate([
+        'name' => 'required',
+        'email' => 'required|email|unique:users,email,' . $id,
+        'contact_name' => 'required',
+        'contact_number' => 'required',
+        'logo' => 'nullable|image|max:2048',
+    ]);
 
-        if ($request->hasFile('logo')) {
-            if ($user->logo && \Storage::disk('public')->exists($user->logo)) {
-                \Storage::disk('public')->delete($user->logo);
-            }
-
-            $logoPath = $request->file('logo')->store('logos', 'public');
-            $user->logo = $logoPath;
+    // Hapus logo jika centang delete_logo
+    if ($request->has('delete_logo') && $user->logo) {
+        if (\Storage::disk('public')->exists($user->logo)) {
+            \Storage::disk('public')->delete($user->logo);
         }
-
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'contact_name' => $request->contact_name,
-            'contact_number' => $request->contact_number,
-            'logo' => $user->logo,
-        ]);
-
-        return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
+        $user->logo = null;
     }
+
+    // Upload logo baru jika ada
+    if ($request->hasFile('logo')) {
+        if ($user->logo && \Storage::disk('public')->exists($user->logo)) {
+            \Storage::disk('public')->delete($user->logo);
+        }
+        $logoPath = $request->file('logo')->store('logos', 'public');
+        $user->logo = $logoPath;
+    }
+
+    // Update data lain
+    $user->update([
+        'name' => $request->name,
+        'email' => $request->email,
+        'contact_name' => $request->contact_name,
+        'contact_number' => $request->contact_number,
+        'logo' => $user->logo,
+    ]);
+
+    return redirect()->route('admin.users.index')->with('success', 'User updated successfully.');
+}
 
     public function destroy($id)
     {

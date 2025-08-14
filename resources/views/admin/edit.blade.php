@@ -36,7 +36,13 @@
             <label>Logo</label>
             <input type="file" name="logo" class="form-control">
             @if($user->logo)
-                <img src="{{ asset('storage/' . $user->logo) }}" width="80" class="mt-2">
+                <div class="mt-2">
+                    <img src="{{ asset('storage/' . $user->logo) }}" width="80" class="mb-2">
+                    <div class="form-check">
+                        <input type="checkbox" name="delete_logo" value="1" class="form-check-input" id="delete_logo">
+                        <label for="delete_logo" class="form-check-label">Hapus Logo</label>
+                    </div>
+                </div>
             @endif
         </div>
 
