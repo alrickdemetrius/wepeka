@@ -70,8 +70,12 @@ class QrLinkController extends Controller
         if (!$user->qrLink) {
             return back()->with('error', 'QR not found for this client.');
         }
+        $tempImage = null;
+        if($user->qrLink->temp_image_file){
+            $tempImage = $user->qrLink->temp_image_file;
+        }
 
-        return view('admin.qr.show', compact('user'));
+        return view('admin.qr.show', compact('user','tempImage'));
     }
 
     public function destroy($userId)

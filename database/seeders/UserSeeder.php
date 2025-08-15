@@ -37,7 +37,7 @@ class UserSeeder extends Seeder
             [
                 'name'=>'Toneetos',
                 'email' => "toneetos@gmail.com",
-                'password'=> Hash::make(''), //sesuaikan
+                'password'=> Hash::make('wepekastyle'), //sesuaikan
                 'contact_name'=> '', //sesuaikan
                 'contact_number'=> '', //sesuaikan
                 'logo_file'=>'',
@@ -52,7 +52,7 @@ class UserSeeder extends Seeder
             [
                 'name'=>'Taroma',
                 'email' => "taroma@gmail.com",
-                'password'=> Hash::make(''),
+                'password'=> Hash::make('wepekastyle'),
                 'contact_name'=> '',
                 'contact_number'=> '',
                 'logo_file'=>'',
@@ -67,7 +67,7 @@ class UserSeeder extends Seeder
             [
                 'name'=>'English House',
                 'email' => "englishhouse@gmail.com", //sesuaikan
-                'password'=> Hash::make(''), //sesuaikan
+                'password'=> Hash::make('wepekastyle'), //sesuaikan
                 'contact_name'=> '', //sesuaikan
                 'contact_number'=> '', //sesuaikan
                 'logo_file'=>'',

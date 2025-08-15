@@ -37,7 +37,11 @@
                                                 alt="QR Template">
 
                                             {{-- QR Overlay --}}
-                                            @if(isset($qrCodeSvg))
+                                            @if(isset($link->temp_image_file))
+                                                <div class="qr-overlay" id="qr-overlay">
+                                                    <img src="{{ asset("images/user_qr/$link->temp_image_file") }}">
+                                                </div>
+                                            @elseif(isset($qrCodeSvg))
                                                 <div class="qr-overlay" id="qr-overlay">
                                                     {!! $qrCodeSvg !!}
                                                 </div>

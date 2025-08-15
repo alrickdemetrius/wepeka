@@ -27,9 +27,17 @@
                                         <div class="qr-preview-container">
                                             <img id="qr-template-img" src="{{ asset('images/qrtemplate.png') }}"
                                                 alt="QR Template">
-                                            <div class="qr-overlay" id="qr-overlay">
-                                                {!! $user->qrLink->qr_code_svg !!}
-                                            </div>
+
+                                            @if(isset($user->qrLink->temp_image_file))
+                                                <div class="qr-overlay" id="qr-overlay">
+                                                    <img src="{!! asset("images/user_qr/$tempImage") !!}">
+                                                </div>
+                                            @elseif(isset($user->qrLink->qr_code_svg))
+                                                <div class="qr-overlay" id="qr-overlay">
+                                                    {!! $user->qrLink->qr_code_svg !!}
+                                                </div>
+                                            @endif
+
                                         </div>
                                     </div>
                                 </div>

@@ -23,7 +23,7 @@ class QrLinkSeeder extends Seeder
                 'file_type'=>'link',
                 'file_data'=>'https://linktr.ee/Toneetos',
                 'slug'=>'e735295f-04ff-41b4-837a-7820c6956c48',
-                'temp_image_file'=>"", //sesuaikan,
+                'temp_image_file'=>"1toneetos_385.jpg", //sesuaikan,
                 'created_at'=> Carbon::now(),
                 'updated_at'=> Carbon::now()
             ],
@@ -37,7 +37,7 @@ class QrLinkSeeder extends Seeder
                 'file_type'=>'link',
                 'file_data'=>'https://wepekasite.com/', //sesuaikan
                 'slug'=>'130d1287-a7be-4a32-8545-4e0afe519f5b',
-                'temp_image_file'=>"", //sesuaikan
+                'temp_image_file'=>"2taroma_385.jpg", //sesuaikan
                 'created_at'=> Carbon::now(),
                 'updated_at'=> Carbon::now()
             ],
@@ -51,7 +51,7 @@ class QrLinkSeeder extends Seeder
                 'file_type'=>'link',
                 'file_data'=>'https://linktr.ee/englishhousekediri',
                 'slug'=>'01ce7314-9631-4abb-b283-afcab2909778',
-                'temp_image_file'=>"", //sesuaikan
+                'temp_image_file'=>"3englishhouse_385.jpg", //sesuaikan
                 'created_at'=> Carbon::now(),
                 'updated_at'=> Carbon::now()
             ],

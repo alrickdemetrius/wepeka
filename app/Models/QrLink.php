@@ -14,12 +14,13 @@ class QrLink extends Model
         'file_type',
         'file_data',
         'qr_code_svg',
+        'temp_image_file',
         'user_id',
         'slug',
     ];
 
     public function user()
-{
-    return $this->belongsTo(User::class);
-}
+    {
+        return $this->belongsTo(User::class);
+    }
 }

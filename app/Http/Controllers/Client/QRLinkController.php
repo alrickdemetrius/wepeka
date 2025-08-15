@@ -17,6 +17,7 @@ class QrLinkController extends Controller
 
     $qrData = null;
     $qrCodeSvg = null;
+    $qrImageTemp = null;
 
     if ($link && $link->slug) {
         $qrData = route('client.qr.redirect', $link->slug);
