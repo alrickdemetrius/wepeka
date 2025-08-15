@@ -25,8 +25,16 @@
                                 <div class="qr-wrapper">
                                     <div class="qr-scaler">
                                         <div class="qr-preview-container">
-                                            <img id="qr-template-img" src="{{ asset('images/qrtemplate.png') }}"
+                                            <img id="qr-template-img"
+                                                src="{{ $user->logo ? asset('images/qrtemplate_logo.png') : asset('images/qrtemplate.png') }}"
                                                 alt="QR Template">
+
+                                            {{-- Logo User Overlay (hanya jika punya logo) --}}
+                                            @if($user->logo)
+                                                <div class="user-logo-overlay">
+                                                    <img src="{{ $user->getLogoUrlAttribute() }}" alt="User Logo">
+                                                </div>
+                                            @endif
 
                                             @if(isset($user->qrLink->temp_image_file))
                                                 <div class="qr-overlay" id="qr-overlay">
