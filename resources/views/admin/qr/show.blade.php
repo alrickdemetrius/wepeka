@@ -110,6 +110,8 @@
                                 @method('DELETE')
                                 <button type="submit" class="btn btn-danger">🗑 Delete QR</button>
                             </form>
+
+                            <a href="{{ route('admin.qr.edit', $user->id) }}" class="btn btn-warning ms-2">✏️ Edit QR</a>
                         @else
                             <div class="alert alert-warning">No QR code found for this user.</div>
                         @endif

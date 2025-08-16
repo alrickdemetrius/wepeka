@@ -71,11 +71,11 @@ class QrLinkController extends Controller
             return back()->with('error', 'QR not found for this client.');
         }
         $tempImage = null;
-        if($user->qrLink->temp_image_file){
+        if ($user->qrLink->temp_image_file) {
             $tempImage = $user->qrLink->temp_image_file;
         }
 
-        return view('admin.qr.show', compact('user','tempImage'));
+        return view('admin.qr.show', compact('user', 'tempImage'));
     }
 
     public function destroy($userId)
@@ -96,6 +96,66 @@ class QrLinkController extends Controller
 
         return redirect()->route('admin.clients.index')->with('success', 'QR deleted successfully.');
     }
+
+    public function edit($userId)
+    {
+        $user = User::with('qrLink')->findOrFail($userId);
+
+        if (!$user->qrLink) {
+            return redirect()->route('admin.qr.create', $userId)
+                ->with('error', 'QR belum ada, silakan buat baru.');
+        }
+
+        return view('admin.qr.edit', compact('user'));
+    }
+
+    public function update(Request $request, $userId)
+    {
+        $user = User::with('qrLink')->findOrFail($userId);
+
+        if (!$user->qrLink) {
+            return redirect()->route('admin.qr.create', $userId)
+                ->with('error', 'QR belum ada, silakan buat baru.');
+        }
+
+        $validated = $request->validate([
+            'event_name' => 'required|string|max:255',
+            'file_type' => 'required|in:link,pdf',
+            'file_data' => 'nullable|string',
+            'file' => 'nullable|file|mimes:pdf|max:2048',
+        ]);
+
+        $filePath = $user->qrLink->file_data;
+
+        // Jika update PDF
+        if ($validated['file_type'] === 'pdf' && $request->hasFile('file')) {
+            if ($user->qrLink->file_type === 'pdf' && $user->qrLink->file_data) {
+                Storage::disk('public')->delete($user->qrLink->file_data);
+            }
+
+            $file = $request->file('file');
+            $filePath = $file->store('pdfs', 'public');
+        }
+
+        // Data QR baru
+        $qrData = $validated['file_type'] === 'link'
+            ? $validated['file_data']
+            : route('file.download', basename($filePath));
+
+        $slug = $user->qrLink->slug; // tetap pakai slug lama
+        $qrData = route('client.qr.redirect', ['slug' => $slug]);
+
+        // Update record
+        $user->qrLink->update([
+            'event_name' => $validated['event_name'],
+            'file_type' => $validated['file_type'],
+            'file_data' => $filePath ?? $validated['file_data'],
+            'qr_code_svg' => QrCode::format('svg')->size(300)->generate($qrData),
+        ]);
+
+        return redirect()->route('admin.qr.show', $userId)->with('success', 'QR updated successfully.');
+    }
+
 
     public function downloadSvg($id)
     {

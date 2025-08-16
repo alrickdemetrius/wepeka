@@ -122,5 +122,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->as('admin.')->group(
     Route::post('/clients/{user}/qr/store', [AdminQrLinkController::class, 'store'])->name('qr.store');
     Route::get('/clients/{user}/qr/show', [AdminQrLinkController::class, 'show'])->name('qr.show');
     Route::delete('/clients/{user}/qr/delete', [AdminQrLinkController::class, 'destroy'])->name('qr.destroy');
+    Route::get('/clients/{user}/qr/edit', [AdminQrLinkController::class, 'edit'])->name('qr.edit');
+    Route::put('/clients/{user}/qr/update', [AdminQrLinkController::class, 'update'])->name('qr.update');
     Route::get('/qr/{id}/download', [AdminQrLinkController::class, 'downloadSvg'])->name('qr.download');
 });
