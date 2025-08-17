@@ -6,7 +6,6 @@
         style="background: url('{{ asset('images/blur_proflink.jpg') }}') no-repeat center center fixed; background-size: cover;">
 
         <div class="container py-5">
-            <h3 class="mb-4 text-white">Edit QR Link</h3>
 
             {{-- Flash messages --}}
             @if (session('success'))

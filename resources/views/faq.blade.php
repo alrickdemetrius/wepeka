@@ -154,7 +154,7 @@
 
         <div class="container">
             <!-- Header + Search -->
-            <div class="faq-section d-flex justify-content-between align-items-center mb-5" style="gap: 1rem; flex-wrap: nowrap;">
+            <div class="faq-section d-flex justify-content-between align-items-center mb-3" style="gap: 1rem; flex-wrap: nowrap;">
                 <h2 style="color: white; font-size: 2.5rem; font-weight: 800; margin-bottom: 0;">
                     Frequently Asked Questions
                 </h2>

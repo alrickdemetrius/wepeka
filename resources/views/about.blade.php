@@ -2,140 +2,205 @@
 
 @section('content')
 <style>
-    /* === Background Utama untuk Kedua Section === */
-    .about-features-wrapper {
-        background: url('{{ asset('images/blur_about.jpg') }}') no-repeat center center;
-        background-size: cover;
-        min-height: 100vh;
-        color: white;
-        font-family: 'Helvetica Neue', sans-serif;
-        position: relative;
-    }
+/* === Background Utama untuk Kedua Section === */
+.about-features-wrapper {
+    background: url('{{ asset('images/blur_about.jpg') }}') no-repeat center center;
+    background-size: cover;
+    min-height: 100vh;
+    color: white;
+    font-family: 'Helvetica Neue', sans-serif;
+    position: relative;
+}
 
-    .about-features-wrapper::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        backdrop-filter: blur(6px);
-        background-color: rgba(0, 0, 0, 0.2);
-        z-index: 1;
-    }
+.about-features-wrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(6px);
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
 
-    /* === About Section === */
-    .about-section,
-    .features-section {
-        position: relative;
-        z-index: 2;
-        padding: 140px 40px 150px;
-    }
+.about-section,
+.features-section,
+.team-section {
+    position: relative;
+    z-index: 2;
+    padding: 140px 40px 150px;
+}
 
-    .about-container {
-        display: flex;
-        flex-wrap: wrap;
-        max-width: 1400px;
-        gap: 60px;
-        align-items: center;
-        margin: auto;
-    }
+/* === About Section === */
+.about-container {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1400px;
+    gap: 60px;
+    align-items: center;
+    margin: auto;
+}
 
-    .about-text {
-        flex: 1 1 600px;
-    }
+.about-text {
+    flex: 1 1 600px;
+}
 
-    .about-title {
-        font-size: 4rem;
-        font-weight: bold;
-        margin-bottom: 30px;
-    }
+.about-title {
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
 
-    .about-description {
-        font-size: 1.3rem;
-        line-height: 2;
-        color: rgba(255, 255, 255, 0.9);
-        margin-bottom: 50px;
-    }
+.about-description {
+    font-size: 1.3rem;
+    line-height: 2;
+    color: rgba(255, 255, 255, 0.9);
+    margin-bottom: 50px;
+}
 
-    .highlight-box {
-        background-color: #1e1e1e;
-        padding: 25px 40px;
-        border-radius: 10px;
-        display: inline-block;
-    }
+.highlight-box {
+    background-color: #1e1e1e;
+    padding: 25px 40px;
+    border-radius: 10px;
+    display: inline-block;
+}
 
-    .highlight-box h2 {
-        font-size: 3rem;
-        font-weight: bold;
-        margin: 0;
-    }
+.highlight-box h2 {
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 0;
+}
 
-    .highlight-box p {
-        margin-top: 15px;
-        margin-bottom: 0;
-        font-size: 1.1rem;
-        color: rgba(255, 255, 255, 0.85);
-    }
+.highlight-box p {
+    margin-top: 15px;
+    margin-bottom: 0;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.85);
+}
 
-    .about-image {
-        flex: 1 1 500px;
-        background-color: rgba(255, 255, 255, 0.2);
-        border-radius: 10px;
-        height: 600px;
-    }
+.about-image {
+    flex: 1 1 500px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
+    height: 600px;
+}
 
-    /* === Features Section === */
-    .features-container {
-        max-width: 1200px;
-        margin: auto;
-        text-align: center;
-    }
+/* === Features Section === */
+.features-container {
+    max-width: 1200px;
+    margin: auto;
+    text-align: center;
+}
 
-    .features-title {
-        font-size: 3rem;
-        font-weight: bold;
-        margin-bottom: 60px;
-    }
+.features-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 60px;
+}
 
-    .feature-cards {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 30px;
-        justify-content: center;
-    }
+.feature-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+}
 
-    .feature-card {
-        flex: 1 1 300px;
-        padding: 30px;
-        border-radius: 15px;
-        color: white;
-        backdrop-filter: blur(10px);
-        text-align: center;
-        min-height: 200px;
-    }
+.feature-card {
+    flex: 1 1 300px;
+    padding: 30px;
+    border-radius: 15px;
+    color: white;
+    backdrop-filter: blur(10px);
+    text-align: center;
+    min-height: 200px;
+}
 
-    .feature-card h3 {
-        font-size: 1.8rem;
-        margin-bottom: 15px;
-    }
+.feature-card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
 
-    .feature-card p {
-        font-size: 1rem;
-        line-height: 1.6;
-    }
+.feature-card p {
+    font-size: 1rem;
+    line-height: 1.6;
+}
 
-    .bg-blue {
-        background: rgba(0, 90, 200, 0.4);
-    }
+.bg-blue {
+    background: rgba(0, 90, 200, 0.4);
+}
 
-    .bg-green {
-        background: rgba(0, 120, 0, 0.4);
-    }
+.bg-green {
+    background: rgba(0, 120, 0, 0.4);
+}
 
-    .bg-red {
-        background: rgba(180, 0, 0, 0.4);
-    }
+.bg-red {
+    background: rgba(180, 0, 0, 0.4);
+}
+
+/* === Team Section (Carousel) === */
+.team-section {
+    text-align: center;
+    background-color: #495151; /* background baru */
+    border-radius: 12px;
+    padding: 120px 40px;
+}
+
+.team-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 50px;
+    color: white;
+}
+
+.carousel-container {
+    position: relative;
+    max-width: 1500px;
+    margin: auto;
+    overflow: hidden;
+}
+
+.carousel-track {
+    display: flex;
+    transition: transform 0.5s ease;
+    width: max-content;
+}
+
+.carousel-card {
+    min-width: 400px;
+    margin: 0 15px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(8px);
+    border-radius: 15px;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: white;
+}
+
+.carousel-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    cursor: pointer;
+    z-index: 10;
+    border-radius: 50%;
+}
+
+.carousel-btn.left {
+    left: 10px;
+}
+
+.carousel-btn.right {
+    right: 10px;
+}
 </style>
 
 <div class="about-features-wrapper">
@@ -165,11 +230,13 @@
             <div class="feature-cards">
                 <div class="feature-card bg-blue">
                     <h3>Scannable Tag</h3>
-                    <p>Apparel WEPEKA dilengkapi dengan scannable tag yang dapat memuat informasi perusahaan atau organisasi sesuai kebutuhan.</p>
+                    <p>Apparel WEPEKA dilengkapi dengan scannable tag yang dapat memuat informasi perusahaan atau
+                        organisasi sesuai kebutuhan.</p>
                 </div>
                 <div class="feature-card bg-green">
                     <h3>Custom Cutting</h3>
-                    <p>WEPEKA juga memperhatikan kenyamanan penggunanya. Maka dari itu, kita menyediakan custom cutting (oversized, fit atau loose).</p>
+                    <p>WEPEKA juga memperhatikan kenyamanan penggunanya. Maka dari itu, kita menyediakan custom cutting
+                        (oversized, fit atau loose).</p>
                 </div>
                 <div class="feature-card bg-red">
                     <h3>Jasa Desain</h3>
@@ -178,5 +245,81 @@
             </div>
         </div>
     </div>
+
+    {{-- Team Section (Carousel) --}}
+    <div class="team-section">
+        <div class="team-title">Our Team</div>
+        <div class="carousel-container">
+
+            <div class="carousel-track" id="carouselTrack">
+                <div class="carousel-card">CEO</div>
+                <div class="carousel-card">Marketing</div>
+                <div class="carousel-card">Logistics</div>
+                <div class="carousel-card">Designer</div>
+                <div class="carousel-card">Developer</div>
+            </div>
+
+        </div>
+    </div>
 </div>
+
+<script>
+const container = document.querySelector(".carousel-container");
+const cards = document.querySelectorAll(".carousel-card");
+const cardWidth = cards[0].offsetWidth + 30; // ukuran card + margin
+
+let isDragging = false;
+let startX, scrollLeft;
+
+// Fungsi tombol
+function moveCarousel(direction) {
+    container.scrollBy({
+        left: direction * cardWidth, // geser per kartu
+        behavior: "smooth"
+    });
+}
+
+// === Drag pakai mouse ===
+container.addEventListener("mousedown", (e) => {
+    isDragging = true;
+    startX = e.pageX;
+    scrollLeft = container.scrollLeft;
+    container.style.cursor = "grabbing";
+});
+
+container.addEventListener("mouseleave", () => {
+    isDragging = false;
+    container.style.cursor = "grab";
+});
+
+container.addEventListener("mouseup", () => {
+    isDragging = false;
+    container.style.cursor = "grab";
+});
+
+container.addEventListener("mousemove", (e) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    const x = e.pageX - startX;
+    container.scrollLeft = scrollLeft - x;
+});
+
+// === Touch support (mobile) ===
+container.addEventListener("touchstart", (e) => {
+    isDragging = true;
+    startX = e.touches[0].pageX;
+    scrollLeft = container.scrollLeft;
+});
+
+container.addEventListener("touchend", () => {
+    isDragging = false;
+});
+
+container.addEventListener("touchmove", (e) => {
+    if (!isDragging) return;
+    const x = e.touches[0].pageX - startX;
+    container.scrollLeft = scrollLeft - x;
+});
+</script>
+
 @endsection
