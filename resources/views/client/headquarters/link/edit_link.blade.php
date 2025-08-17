@@ -1,282 +1,165 @@
 @extends('layouts.app')
 
 @section('content')
+    {{-- Background Container --}}
     <div class="min-vh-100 py-4"
         style="background: url('{{ asset('images/blur_proflink.jpg') }}') no-repeat center center fixed; background-size: cover;">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-lg-8 col-md-10 mx-auto">
-                    <div class="bg-white rounded p-4 shadow">
-                        <div class="mb-4">
-                            <h3 class="fw-bold text-dark mb-1">Edit QR Link</h3>
+
+        <div class="container py-5">
+            <h3 class="mb-4 text-white">Edit QR Link</h3>
+
+            {{-- Flash messages --}}
+            @if (session('success'))
+                <div class="alert alert-success">{{ session('success') }}</div>
+            @endif
+            @if (session('error'))
+                <div class="alert alert-danger">{{ session('error') }}</div>
+            @endif
+
+            {{-- Validation errors --}}
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
+            <div class="card shadow rounded">
+                <div class="card-body">
+                    <form action="{{ route('client.link.update') }}" method="POST" enctype="multipart/form-data">
+                        @csrf
+                        @method('PUT')
+
+                        {{-- Event Name --}}
+                        <div class="mb-3">
+                            <label for="event_name" class="form-label">Event Name</label>
+                            <input type="text" name="event_name" id="event_name" class="form-control"
+                                value="{{ old('event_name', $link->event_name) }}" required>
                         </div>
 
-                        <form action="{{ route('client.link.update', $link->id) }}" method="POST"
-                            onsubmit="return validateForm();" enctype="multipart/form-data">
+                        {{-- File Type - Changed to Segmented Switch with Custom Color --}}
+                        <div class="mb-3">
+                            <label class="form-label">File Type</label>
+                            <div class="btn-group w-100" role="group" aria-label="File Type Selection">
+                                <input type="radio" class="btn-check" name="file_type" id="file_type_link" value="link" autocomplete="off"
+                                    {{ old('file_type', $link->file_type) === 'link' ? 'checked' : '' }}>
+                                <label class="btn btn-outline-custom-warning" for="file_type_link">Link</label> {{-- Kustom kelas di sini --}}
 
-                            @if (session('error'))
-                                <div class="alert alert-danger">{{ session('error') }}</div>
-                            @endif
+                                <input type="radio" class="btn-check" name="file_type" id="file_type_pdf" value="pdf" autocomplete="off"
+                                    {{ old('file_type', $link->file_type) === 'pdf' ? 'checked' : '' }}>
+                                <label class="btn btn-outline-custom-warning" for="file_type_pdf">PDF</label> {{-- Kustom kelas di sini --}}
+                            </div>
+                        </div>
 
-                            @if ($errors->any())
-                                <div class="alert alert-danger">
-                                    <ul class="mb-0">
-                                        @foreach ($errors->all() as $err)
-                                            <li>{{ $err }}</li>
-                                        @endforeach
-                                    </ul>
+                        {{-- If link --}}
+                        <div class="mb-3 file-type-link"
+                            style="{{ old('file_type', $link->file_type) === 'link' ? '' : 'display:none;' }}">
+                            <label for="external_link" class="form-label">External Link (URL)</label>
+                            <input type="url" name="file_data" id="external_link" class="form-control"
+                                value="{{ old('file_type', $link->file_type) === 'link' ? old('file_data', $link->file_data) : '' }}"
+                                placeholder="https://example.com"
+                                {{ old('file_type', $link->file_type) === 'link' ? 'required' : '' }}>
+                        </div>
+
+                        {{-- If PDF --}}
+                        <div class="mb-3 file-type-pdf"
+                            style="{{ old('file_type', $link->file_type) === 'pdf' ? '' : 'display:none;' }}">
+                            <label for="upload_pdf" class="form-label">Upload PDF</label>
+                            <input type="file" name="file" id="upload_pdf" class="form-control" accept="application/pdf">
+                            <div class="form-text">Leave blank to keep the current PDF.</div>
+
+                            @if($link->file_type === 'pdf' && $link->file_data)
+                                <p class="mt-2">
+                                    Current PDF:
+                                    <a href="{{ asset('storage/' . $link->file_data) }}" target="_blank">
+                                        View PDF
+                                    </a>
+                                </p>
+                                <div class="form-check mt-2">
+                                    <input type="checkbox" name="remove_pdf_flag" value="1"
+                                        id="remove_pdf" class="form-check-input">
+                                    <label for="remove_pdf" class="form-check-label">Remove Current PDF</label>
                                 </div>
                             @endif
+                        </div>
 
-                            @csrf
-                            @method('PUT')
-                            {{-- Hidden inputs to store the chosen file_type and its data --}}
-                            <input type="hidden" name="file_type" id="fileTypeInput" value="{{ old('file_type', $link->file_type) }}">
-                            <input type="hidden" name="file_data" id="hiddenFileData" value="{{ old('file_data', $link->file_type === 'link' ? $link->file_data : '') }}">
-
-                            <div class="mb-4">
-                                <label class="form-label fw-semibold text-dark mb-2">Event Name</label>
-                                <input type="text" class="form-control form-control-lg" name="event_name"
-                                    value="{{ old('event_name', $link->event_name) }}" placeholder="Enter event name"
-                                    required>
-                            </div>
-
-                            <div class="mb-4">
-                                <label class="form-label fw-semibold text-dark mb-3">File Type</label>
-                                <div class="d-flex gap-3 mb-3">
-                                    <button type="button"
-                                        class="btn file-type-btn px-4 py-2 fw-semibold {{ $link->file_type === 'link' ? 'btn-warning active' : 'btn-outline-secondary' }}"
-                                        data-type="link">Link</button>
-
-                                    <button type="button"
-                                        class="btn file-type-btn px-4 py-2 fw-semibold {{ $link->file_type === 'pdf' ? 'btn-warning active' : 'btn-outline-secondary' }}"
-                                        data-type="pdf">PDF</button>
-                                </div>
-                            </div>
-
-                            <div class="mb-4 {{ $link->file_type === 'link' ? '' : 'd-none' }}" id="linkWrapper">
-                                <label class="form-label fw-semibold text-dark mb-2">Link</label>
-                                <input type="url" class="form-control form-control-lg" id="linkInput" name="file_data_visible"
-                                    value="{{ old('file_data', $link->file_type === 'link' ? $link->file_data : '') }}" placeholder="Enter your link here">
-                            </div>
-
-                            <div class="mb-4 {{ $link->file_type === 'pdf' ? '' : 'd-none' }}" id="pdfWrapper">
-                                <label class="form-label fw-semibold text-dark mb-2">Upload PDF</label>
-                                <small class="text-muted d-block mb-2">Only PDF files allowed. Max size: 2MB</small>
-                                @if($link->file_type === 'pdf' && $link->file_data)
-                                    <p id="currentPdfDisplay" class="mb-2">
-                                        Current file:
-                                        <a href="{{ route('file.download', basename($link->file_data)) }}" target="_blank">
-                                            Download PDF ({{ basename($link->file_data) }})
-                                        </a>
-                                        <button type="button" class="btn btn-sm btn-outline-danger ms-2" id="removePdfBtn">Remove Current PDF</button>
-                                    </p>
-                                @endif
-                                <div class="upload-area border rounded p-4 text-center bg-white"
-                                    style="min-height: 120px; border: 2px dashed #dee2e6; cursor: pointer;">
-                                    <div id="uploadPlaceholder" class="upload-placeholder text-muted">
-                                        <i class="fas fa-cloud-upload-alt fa-2x mb-2"></i>
-                                        <div class="fw-semibold">Drag & drop PDF here or click to browse</div>
-                                    </div>
-                                    <input type="file" class="d-none" id="fileInput" name="file" accept=".pdf">
-                                </div>
-                            </div>
-
-                            <div class="d-flex gap-3">
-                                <a href="{{ route('client.link.view_link') }}"
-                                    class="btn btn-secondary px-4 py-2 fw-semibold">Cancel</a>
-                                <button type="submit" class="btn btn-dark px-4 py-2 fw-semibold">Update</button>
-                            </div>
-                        </form>
-                    </div>
+                        <div class="d-flex gap-3 mt-4">
+                            <a href="{{ route('client.link.view_link') }}" class="btn btn-secondary">Back</a>
+                            <button type="submit" class="btn btn-primary">Update QR Link</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 
     <style>
-        .file-type-btn.active {
-            position: relative;
+        /* Custom styles for the segmented button group */
+        .btn-outline-custom-warning {
+            --bs-btn-color: #ffc107; /* Warna teks default */
+            --bs-btn-border-color: #ffc107; /* Warna border default */
+            --bs-btn-hover-color: #000; /* Warna teks saat hover */
+            --bs-btn-hover-bg: #ffc107; /* Warna background saat hover */
+            --bs-btn-hover-border-color: #ffc107; /* Warna border saat hover */
+            --bs-btn-focus-shadow-rgb: 255,193,7; /* RGB dari #ffc107 untuk shadow fokus */
+            --bs-btn-active-color: #000; /* Warna teks saat aktif */
+            --bs-btn-active-bg: #ffc107; /* Warna background saat aktif */
+            --bs-btn-active-border-color: #ffc107; /* Warna border saat aktif */
+            --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+            --bs-btn-disabled-color: #ffc107;
+            --bs-btn-disabled-bg: transparent;
+            --bs-btn-disabled-border-color: #ffc107;
+            --bs-gradient: none;
         }
 
-        .upload-area:hover {
-            border-color: #007bff !important;
-            background-color: #f8f9fa !important;
-        }
-
-        .upload-area.drag-over {
-            border-color: #007bff !important;
-            background-color: #e7f3ff !important;
-        }
-
-        .qr-small svg {
-            width: 100%;
-            height: auto;
+        /* Mengatasi warna teks saat radio button aktif (dicentang) */
+        .btn-check:checked + .btn-outline-custom-warning {
+            color: #000; /* Warna teks hitam saat tombol aktif */
+            background-color: #ffc107; /* Warna latar belakang kuning saat tombol aktif */
+            border-color: #ffc107; /* Warna border kuning saat tombol aktif */
         }
     </style>
-@endsection
 
-@push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const fileTypeBtns = document.querySelectorAll('.file-type-btn');
-            const fileTypeInput = document.getElementById('fileTypeInput');
-            const hiddenFileData = document.getElementById('hiddenFileData');
-            const linkWrapper = document.getElementById('linkWrapper');
-            const linkInput = document.getElementById('linkInput');
-            const pdfWrapper = document.getElementById('pdfWrapper');
-            const fileInput = document.getElementById('fileInput');
-            const uploadPlaceholder = document.getElementById('uploadPlaceholder');
-            const uploadArea = document.querySelector('.upload-area');
-            const currentPdfDisplay = document.getElementById('currentPdfDisplay');
-            const removePdfBtn = document.getElementById('removePdfBtn');
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const fileTypeRadios = document.querySelectorAll('input[name="file_type"]'); // Ambil kedua radio button
+        const linkFields = document.querySelector('.file-type-link');
+        const pdfFields = document.querySelector('.file-type-pdf');
+        const externalLinkInput = document.getElementById('external_link');
+        const uploadPdfInput = document.getElementById('upload_pdf');
 
-            function updateFormDisplay(selectedType) {
-                fileTypeInput.value = selectedType;
-
-                fileTypeBtns.forEach(btn => {
-                    if (btn.dataset.type === selectedType) {
-                        btn.classList.remove('btn-outline-secondary');
-                        btn.classList.add('btn-warning', 'active');
-                    } else {
-                        btn.classList.remove('btn-warning', 'active');
-                        btn.classList.add('btn-outline-secondary');
-                    }
-                });
-
-                if (selectedType === 'link') {
-                    linkWrapper.classList.remove('d-none');
-                    pdfWrapper.classList.add('d-none');
-                    linkInput.name = 'file_data';
-                    fileInput.name = 'file_unused';
-                    fileInput.value = '';
-                    updateUploadPlaceholder();
-                    if (currentPdfDisplay) currentPdfDisplay.classList.add('d-none');
-                    linkInput.value = hiddenFileData.value;
-                } else {
-                    linkWrapper.classList.add('d-none');
-                    pdfWrapper.classList.remove('d-none');
-                    linkInput.name = 'link_data_unused';
-                    fileInput.name = 'file';
-                    linkInput.value = '';
-                    if ("{{ $link->file_type }}" === 'pdf' && "{{ $link->file_data }}" !== '') {
-                        if (currentPdfDisplay) currentPdfDisplay.classList.remove('d-none');
-                        if (fileInput.files.length > 0) {
-                            updateUploadPlaceholder(fileInput.files[0]);
-                        } else {
-                            updateUploadPlaceholder();
-                        }
-                    } else {
-                        if (currentPdfDisplay) currentPdfDisplay.classList.add('d-none');
-                        updateUploadPlaceholder();
-                    }
+        function toggleFields() {
+            let selectedFileType = '';
+            // Temukan radio button yang saat ini dicentang
+            fileTypeRadios.forEach(radio => {
+                if (radio.checked) {
+                    selectedFileType = radio.value;
                 }
+            });
+
+            if (selectedFileType === 'link') {
+                linkFields.style.display = '';
+                pdfFields.style.display = 'none';
+                externalLinkInput.setAttribute('required', 'required');
+                uploadPdfInput.removeAttribute('required');
+            } else if (selectedFileType === 'pdf') {
+                linkFields.style.display = 'none';
+                pdfFields.style.display = '';
+                externalLinkInput.removeAttribute('required');
+                // uploadPdfInput.setAttribute('required', 'required');
             }
+        }
 
-            function updateUploadPlaceholder(file = null) {
-                if (file) {
-                    uploadPlaceholder.innerHTML = `<i class="fas fa-file-pdf fa-2x mb-2 text-danger"></i> <div class="fw-semibold text-dark">${file.name}</div> <small class="text-muted">Click to change file</small>`;
-                } else {
-                    uploadPlaceholder.innerHTML = `<i class="fas fa-cloud-upload-alt fa-2x mb-2"></i> <div class="fw-semibold">Drag & drop PDF here or click to browse</div>`;
-                }
-            }
+        // Panggil fungsi toggleFields saat halaman pertama kali dimuat
+        toggleFields();
 
-            fileTypeBtns.forEach(btn => {
-                btn.addEventListener('click', function () {
-                    const selectedType = this.dataset.type;
-                    if (fileTypeInput.value === 'link') {
-                        hiddenFileData.value = linkInput.value;
-                    } else {
-                        hiddenFileData.value = "{{ $link->file_type === 'pdf' && $link->file_data ? $link->file_data : '' }}";
-                    }
-                    updateFormDisplay(selectedType);
-                });
-            });
-
-            uploadArea.addEventListener('click', () => {
-                if (fileTypeInput.value === 'pdf') {
-                    fileInput.click();
-                }
-            });
-
-            fileInput.addEventListener('change', function (e) {
-                handleFileUpload(e.target.files[0]);
-            });
-
-            function handleFileUpload(file) {
-                if (!file) {
-                    if (fileTypeInput.value === 'pdf' && hiddenFileData.value) {
-                        if (currentPdfDisplay) currentPdfDisplay.classList.remove('d-none');
-                        updateUploadPlaceholder();
-                    } else {
-                        updateUploadPlaceholder();
-                    }
-                    return;
-                }
-
-                const maxSize = 2 * 1024 * 1024;
-                const isPDF = file.name.toLowerCase().endsWith('.pdf');
-
-                if (!isPDF) {
-                    alert('Only PDF files are allowed.');
-                    fileInput.value = '';
-                    handleFileUpload(null);
-                    return;
-                }
-
-                if (file.size > maxSize) {
-                    alert('PDF file size must be 2MB or less.');
-                    fileInput.value = '';
-                    handleFileUpload(null);
-                    return;
-                }
-
-                updateUploadPlaceholder(file);
-                hiddenFileData.value = '';
-                if (currentPdfDisplay) currentPdfDisplay.classList.add('d-none');
-            }
-
-            ['dragenter', 'dragover'].forEach(event => {
-                uploadArea.addEventListener(event, e => {
-                    e.preventDefault();
-                    if (fileTypeInput.value === 'pdf') {
-                        uploadArea.classList.add('drag-over');
-                    }
-                });
-            });
-
-            ['dragleave', 'drop'].forEach(event => {
-                e.preventDefault();
-                uploadArea.classList.remove('drag-over');
-            });
-
-            uploadArea.addEventListener('drop', function (e) {
-                e.preventDefault();
-                const file = e.dataTransfer.files[0];
-                if (file && fileTypeInput.value === 'pdf') {
-                    fileInput.files = e.dataTransfer.files;
-                    handleFileUpload(file);
-                }
-            });
-
-            if (removePdfBtn) {
-                removePdfBtn.addEventListener('click', function () {
-                    if (confirm('Are you sure you want to remove the current PDF?')) {
-                        hiddenFileData.value = '';
-                        if (currentPdfDisplay) currentPdfDisplay.classList.add('d-none');
-                        fileInput.value = '';
-                        updateUploadPlaceholder();
-                    }
-                });
-            }
-
-            linkInput.addEventListener('input', function () {
-                if (fileTypeInput.value === 'link') {
-                    hiddenFileData.value = linkInput.value;
-                }
-            });
-
-            updateFormDisplay(fileTypeInput.value);
+        // Tambahkan event listener untuk setiap radio button
+        fileTypeRadios.forEach(radio => {
+            radio.addEventListener('change', toggleFields);
         });
-    </script>
-@endpush
+    });
+</script>
+@endsection

@@ -21,7 +21,7 @@
 
                     <div class="bg-white rounded p-4 shadow">
                         <div class="mb-4">
-                            <h3 class="fw-bold text-dark mb-1">{{ auth()->user()->name }}</h3>
+                            <h3 class="fw-bold text-dark mb-1">{{ $link->event_name }}</h3>
                             <p class="text-muted mb-0">Manage your <span class="text-warning fw-semibold">We</span><span
                                     class="fw-semibold">peka</span> QR Code</p>
                         </div>
@@ -57,26 +57,30 @@
                                     </div>
                                 </div>
 
-                                <div class="mt-3">
-                                    <button id="download-merged" class="btn btn-primary mt-3">Download Tag</button>
-                                </div>
+                                <p class="text-muted mt-3 mb-0">Scan this QR to access:</p>
 
-                                <div class="mt-3">
-                                    @if (isset($qrData))
-                                        <div class="text-center mt-4">
-                                            <p><strong>Dynamic QR Link:</strong></p>
-                                            <a href="{{ $qrData }}" target="_blank">{{ $qrData }}</a>
-                                        </div>
-                                    @endif
-                                </div>
+                                <div class="mt-3 d-flex justify-content-center gap-3">
+                                    <button id="download-merged" class="btn btn-primary fw-semibold px-4 py-2">Download
+                                        Tag</button>
+                                    <a href="{{ route('client.link.edit_link') }}"
+                                        class="btn btn-dark fw-semibold px-4 py-2">Edit QR</a>
 
-                                <p class="text-muted mt-2 mb-0">Scan this QR to access:
                                     @if ($link->file_type === 'pdf')
-                                        <a href="{{ route('file.download', basename($link->file_data)) }}" target="_blank">
+
+                                        <a href="{{ $qrData }}" target="_blank"
+                                            class="btn btn-success fw-semibold px-4 py-2">
+                                            Open PDF
+                                        </a>
+
+                                        <a href="{{ $qrData }}" download class="btn btn-warning fw-semibold px-4 py-2">
                                             Download PDF
                                         </a>
+                                    @elseif (isset($qrData))
+                                        <a href="{{ $qrData }}" target="_blank" class="btn btn-success fw-semibold px-4 py-2">
+                                            Open Link
+                                        </a>
                                     @endif
-                                </p>
+                                </div>
                             </div>
 
                             <form action="{{ route('client.link.update') }}" method="POST" enctype="multipart/form-data">
@@ -86,10 +90,7 @@
                                     <a href="{{ route('client.headquarters') }}"
                                         class="btn btn-secondary px-4 py-2 fw-semibold">Back</a>
                                 </div>
-                                <div class="d-flex gap-3 justify-content-center mt-4">
-                                    <a href="{{ route('client.link.edit_link') }}"
-                                        class="btn btn-dark fw-semibold px-4 py-2">Edit QR</a>
-                                </div>
+
                             </form>
                         @else
                             <div class="alert alert-warning">No QR code found for this user.</div>
