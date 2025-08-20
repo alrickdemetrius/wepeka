@@ -37,8 +37,8 @@ class UserSeeder extends Seeder
             [
                 'name'=>'Toneetos',
                 'email' => "toneetos@gmail.com",
-                'password'=> Hash::make('wepekastyle'), //sesuaikan
-                'contact_name'=> '', //sesuaikan
+                'password'=> Hash::make('Toneetos'), //sesuaikan
+                'contact_name'=> 'Toneetos', //sesuaikan
                 'contact_number'=> '', //sesuaikan
                 'logo_file'=>'',
                 'role'=> 'client',
@@ -52,8 +52,8 @@ class UserSeeder extends Seeder
             [
                 'name'=>'Taroma',
                 'email' => "taroma@gmail.com",
-                'password'=> Hash::make('wepekastyle'),
-                'contact_name'=> '',
+                'password'=> Hash::make('Taroma'),
+                'contact_name'=> 'Taroma',
                 'contact_number'=> '',
                 'logo_file'=>'',
                 'role'=> 'client',
@@ -66,9 +66,9 @@ class UserSeeder extends Seeder
         DB::table('users')->insert([
             [
                 'name'=>'English House',
-                'email' => "englishhouse@gmail.com", //sesuaikan
-                'password'=> Hash::make('wepekastyle'), //sesuaikan
-                'contact_name'=> '', //sesuaikan
+                'email' => "englishhousekediri@gmail.com", //sesuaikan
+                'password'=> Hash::make('Englishhousekediri'), //sesuaikan
+                'contact_name'=> 'English House', //sesuaikan
                 'contact_number'=> '', //sesuaikan
                 'logo_file'=>'',
                 'role'=> 'client',
