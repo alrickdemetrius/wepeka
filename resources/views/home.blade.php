@@ -22,6 +22,9 @@
             <h2 class="mb-5 fw-bold">
                 Identity That Inspires
             </h2>
+            <h1 class="display-6 mb-4">
+                Branding Kit Lengkap untuk Bisnis Anda.
+            </h1>
             @if(Auth::user())
                 <div class="d-flex justify-content-center gap-3">
                     <a href="{{ route('client.headquarters') }}" class="btn btn-dark btn-lg px-4 rounded-pill shadow">Headquarters</a>

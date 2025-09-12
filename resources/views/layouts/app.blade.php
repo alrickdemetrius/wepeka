@@ -7,11 +7,13 @@
     <!-- SEO -->
     <meta name="keywords"
         content="Wepeka, Apparel, Clothing, Baju, Brand, Kaos, Seragam, Custom, Sablon, Bordir, Tag, QR">
-    <meta name="description" content="Wepeka is the best option for your branding kit.">
+    <meta name="description" content="Wepeka Apparel membantu bisnis membangun identitas brand profesional
+    lewat branding kit lengkap:
+    logo, color palette, apparel, dan merchandise custom.">
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Wepeka</title>
+    <title>Wepeka Apparel | Branding Kit & Apparel untuk Bisnis dan Organisasi</title>
     <link rel="icon" href="{!! asset('images/logo_web.png') !!}" />
 
     <!-- Fonts -->
