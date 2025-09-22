@@ -239,6 +239,55 @@
             transform: translateY(0) scale(1);
             opacity: 1;
         }
+
+        /* ====================================================================== */
+        /* CSS UNTUK FOOTER (VERSI DIPERBESAR)                                    */
+        /* ====================================================================== */
+        /* Ukuran logo di footer diperbesar */
+        footer .logo-img {
+            height: 70px;
+        }
+
+        /* Ukuran link di footer diperbesar */
+        .footer-links p,
+        .footer-links a {
+            font-size: 1rem;
+            /* Sedikit lebih besar dari sebelumnya */
+        }
+
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        .footer-links a:hover {
+            color: #ffffff;
+        }
+
+        /* Ukuran ikon sosial diperbesar */
+        .social-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 42px;
+            /* Diperbesar dari 38px */
+            height: 42px;
+            /* Diperbesar dari 38px */
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            font-size: 1.1rem;
+            /* Ukuran ikon di dalam diperbesar */
+            transition: all 0.2s ease-in-out;
+        }
+
+        .social-icon:hover {
+            background-color: #ffffff;
+            color: #212529;
+            border-color: #ffffff;
+        }
     </style>
 </head>
 
@@ -260,7 +309,7 @@
                     <a href="{{ route('client.headquarters') }}" class="nav-link">Headquarters</a>
                 @endif
             @else
-                <a href="{{ route('client.headquarters') }}" class="nav-link">Headquarter</a>
+                <a href="{{ route('client.headquarters') }}" class="nav-link">Headquarters</a>
             @endauth
             <a href="{{ route('about') }}" class="nav-link">About</a>
             <a href="{{ route('faq') }}" class="nav-link">FAQ</a>
@@ -421,6 +470,82 @@
 
         });
     </script>
+
+
+<footer class="bg-dark text-white pt-5 pb-4">
+    {{--
+        'container' secara otomatis akan menyesuaikan lebarnya di berbagai ukuran layar.
+        'text-center text-md-start' berarti:
+        - Di layar HP (kecil), semua teks akan rata tengah.
+        - Di layar tablet/desktop (medium ke atas), teks akan rata kiri.
+    --}}
+    <div class="container text-center text-md-start">
+        <div class="row">
+
+            {{--
+                'col-md-4' berarti kolom ini akan mengambil 4 dari 12 bagian grid di layar medium ke atas.
+                Di layar HP (di bawah medium), kolom ini akan otomatis mengambil lebar penuh (12 bagian) dan tersusun ke bawah.
+                'mb-4' (margin-bottom) berfungsi untuk memberi jarak saat kolom-kolom ini tersusun ke bawah di layar HP.
+            --}}
+            <div class="col-md-4 col-lg-4 col-xl-4 mx-auto mb-4">
+                <img src="{{ asset('images/logowepeka_gelap.png') }}" alt="Wepeka Logo" class="logo-img mb-2">
+                <p class="text-white-50" style="font-size: 1rem;">
+                    Your trusted branding partner for creating powerful brand identities that connect, convert, and
+                    captivate your audience.
+                </p>
+                <div class="mt-3">
+                    <a href="#" class="social-icon me-2"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="social-icon me-2"><i class="bi bi-twitter"></i></a>
+                    <a href="https://www.instagram.com/wepeka.apparel/" class="social-icon me-2"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-tiktok"></i></a>
+                </div>
+            </div>
+
+            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4 footer-links">
+                <h5 class="text-uppercase fw-bold mb-4">Quick Links</h5>
+                <p><a href="#">Home</a></p>
+                <p><a href="#">Headquarters</a></p>
+                <p><a href="#">About Us</a></p>
+                <p><a href="#">Contact</a></p>
+            </div>
+
+            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4 footer-links">
+                <h5 class="text-uppercase fw-bold mb-4">Services</h5>
+                <p><a href="#">Logo Design</a></p>
+                <p><a href="#">Brand Guidelines</a></p>
+                <p><a href="#">Scaling Up</a></p>
+                <p><a href="#">Apparel</a></p>
+                <p><a href="#">Brand Insights</a></p>
+            </div>
+
+            <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4 footer-links">
+                <h5 class="text-uppercase fw-bold mb-4">Contact Info</h5>
+                <p><i class="bi bi-envelope-fill me-3"></i> wepeka@gmail.com</p>
+                <p><i class="bi bi-telephone-fill me-3"></i> +62 --- ---- ----</p>
+                <p><i class="bi bi-geo-alt-fill me-3"></i> Location</p>
+            </div>
+        </div>
+
+        <hr class="my-4">
+
+        <div class="row align-items-center">
+            {{--
+                'col-md-6' akan membuat kolom ini mengambil setengah lebar di layar medium ke atas.
+                Di layar HP, ini juga akan tersusun ke bawah secara otomatis.
+                'text-md-start' membuat teks rata kiri di desktop, dan 'text-center' (dari div container di atas) membuatnya rata tengah di HP.
+            --}}
+            <div class="col-md-6 text-center text-md-start mb-2 mb-md-0">
+                <p class="mb-0 text-white-50">&copy; {{ date('Y') }} Wepeka. All rights reserved.</p>
+            </div>
+            <div class="col-md-6 text-center text-md-end footer-links">
+                <a href="#" class="ms-3">Privacy Policy</a>
+                <a href="#" class="ms-3">Terms of Service</a>
+                <a href="#" class="ms-3">Cookie Policy</a>
+            </div>
+        </div>
+    </div>
+</footer>
+    @stack('scripts')
 </body>
 
 </html>
