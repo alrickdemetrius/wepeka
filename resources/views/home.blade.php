@@ -399,30 +399,49 @@
             </div>
         </div>
         <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-            {{-- Isi Portfolio Anda --}}
-            @for ($i = 0; $i < 6; $i++)
+
+            {{-- ====================================================== --}}
+            {{-- GANTI KODE STATIS LAMA ANDA DENGAN KODE DINAMIS INI --}}
+            {{-- ====================================================== --}}
+
+            @forelse($featuredPortfolios as $portfolio)
             <div class="col">
                 <div class="card h-100 shadow-sm overflow-hidden" style="border-radius: 1rem; border: 1px solid #e9ecef;">
+
+                    {{-- GAMBAR DINAMIS --}}
                     <div style="
                         height: 300px;
-                        background: url('{{ asset('images/blur_home.jpg') }}');
+                        background: url('{{ $portfolio->image ? asset('storage/' . $portfolio->image) : asset('images/blur_home.jpg') }}');
                         background-size: cover;
                         background-position: center;
                     "></div>
+
                     <div class="card-body">
                         <div class="mb-2">
-                            <span class="badge rounded-pill bg-secondary fw-medium me-1 px-3 py-1">Apparel</span>
-                            <span class="badge rounded-pill bg-secondary fw-medium me-1 px-3 py-1">Branding</span>
+                            {{-- KATEGORI/TAG DINAMIS --}}
+                            <span class="badge rounded-pill bg-secondary fw-medium me-1 px-3 py-1">{{ $portfolio->category }}</span>
                         </div>
-                        <h4 class="card-title fw-bold">Project Name</h4>
+
+                        {{-- NAMA PROYEK DINAMIS --}}
+                        <h4 class="card-title fw-bold">{{ $portfolio->project_name }}</h4>
+
+                        {{-- DESKRIPSI DINAMIS --}}
                         <p class="card-text text-muted">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
-                            incididunt ut labore et dolore magna aliqua.
+                            {{ $portfolio->description }}
                         </p>
                     </div>
                 </div>
             </div>
-            @endfor
+            @empty
+            <div class="col-12 text-center">
+                <p class="lead text-muted">Belum ada portofolio yang ditampilkan.</p>
+            </div>
+            @endforelse
+
+            {{-- ====================================================== --}}
+            {{-- AKHIR DARI MODIFIKASI --}}
+            {{-- ====================================================== --}}
+
         </div>
     </div>
 

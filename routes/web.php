@@ -8,6 +8,8 @@ use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\QrLinkController as AdminQrLinkController;
 use App\Http\Controllers\Client\QrLinkController as ClientQrLinkController;
 use App\Http\Controllers\ClientProfileController;
+use App\Http\Controllers\Admin\PortfolioController;
+use App\Models\Portfolio;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,7 +18,8 @@ use App\Http\Controllers\ClientProfileController;
 */
 
 Route::get('/', function () {
-    return view('home');
+    $featuredPortfolios = Portfolio::where('is_featured', true)->latest()->get();
+    return view('home', compact('featuredPortfolios'));
 })->name('home');
 
 Route::get('/socials', function () {
@@ -125,4 +128,6 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->as('admin.')->group(
     Route::get('/clients/{user}/qr/edit', [AdminQrLinkController::class, 'edit'])->name('qr.edit');
     Route::put('/clients/{user}/qr/update', [AdminQrLinkController::class, 'update'])->name('qr.update');
     Route::get('/qr/{id}/download', [AdminQrLinkController::class, 'downloadSvg'])->name('qr.download');
+
+    Route::resource('portfolios', PortfolioController::class);
 });
