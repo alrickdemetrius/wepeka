@@ -20,13 +20,14 @@
                     @endif
 
                     <div class="bg-white rounded p-4 shadow">
-                        <div class="mb-4">
-                            <h3 class="fw-bold text-dark mb-1">{{ $link->event_name }}</h3>
-                            <p class="text-muted mb-0">Manage your <span class="text-warning fw-semibold">We</span><span
-                                    class="fw-semibold">peka</span> QR Code</p>
-                        </div>
-
                         @if ($link)
+                            {{-- Header hanya muncul/mengakses properti jika $link TIDAK NULL --}}
+                            <div class="mb-4">
+                                <h3 class="fw-bold text-dark mb-1">{{ $link->event_name }}</h3>
+                                <p class="text-muted mb-0">Manage your <span class="text-warning fw-semibold">We</span><span
+                                        class="fw-semibold">peka</span> QR Code</p>
+                            </div>
+
                             <div class="mb-4 text-center">
                                 <div class="qr-wrapper">
                                     <div class="qr-scaler">
@@ -47,7 +48,7 @@
                                                 </div>
                                             @endif
 
-                                            {{-- Logo User Overlay (hanya jika punya logo) --}}
+                                            {{-- Logo User Overlay --}}
                                             @if(auth()->user()->logo)
                                                 <div class="user-logo-overlay">
                                                     <img src="{{ auth()->user()->getLogoUrlAttribute() }}" alt="User Logo">
@@ -60,40 +61,34 @@
                                 <p class="text-muted mt-3 mb-0">Scan this QR to access:</p>
 
                                 <div class="mt-3 d-flex justify-content-center gap-3">
-                                    <button id="download-merged" class="btn btn-primary fw-semibold px-4 py-2">Download
-                                        Tag</button>
-                                    <a href="{{ route('client.link.edit_link') }}"
-                                        class="btn btn-dark fw-semibold px-4 py-2">Edit QR</a>
+                                    <button id="download-merged" class="btn btn-primary fw-semibold px-4 py-2">Download Tag</button>
+                                    <a href="{{ route('client.link.edit_link') }}" class="btn btn-dark fw-semibold px-4 py-2">Edit QR</a>
 
                                     @if ($link->file_type === 'pdf')
-
-                                        <a href="{{ $qrData }}" target="_blank"
-                                            class="btn btn-success fw-semibold px-4 py-2">
-                                            Open PDF
-                                        </a>
-
-                                        <a href="{{ $qrData }}" download class="btn btn-warning fw-semibold px-4 py-2">
-                                            Download PDF
-                                        </a>
+                                        <a href="{{ $qrData }}" target="_blank" class="btn btn-success fw-semibold px-4 py-2">Open PDF</a>
+                                        <a href="{{ $qrData }}" download class="btn btn-warning fw-semibold px-4 py-2">Download PDF</a>
                                     @elseif (isset($qrData))
-                                        <a href="{{ $qrData }}" target="_blank" class="btn btn-success fw-semibold px-4 py-2">
-                                            Open Link
-                                        </a>
+                                        <a href="{{ $qrData }}" target="_blank" class="btn btn-success fw-semibold px-4 py-2">Open Link</a>
                                     @endif
                                 </div>
                             </div>
 
-                            <form action="{{ route('client.link.update') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                @method('PUT')
-                                <div class="d-flex gap-3">
-                                    <a href="{{ route('client.headquarters') }}"
-                                        class="btn btn-secondary px-4 py-2 fw-semibold">Back</a>
-                                </div>
-
-                            </form>
+                            <div class="d-flex gap-3">
+                                <a href="{{ route('client.headquarters') }}" class="btn btn-secondary px-4 py-2 fw-semibold">Back</a>
+                            </div>
                         @else
+                            {{-- Tampilan jika $link NULL --}}
+                            <div class="mb-4">
+                                <h3 class="fw-bold text-dark mb-1">QR Code Management</h3>
+                                <p class="text-muted mb-0">Manage your <span class="text-warning fw-semibold">We</span><span
+                                        class="fw-semibold">peka</span> QR Code</p>
+                            </div>
+
                             <div class="alert alert-warning">No QR code found for this user.</div>
+
+                            <div class="d-flex gap-3">
+                                <a href="{{ route('client.headquarters') }}" class="btn btn-secondary px-4 py-2 fw-semibold">Back</a>
+                            </div>
                         @endif
                     </div>
                 </div>

@@ -288,6 +288,117 @@
             color: #212529;
             border-color: #ffffff;
         }
+
+
+        .logo-img {
+            height: 35px;
+        }
+
+        .navbar {
+            padding-top: 15px !important;
+            /* Tambah ruang atas */
+            padding-bottom: 15px !important;
+            /* Tambah ruang bawah */
+            min-height: 80px;
+            /* Memastikan tinggi minimal navbar */
+        }
+
+        /* PERBAIKAN: Padding dikurangi dari 50px ke 15px agar muat dalam satu baris */
+        .nav-link {
+            font-size: 15px;
+            padding: 10px 15px !important;
+            /* ✅ tambah tinggi */
+            display: flex;
+            align-items: center;
+        }
+
+
+        .nav-link.active {
+            color: #ffc107 !important;
+            font-weight: bold;
+        }
+
+        /* Tombol Book Now dibuat lebih compact */
+        /* Styling khusus tombol Book Now di Navbar */
+        .nav-book-btn {
+            background-color: #ffc107 !important;
+            color: #000 !important;
+            font-weight: 800 !important;
+            border-radius: 50px;
+
+            /* PERUBAHAN: Padding vertikal ditambah dari 6px/8px menjadi 12px agar lebih tinggi */
+            padding: 12px 25px;
+
+            margin-right: 10px;
+            box-shadow: 0 4px 10px rgba(255, 193, 7, 0.2);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            font-size: 14px;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Penyesuaian jarak gap untuk layar besar */
+        .gap-custom {
+            gap: 1rem !important;
+        }
+
+        @media (min-width: 1400px) {
+            .nav-link {
+                padding: 0 20px !important;
+            }
+        }
+
+        /* Styling Mobile Sidebar agar lebih rapi */
+        .mobile-sidebar {
+            padding: 30px 25px !important;
+            /* Menambah ruang di dalam sidebar */
+        }
+
+        /* Jarak khusus untuk tombol Book Now di mobile */
+        .mobile-sidebar .btn-warning {
+            margin-bottom: 35px !important;
+            /* Jarak besar setelah tombol kuning */
+            font-size: 15px;
+            letter-spacing: 0.5px;
+        }
+
+        /* Mengatur jarak dan tampilan link navigasi */
+        .mobile-sidebar .nav-link {
+            display: block;
+            padding: 18px 0 !important;
+            /* Memberikan jarak atas-bawah yang lega */
+            font-size: 17px;
+            font-weight: 500;
+            color: #000;
+            border-bottom: 1px solid #f2f2f2;
+            /* Memberikan garis pembatas tipis agar rapi */
+            transition: all 0.2s ease;
+        }
+
+        /* Menghilangkan garis pembatas pada item terakhir agar bersih */
+        .mobile-sidebar .nav-link:last-of-type {
+            border-bottom: none;
+        }
+
+        /* Hover effect pada menu mobile */
+        .mobile-sidebar .nav-link:hover {
+            padding-left: 10px !important;
+            /* Efek bergeser sedikit saat ditekan */
+            color: #ffc107 !important;
+        }
+
+        /* Jarak khusus untuk tombol Sign Out (warna merah) */
+        .mobile-sidebar .nav-link.text-danger {
+            margin-top: 20px;
+            border-bottom: none;
+            font-weight: 600;
+        }
+
+        .nav-link.nav-book-btn {
+            padding: 9px 25px !important;
+        }
     </style>
 </head>
 
@@ -301,6 +412,11 @@
                     <img src="{{ asset('images/logowepeka_ed.png') }}" alt="Wepeka Logo" class="logo-img">
                 </a>
             </div>
+
+            <a href="{{ route('booking') }}" class="btn btn-warning w-100 fw-bold rounded-pill mb-4 py-2 shadow-sm">
+                <i class="bi bi-calendar-check-fill me-2"></i> BOOK NOW
+            </a>
+
             <a href="{{ url('/') }}" class="nav-link">Home</a>
             <a href="{{ route('about') }}" class="nav-link">About</a>
             @auth
@@ -335,10 +451,16 @@
                         style="font-size: 24px; border: none; background: none;">
                         <i class="fas fa-bars"></i>
                     </button>
-                    <div class="d-none d-xxl-flex align-items-center gap-5">
+
+                    <div class="d-none d-xxl-flex align-items-center gap-2">
+                        <a class="nav-link nav-book-btn d-flex align-items-center" href="{{ route('booking') }}">
+                            <i class="bi bi-calendar-check-fill me-2"></i> BOOK NOW
+                        </a>
+
                         <a class="nav-link {{ request()->is('/') ? 'active' : '' }}" href="{{ url('/') }}">Home</a>
                         <a class="nav-link {{ request()->is('about') ? 'active' : '' }}"
                             href="{{ route('about') }}">About</a>
+
                         @auth
                             @if (Auth::user()->role === 'admin')
                                 <a class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}"
@@ -351,7 +473,6 @@
                             <a class="nav-link {{ request()->is('client/headquarters') ? 'active' : '' }}"
                                 href="{{ route('client.headquarters') }}">Headquarter</a>
                         @endauth
-
                     </div>
                 </div>
 
@@ -361,22 +482,14 @@
                     </a>
                 </div>
 
-                @auth
-                    @if(Auth::user()->role === 'client' && Auth::user()->logo)
-                        <div class="d-block d-md-none">
-                            <img src="{{ asset('storage/' . Auth::user()->logo) }}" alt="Client Logo"
-                                class="client-logo mobile-disabled" onclick="toggleClientSidebar()">
-                        </div>
-                    @endif
-                @endauth
-
-                <div class="d-flex align-items-center gap-5 d-none d-md-flex">
+                <div class="d-flex align-items-center gap-3 d-none d-md-flex">
                     <a class="nav-link {{ request()->is('faq') ? 'active' : '' }}" href="{{ route('faq') }}">FAQ</a>
                     <a class="nav-link {{ request()->is('socials') ? 'active' : '' }}"
                         href="{{ route('socials') }}">Socials</a>
                     @guest
-                        <a class="btn text-white fw-semibold px-3 py-2"
-                            style="background-color: #87a9c4; border-radius: 999px;" href="{{ route('login') }}">Sign In</a>
+                        <a class="btn text-white fw-semibold px-4 py-2"
+                            style="background-color: #87a9c4; border-radius: 999px; font-size: 14px;"
+                            href="{{ route('login') }}">Sign In</a>
                     @else
                         @if(Auth::user()->role === 'client' || Auth::user()->role === 'admin')
                             @if(Auth::user()->logo)

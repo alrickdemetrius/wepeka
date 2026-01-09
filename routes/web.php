@@ -22,6 +22,14 @@ Route::get('/', function () {
     return view('home', compact('featuredPortfolios'));
 })->name('home');
 
+Route::get('/booking', function () {
+    $featuredPortfolios = \App\Models\Portfolio::where('is_featured', true)
+                            ->latest()
+                            ->take(3)
+                            ->get();
+    return view('client.booking', compact('featuredPortfolios'));
+})->name('booking');
+
 Route::get('/socials', function () {
     return view('socials');
 })->name('socials');
@@ -93,15 +101,6 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->as('client.')->gro
     Route::put('/profile/update-password', [ClientProfileController::class, 'updatePassword'])->name('profile.update-password');
     Route::delete('/profile/delete-logo', [ClientProfileController::class, 'deleteLogo'])->name('profile.delete-logo');
 
-    Route::get('/booking', function () {
- 
-        $featuredPortfolios = \App\Models\Portfolio::where('is_featured', true)
-                                ->latest()
-                                ->take(3) // Ambil maksimal 3 agar layout pas
-                                ->get();
-
-        return view('client.booking', compact('featuredPortfolios'));
-    })->name('booking');
 
     // QR Link (Client View & Management)
     Route::get('/link', [ClientQrLinkController::class, 'index'])->name('link.view_link');

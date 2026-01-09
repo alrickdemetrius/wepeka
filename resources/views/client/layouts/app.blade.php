@@ -99,65 +99,55 @@
   <div class="app-wrapper">
     <!--begin::Header-->
     <nav class="app-header navbar navbar-expand bg-body">
-      <!--begin::Container-->
-      <div class="container-fluid">
-        <!--begin::Start Navbar Links-->
-        <ul class="navbar-nav">
-          <!-- Toggle Sidebar Button -->
-          <li class="nav-item">
-            <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button">
-              <i class="bi bi-list"></i>
-            </a>
-          </li>
-
-          <!-- Navigation Links -->
-          <li class="nav-item d-none d-md-block">
-            <a href="{{ route('home') }}" class="nav-link">Home</a>
-          </li>
-          <li class="nav-item d-none d-md-block">
-            <a href="{{ route('client.headquarters') }}" class="nav-link">Headquarters</a>
-          </li>
-        </ul>
-        <!--end::Start Navbar Links-->
-
-        <!--begin::End Navbar Links-->
-        <ul class="navbar-nav ms-auto">
-          @guest
-            @if (Route::has('login'))
-            <li class="nav-item">
-            <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-            </li>
-            @endif
-          @else
-            <li class="nav-item dropdown">
-            <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-              aria-haspopup="true" aria-expanded="false" v-pre>
-              {{ Auth::user()->name }}
-            </a>
-
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-              <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault();
-                       document.getElementById('logout-form').submit();">
-              {{ __('Logout') }}
-              </a>
-
-              <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-              @csrf
-              </form>
-            </div>
-            </li>
-          @endguest
-
-          <li class="nav-item">
-              <a href="./index.html" class="nav-link brand-link pe-3">
-                <img src="{{ asset('images/logowepeka_ed.png') }}" alt="Logo Here" class="brand-image opacity-100" style="height: 30px;" />
+        <div class="container-fluid">
+          <ul class="navbar-nav align-items-center"> <li class="nav-item">
+              <a class="nav-link" data-lte-toggle="sidebar" href="#" role="button">
+                <i class="bi bi-list"></i>
               </a>
             </li>
-        </ul>
-        <!--end::End Navbar Links-->
-      </div>
-      <!--end::Container-->
-    </nav>
+
+            <li class="nav-item ms-2 me-3">
+              <a href="{{ route('booking') }}" class="btn btn-warning fw-bold text-dark shadow"
+                 style="border-radius: 25px; padding: 8px 25px; border: 2px solid #000; transition: all 0.3s ease;">
+                <i class="bi bi-calendar-check-fill me-2"></i>BOOK NOW
+              </a>
+            </li>
+
+            <li class="nav-item d-none d-md-block">
+              <a href="{{ route('home') }}" class="nav-link fw-semibold">Home</a>
+            </li>
+            <li class="nav-item d-none d-md-block">
+              <a href="{{ route('client.headquarters') }}" class="nav-link">Headquarters</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav ms-auto align-items-center">
+              @guest
+                @if (Route::has('login'))
+                <li class="nav-item">
+                  <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                </li>
+                @endif
+              @else
+                <li class="nav-item dropdown">
+                  <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                    <i class="bi bi-person-circle me-1"></i> {{ Auth::user()->name }}
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-end">
+                    <a class="dropdown-item" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                      <i class="bi bi-box-arrow-right me-2"></i>{{ __('Logout') }}
+                    </a>
+                  </div>
+                </li>
+              @endguest
+
+              <li class="nav-item">
+                <a href="{{ route('home') }}" class="nav-link brand-link pe-3">
+                  <img src="{{ asset('images/logowepeka_ed.png') }}" alt="Logo" style="height: 35px;" />
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
     <!--end::Header-->
 
     <!--begin::Sidebar-->
