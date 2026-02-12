@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Client\BookingController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
@@ -22,13 +23,7 @@ Route::get('/', function () {
     return view('home', compact('featuredPortfolios'));
 })->name('home');
 
-Route::get('/booking', function () {
-    $featuredPortfolios = \App\Models\Portfolio::where('is_featured', true)
-                            ->latest()
-                            ->take(3)
-                            ->get();
-    return view('client.booking', compact('featuredPortfolios'));
-})->name('booking');
+Route::get('/booking', [BookingController::class, 'index'])->name('booking');
 
 Route::get('/socials', function () {
     return view('socials');

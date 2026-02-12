@@ -204,7 +204,7 @@
                             <span class="text-muted fw-medium fs-5">7+ projects</span>
                         </div>
                         <div class="d-flex gap-3">
-                            <a href="{{ route('login') }}" class="btn btn-warning btn-lg px-4 py-3 d-flex align-items-center gap-2">
+                            <a href="{{ route('booking') }}" class="btn btn-warning btn-lg px-4 py-3 d-flex align-items-center gap-2">
                                 Get Started <i class="bi bi-arrow-right"></i>
                             </a>
                             <a href="#" class="btn btn-outline-secondary btn-lg px-4 py-3 d-flex align-items-center gap-2">
