@@ -24,6 +24,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::get('/booking', [BookingController::class, 'index'])->name('booking');
+Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
 
 Route::get('/socials', function () {
     return view('socials');
