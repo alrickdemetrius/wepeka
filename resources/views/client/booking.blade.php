@@ -187,6 +187,30 @@
     .illustration-card:hover .portfolio-overlay {
         opacity: 1;
     }
+
+    /* Styling khusus tombol toggle layanan */
+    .service-selection .btn-check + .btn {
+        border: 2px solid #FFD700;
+        background-color: transparent;
+        color: #000;
+        font-weight: 600;
+        border-radius: 50px;
+        padding: 8px 20px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+        transition: all 0.3s ease;
+    }
+
+    .service-selection .btn-check:checked + .btn {
+        background-color: #FFD700;
+        border-color: #FFD700;
+        color: #000;
+        box-shadow: 0 4px 10px rgba(255, 215, 0, 0.3);
+    }
+
+    .service-selection .btn-check + .btn:hover {
+        background-color: rgba(255, 214, 0, 0.1);
+    }
 </style>
 
 {{-- === TOP BANNER === --}}
@@ -239,15 +263,29 @@
                     </div>
                 </div>
 
-                <div class="mb-2">
-                    <label class="form-label">Service Type*</label>
-                    <select name="service_type" class="form-select">
-                        <option selected disabled>Select a service...</option>
-                        <option value="website">Website Design</option>
-                        <option value="branding">Branding & Logo</option>
-                        <option value="apparel">Apparel Production</option>
-                        <option value="marketing">Digital Marketing</option>
-                    </select>
+                <div class="mb-3">
+                    <label class="form-label d-block">Service Type* <span class="small text-muted fw-normal">(Select one or more)</span></label>
+                    <div class="service-selection">
+                        {{-- Website Design --}}
+                        <input type="checkbox" name="service_type[]" value="website" class="btn-check" id="svc-website" autocomplete="off">
+                        <label class="btn" for="svc-website">Website Design</label>
+
+                        {{-- Branding & Logo --}}
+                        <input type="checkbox" name="service_type[]" value="branding" class="btn-check" id="svc-branding" autocomplete="off">
+                        <label class="btn" for="svc-branding">Branding & Logo</label>
+
+                        {{-- Digital Marketing --}}
+                        <input type="checkbox" name="service_type[]" value="marketing" class="btn-check" id="svc-marketing" autocomplete="off">
+                        <label class="btn" for="svc-marketing">Digital Marketing</label>
+
+                        {{-- Jingle --}}
+                        <input type="checkbox" name="service_type[]" value="jingle" class="btn-check" id="svc-jingle" autocomplete="off">
+                        <label class="btn" for="svc-jingle">Jingle</label>
+
+                        {{-- Apparel Production --}}
+                        <input type="checkbox" name="service_type[]" value="apparel" class="btn-check" id="svc-apparel" autocomplete="off">
+                        <label class="btn" for="svc-apparel">Apparel Production</label>
+                    </div>
                 </div>
 
                 <div class="mb-4">
