@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('contact_name');
             $table->string('email');
             $table->string('phone');
-            $table->json('service_types');
+            // service_types dihapus, diganti dengan relasi ke booking_details
             $table->text('message');
             $table->string('status')->default('pending'); 
             $table->timestamps();

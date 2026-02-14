@@ -273,27 +273,43 @@
                         </div>
                     @endif
 
+                    @if(session('error'))
+                        <div class="alert alert-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
+
+                    @if($errors->any())
+                        <div class="alert alert-danger">
+                            <ul class="mb-0">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
                     <div class="mb-2">
                         <label class="form-label">Company Name*</label>
-                        <input type="text" name="company_name" class="form-control">
+                        <input type="text" name="company_name" class="form-control" value="{{ old('company_name') }}" required>
                     </div>
 
                     <div class="mb-2">
                         <label class="form-label">Contact Name*</label>
-                        <input type="text" name="contact_name" class="form-control">
+                        <input type="text" name="contact_name" class="form-control" value="{{ old('contact_name') }}" required>
                     </div>
 
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-2">
                                 <label class="form-label">Email*</label>
-                                <input type="email" name="email" class="form-control">
+                                <input type="email" name="email" class="form-control" value="{{ old('email') }}" required>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="mb-2">
                                 <label class="form-label">Phone Number*</label>
-                                <input type="text" name="phone" class="form-control">
+                                <input type="text" name="phone" class="form-control" value="{{ old('phone') }}" required>
                             </div>
                         </div>
                     </div>
@@ -302,36 +318,22 @@
                         <label class="form-label d-block">Service Type* <span class="small text-muted fw-normal">(Select one
                                 or more)</span></label>
                         <div class="service-selection">
-                            {{-- Website Design --}}
-                            <input type="checkbox" name="service_type[]" value="website" class="btn-check" id="svc-website"
-                                autocomplete="off">
-                            <label class="btn" for="svc-website">Website Design</label>
-
-                            {{-- Branding & Logo --}}
-                            <input type="checkbox" name="service_type[]" value="branding" class="btn-check"
-                                id="svc-branding" autocomplete="off">
-                            <label class="btn" for="svc-branding">Branding & Logo</label>
-
-                            {{-- Digital Marketing --}}
-                            <input type="checkbox" name="service_type[]" value="marketing" class="btn-check"
-                                id="svc-marketing" autocomplete="off">
-                            <label class="btn" for="svc-marketing">Digital Marketing</label>
-
-                            {{-- Jingle --}}
-                            <input type="checkbox" name="service_type[]" value="jingle" class="btn-check" id="svc-jingle"
-                                autocomplete="off">
-                            <label class="btn" for="svc-jingle">Jingle</label>
-
-                            {{-- Apparel Production --}}
-                            <input type="checkbox" name="service_type[]" value="apparel" class="btn-check" id="svc-apparel"
-                                autocomplete="off">
-                            <label class="btn" for="svc-apparel">Apparel Production</label>
+                            @foreach($jenisLayanans as $layanan)
+                                <input type="checkbox" 
+                                       name="service_type[]" 
+                                       value="{{ $layanan->id }}" 
+                                       class="btn-check" 
+                                       id="svc-{{ $layanan->id }}"
+                                       autocomplete="off"
+                                       {{ is_array(old('service_type')) && in_array($layanan->id, old('service_type')) ? 'checked' : '' }}>
+                                <label class="btn" for="svc-{{ $layanan->id }}">{{ $layanan->nama }}</label>
+                            @endforeach
                         </div>
                     </div>
 
                     <div class="mb-4">
                         <label class="form-label">Message*</label>
-                        <textarea name="message" class="form-control" rows="5"></textarea>
+                        <textarea name="message" class="form-control" rows="5" required>{{ old('message') }}</textarea>
                     </div>
 
                     <button type="submit" class="btn btn-send">
