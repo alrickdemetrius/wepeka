@@ -14,7 +14,8 @@ class DatabaseSeeder extends Seeder
     {
          $this->call([
             UserSeeder::class,
-            QrLinkSeeder::class
+            QrLinkSeeder::class,
+            BookingSeeder::class
         ]);
         // \App\Models\User::factory(10)->create();
 
