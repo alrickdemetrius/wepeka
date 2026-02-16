@@ -134,4 +134,6 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->as('admin.')->group(
     Route::get('/qr/{id}/download', [AdminQrLinkController::class, 'downloadSvg'])->name('qr.download');
 
     Route::resource('portfolios', PortfolioController::class);
+    Route::get('/bookings', [App\Http\Controllers\Admin\AdminBookingController::class, 'index'])->name('bookings.index');
+    Route::patch('/bookings/{id}/status', [App\Http\Controllers\Admin\AdminBookingController::class, 'updateStatus'])->name('bookings.updateStatus');
 });
