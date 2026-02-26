@@ -9,6 +9,8 @@ use Illuminate\Http\Request;
 use App\Models\Portfolio;
 use App\Models\JenisLayanan;
 use Illuminate\Support\Facades\DB;
+use App\Mail\NewBookingNotification;
+use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
 {
@@ -18,9 +20,9 @@ class BookingController extends Controller
             ->latest()
             ->take(3)
             ->get();
-        
+
         $jenisLayanans = JenisLayanan::all();
-        
+
         return view('client.booking', compact('featuredPortfolios', 'jenisLayanans'));
     }
 
@@ -37,7 +39,7 @@ class BookingController extends Controller
         ]);
 
         DB::beginTransaction();
-        
+
         try {
             // Create booking
             $booking = Booking::create([
@@ -58,10 +60,13 @@ class BookingController extends Controller
 
             DB::commit();
 
+            # masi pake email ku
+            Mail::to('michaelsin04@gmail.com')->send(new NewBookingNotification($booking));
+
             return redirect()->back()->with('success', 'Your booking request has been sent! We will contact you soon.');
         } catch (\Exception $e) {
             DB::rollBack();
-            return redirect()->back()->with('error', 'Something went wrong. Please try again.');
+            return redirect()->back()->with('error', $e->getMessage());
         }
     }
 }
