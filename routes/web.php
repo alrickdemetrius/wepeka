@@ -97,13 +97,11 @@ Route::middleware(['auth', 'role:client'])->prefix('client')->as('client.')->gro
     Route::put('/profile/update-password', [ClientProfileController::class, 'updatePassword'])->name('profile.update-password');
     Route::delete('/profile/delete-logo', [ClientProfileController::class, 'deleteLogo'])->name('profile.delete-logo');
 
-
     // QR Link (Client View & Management)
     Route::get('/link', [ClientQrLinkController::class, 'index'])->name('link.view_link');
     Route::get('/link/edit', [ClientQrLinkController::class, 'edit'])->name('link.edit_link');
     Route::put('/link/update', [ClientQrLinkController::class, 'update'])->name('link.update');
     Route::get('/r/{slug}', [ClientQrLinkController::class, 'redirect'])->name('link.redirect');
-    // Route::get('/link/download-qr', [ClientQrLinkController::class, 'downloadQr'])->name('link.download_qr');
 });
 
 /*
@@ -134,6 +132,9 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->as('admin.')->group(
     Route::get('/qr/{id}/download', [AdminQrLinkController::class, 'downloadSvg'])->name('qr.download');
 
     Route::resource('portfolios', PortfolioController::class);
+
+    // Bookings
     Route::get('/bookings', [App\Http\Controllers\Admin\AdminBookingController::class, 'index'])->name('bookings.index');
+    Route::get('/bookings/{id}', [App\Http\Controllers\Admin\AdminBookingController::class, 'show'])->name('bookings.show');
     Route::patch('/bookings/{id}/status', [App\Http\Controllers\Admin\AdminBookingController::class, 'updateStatus'])->name('bookings.updateStatus');
 });
