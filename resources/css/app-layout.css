@@ -1,0 +1,369 @@
+.logo-img {
+    height: 35px;
+}
+
+.nav-link {
+    font-size: 16px;
+    color: #000;
+    text-decoration: none;
+    padding: 0 50px;
+}
+
+.client-logo {
+    height: 35px;
+    width: 35px;
+    object-fit: cover;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.nav-link.active {
+    color: #ffc107 !important;
+    font-weight: bold;
+}
+
+.nav-link.text-danger,
+.nav-link.text-danger:hover {
+    color: #dc3545 !important;
+}
+
+.nav-link.signout {
+    margin-top: 12px;
+}
+
+@media (max-width: 1399.98px) {
+    .d-xxl-flex {
+        display: none !important;
+    }
+
+    .d-xxl-none {
+        display: block !important;
+    }
+}
+
+@media (min-width: 1400px) {
+    .d-xxl-flex {
+        display: flex !important;
+    }
+
+    .d-xxl-none {
+        display: none !important;
+    }
+}
+
+.mobile-sidebar,
+.client-sidebar {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 300px;
+    height: 100%;
+    background-color: white;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+    z-index: 1060;
+    transition: right 0.3s ease-in-out;
+    padding: 20px;
+}
+
+.mobile-sidebar.show,
+.client-sidebar.show {
+    right: 0;
+}
+
+.mobile-sidebar .nav-link,
+.client-sidebar .nav-link {
+    display: block;
+    padding: 12px 0;
+    font-size: 16px;
+    color: #000;
+}
+
+.client-sidebar .nav-link:hover {
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.sidebar-overlay,
+#clientSidebarOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1055;
+    display: none;
+}
+
+.sidebar-overlay.show,
+#clientSidebarOverlay.show {
+    display: block;
+}
+
+.client-logo.mobile-disabled {
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+/* Modal Card Styling */
+.logout-card {
+    background-color: white;
+    padding: 2rem;
+    width: 100%;
+    max-width: 430px;
+    height: 300px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.logout-title {
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 12px;
+    letter-spacing: 0.5px;
+}
+
+@media (max-width: 1024px) {
+    .logout-title {
+        font-size: 1.2rem;
+        /* kecilkan font */
+    }
+}
+
+@media (max-width: 768px) {
+    .logout-title {
+        font-size: 1rem;
+        padding: 0 10px;
+        /* beri jarak kiri-kanan */
+    }
+}
+
+@media (max-width: 480px) {
+    .logout-title {
+        font-size: 0.9rem;
+    }
+}
+
+.logo-container {
+    background: white;
+    border-radius: 50%;
+    padding: 20px;
+    position: absolute;
+    top: -50px;
+    inset-inline: 0;
+    margin-inline: auto;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.logo-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    display: block;
+    border-radius: 50%;
+}
+
+/* Responsive adjustments for small screens */
+@media (max-width: 576px) {
+    .logout-card {
+        padding: 1.5rem 1rem;
+        max-width: 90%;
+    }
+
+    .logo-container {
+        top: -35px;
+        width: 80px;
+        height: 80px;
+        padding: 15px;
+    }
+
+    .logout-title {
+        font-size: 18px;
+    }
+}
+
+/* Ensure modal above sidebar */
+.modal {
+    z-index: 9999 !important;
+}
+
+.modal.fade .modal-dialog {
+    transform: translateY(-10px) scale(0.95);
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.modal.fade.show .modal-dialog {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+}
+
+/* ====================================================================== */
+/* CSS UNTUK FOOTER (VERSI DIPERBESAR)                                    */
+/* ====================================================================== */
+/* Ukuran logo di footer diperbesar */
+footer .logo-img {
+    height: 70px;
+}
+
+/* Ukuran link di footer diperbesar */
+.footer-links p,
+.footer-links a {
+    font-size: 1rem;
+    /* Sedikit lebih besar dari sebelumnya */
+}
+
+.footer-links a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: color 0.2s ease-in-out;
+}
+
+.footer-links a:hover {
+    color: #ffffff;
+}
+
+/* Ukuran ikon sosial diperbesar */
+.social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    /* Diperbesar dari 38px */
+    height: 42px;
+    /* Diperbesar dari 38px */
+    border: 1px solid rgba(255, 255, 255, 0.7);
+    border-radius: 50%;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 1.1rem;
+    /* Ukuran ikon di dalam diperbesar */
+    transition: all 0.2s ease-in-out;
+}
+
+.social-icon:hover {
+    background-color: #ffffff;
+    color: #212529;
+    border-color: #ffffff;
+}
+
+
+.logo-img {
+    height: 35px;
+}
+
+.navbar {
+    padding-top: 15px !important;
+    /* Tambah ruang atas */
+    padding-bottom: 15px !important;
+    /* Tambah ruang bawah */
+    min-height: 80px;
+    /* Memastikan tinggi minimal navbar */
+}
+
+/* PERBAIKAN: Padding dikurangi dari 50px ke 15px agar muat dalam satu baris */
+.nav-link {
+    font-size: 15px;
+    padding: 10px 15px !important;
+    /* ✅ tambah tinggi */
+    display: flex;
+    align-items: center;
+}
+
+
+.nav-link.active {
+    color: #ffc107 !important;
+    font-weight: bold;
+}
+
+/* Tombol Book Now dibuat lebih compact */
+/* Styling khusus tombol Book Now di Navbar */
+.nav-book-btn {
+    background-color: #ffc107 !important;
+    color: #000 !important;
+    font-weight: 800 !important;
+    border-radius: 50px;
+
+    /* PERUBAHAN: Padding vertikal ditambah dari 6px/8px menjadi 12px agar lebih tinggi */
+    padding: 12px 25px;
+
+    margin-right: 10px;
+    box-shadow: 0 4px 10px rgba(255, 193, 7, 0.2);
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    font-size: 14px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+}
+
+/* Penyesuaian jarak gap untuk layar besar */
+.gap-custom {
+    gap: 1rem !important;
+}
+
+@media (min-width: 1400px) {
+    .nav-link {
+        padding: 0 20px !important;
+    }
+}
+
+/* Styling Mobile Sidebar agar lebih rapi */
+.mobile-sidebar {
+    padding: 30px 25px !important;
+    /* Menambah ruang di dalam sidebar */
+}
+
+/* Jarak khusus untuk tombol Book Now di mobile */
+.mobile-sidebar .btn-warning {
+    margin-bottom: 35px !important;
+    /* Jarak besar setelah tombol kuning */
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
+
+/* Mengatur jarak dan tampilan link navigasi */
+.mobile-sidebar .nav-link {
+    display: block;
+    padding: 18px 0 !important;
+    /* Memberikan jarak atas-bawah yang lega */
+    font-size: 17px;
+    font-weight: 500;
+    color: #000;
+    border-bottom: 1px solid #f2f2f2;
+    /* Memberikan garis pembatas tipis agar rapi */
+    transition: all 0.2s ease;
+}
+
+/* Menghilangkan garis pembatas pada item terakhir agar bersih */
+.mobile-sidebar .nav-link:last-of-type {
+    border-bottom: none;
+}
+
+/* Hover effect pada menu mobile */
+.mobile-sidebar .nav-link:hover {
+    padding-left: 10px !important;
+    /* Efek bergeser sedikit saat ditekan */
+    color: #ffc107 !important;
+}
+
+/* Jarak khusus untuk tombol Sign Out (warna merah) */
+.mobile-sidebar .nav-link.text-danger {
+    margin-top: 20px;
+    border-bottom: none;
+    font-weight: 600;
+}
+
+.nav-link.nav-book-btn {
+    padding: 9px 25px !important;
+}
