@@ -15,10 +15,22 @@ class Portfolio extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'project_name',
-        'category',
+        'brand_id',
+        'title',
+        'portfolio_category_id',
         'description',
-        'image',
-        'is_featured',
+        'is_featured'
     ];
+
+    public function brand() {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function images() {
+        return $this->hasMany(PortfolioImage::class);
+    }
+
+    public function category() {
+        return $this->belongsTo(PortfolioCategory::class, 'portfolio_category_id');
+    }
 }

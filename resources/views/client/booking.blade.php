@@ -319,10 +319,10 @@
                                 or more)</span></label>
                         <div class="service-selection">
                             @foreach($jenisLayanans as $layanan)
-                                <input type="checkbox" 
-                                       name="service_type[]" 
-                                       value="{{ $layanan->id }}" 
-                                       class="btn-check" 
+                                <input type="checkbox"
+                                       name="service_type[]"
+                                       value="{{ $layanan->id }}"
+                                       class="btn-check"
                                        id="svc-{{ $layanan->id }}"
                                        autocomplete="off"
                                        {{ is_array(old('service_type')) && in_array($layanan->id, old('service_type')) ? 'checked' : '' }}>
@@ -387,19 +387,30 @@
             @forelse($featuredPortfolios as $portfolio)
                 <div class="col-md-4">
                     <div class="illustration-card position-relative">
-                        {{-- Gambar Portfolio --}}
-                        <img src="{{ $portfolio->image ? asset('storage/' . $portfolio->image) : asset('images/blur_home.jpg') }}"
-                            alt="{{ $portfolio->project_name }}"
-                            title="{{ $portfolio->project_name }} - {{ $portfolio->category }}">
+                        {{-- Ambil gambar pertama dari galeri project --}}
+                        @php
+                            $displayImage = $portfolio->images->first();
+                        @endphp
 
-                        {{-- (Opsional) Label Nama Project saat Hover --}}
-                        <div class="portfolio-overlay">
-                            <span class="badge bg-warning text-dark">{{ $portfolio->category }}</span>
+                        <img src="{{ $displayImage ? asset('storage/' . $displayImage->image_path) : asset('images/blur_home.jpg') }}"
+                            alt="{{ $portfolio->title }}"
+                            title="{{ $portfolio->brand->nama_brand ?? 'Wepeka' }} - {{ $portfolio->title }}">
+
+                        {{-- Label Kategori & Nama Brand --}}
+                        <div class="portfolio-overlay p-2 w-100" style="background: rgba(0,0,0,0.5); bottom: 0; left: 0;">
+                            {{-- PERBAIKAN: Panggil nama kategori dari relasi --}}
+                            <span class="badge bg-warning text-dark">
+                                {{ $portfolio->category->name ?? 'Uncategorized' }}
+                            </span>
+
+                            {{-- PERBAIKAN: Panggil nama brand dari kolom 'name' (yang tadi kita fix) --}}
+                            <div class="text-white small fw-bold mt-1">
+                                {{ $portfolio->brand->name ?? 'Wepeka Client' }}
+                            </div>
                         </div>
                     </div>
                 </div>
             @empty
-                {{-- Tampilan jika belum ada portfolio featured --}}
                 <div class="col-12 text-center py-4">
                     <p class="text-muted">Portfolio content will appear here.</p>
                 </div>

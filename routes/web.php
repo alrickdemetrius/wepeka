@@ -19,7 +19,11 @@ use App\Models\Portfolio;
 */
 
 Route::get('/', function () {
-    $featuredPortfolios = Portfolio::where('is_featured', true)->latest()->get();
+    $featuredPortfolios = Portfolio::with(['images', 'brand'])
+                        ->where('is_featured', true)
+                        ->latest()
+                        ->take(3)
+                        ->get();
     return view('home', compact('featuredPortfolios'));
 })->name('home');
 
@@ -132,6 +136,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->as('admin.')->group(
     Route::get('/qr/{id}/download', [AdminQrLinkController::class, 'downloadSvg'])->name('qr.download');
 
     Route::resource('portfolios', PortfolioController::class);
+    Route::get('/portfolio/{id}', [PortfolioController::class, 'show'])->name('portfolio.show');
 
     // Bookings
     Route::get('/bookings', [App\Http\Controllers\Admin\AdminBookingController::class, 'index'])->name('bookings.index');

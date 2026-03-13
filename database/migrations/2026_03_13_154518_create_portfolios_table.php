@@ -13,11 +13,14 @@ return new class extends Migration
     {
         Schema::create('portfolios', function (Blueprint $table) {
             $table->id();
-            $table->string('project_name');
-            $table->string('category');
-            $table->text('description')->nullable();
-            $table->string('image')->nullable(); // Untuk menyimpan path gambar
-            $table->boolean('is_featured')->default(false); // Untuk "pilih yg mana yg mau ditaruh di dashboard"
+            $table->foreignId('brand_id')->constrained()->onDelete('cascade');
+
+            // Ganti $table->string('category') menjadi:
+            $table->foreignId('portfolio_category_id')->constrained('portfolio_categories');
+
+            $table->string('title');
+            $table->text('description');
+            $table->boolean('is_featured')->default(false);
             $table->timestamps();
         });
     }

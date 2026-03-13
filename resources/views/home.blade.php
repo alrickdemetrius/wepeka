@@ -172,7 +172,6 @@
         opacity: 1;
         transform: translateY(0);
     }
-
 </style>
 
 @section('content')
@@ -183,28 +182,35 @@
                 <div class="row align-items-center g-5">
                     <div class="col-lg-6">
                         <div style="
-                            background: url('{{ asset('images/blur_home.jpg') }}');
-                            height: 800px;
-                            background-size: cover;
-                            background-position: center;
-                            border-radius: 0.75rem;">
+                                background: url('{{ asset('images/blur_home.jpg') }}');
+                                height: 800px;
+                                background-size: cover;
+                                background-position: center;
+                                border-radius: 0.75rem;">
                         </div>
                     </div>
                     <div class="col-lg-6">
                         <h1 class="display-4 fw-bold mb-4">
-                            Introducing <span class="text-warning fw-semibold">We</span><span class="fw-semibold">peka</span>:<br>
+                            Introducing <span class="text-warning fw-semibold">We</span><span
+                                class="fw-semibold">peka</span>:<br>
                             Your Branding Kit Partner
                         </h1>
                         <div class="d-flex align-items-center mb-4">
                             <div class="d-flex me-3">
-                                <img src="https://i.pravatar.cc/48?img=1" class="rounded-circle border border-2 border-white" alt="avatar 1" style="margin-right: -15px;">
-                                <img src="https://i.pravatar.cc/48?img=2" class="rounded-circle border border-2 border-white" alt="avatar 2" style="margin-right: -15px;">
-                                <img src="https://i.pravatar.cc/48?img=3" class="rounded-circle border border-2 border-white" alt="avatar 3">
+                                <img src="https://i.pravatar.cc/48?img=1"
+                                    class="rounded-circle border border-2 border-white" alt="avatar 1"
+                                    style="margin-right: -15px;">
+                                <img src="https://i.pravatar.cc/48?img=2"
+                                    class="rounded-circle border border-2 border-white" alt="avatar 2"
+                                    style="margin-right: -15px;">
+                                <img src="https://i.pravatar.cc/48?img=3"
+                                    class="rounded-circle border border-2 border-white" alt="avatar 3">
                             </div>
                             <span class="text-muted fw-medium fs-5">7+ projects</span>
                         </div>
                         <div class="d-flex gap-3">
-                            <a href="{{ route('booking') }}" class="btn btn-warning btn-lg px-4 py-3 d-flex align-items-center gap-2">
+                            <a href="{{ route('booking') }}"
+                                class="btn btn-warning btn-lg px-4 py-3 d-flex align-items-center gap-2">
                                 Get Started <i class="bi bi-arrow-right"></i>
                             </a>
                             <a href="#" class="btn btn-outline-secondary btn-lg px-4 py-3 d-flex align-items-center gap-2">
@@ -260,11 +266,11 @@
                         </div>
                         <div class="col-lg-6">
                             <div style="
-                                background: url('{{ asset('images/blur_home.jpg') }}');
-                                height: 550px;
-                                background-size: cover;
-                                background-position: center;
-                                border-radius: 1rem;">
+                                    background: url('{{ asset('images/blur_home.jpg') }}');
+                                    height: 550px;
+                                    background-size: cover;
+                                    background-position: center;
+                                    border-radius: 1rem;">
                             </div>
                         </div>
                     </div>
@@ -275,11 +281,11 @@
                     <div class="row g-5 align-items-start">
                         <div class="col-lg-6">
                             <div style="
-                                background: url('{{ asset('images/blur_home.jpg') }}');
-                                height: 550px;
-                                background-size: cover;
-                                background-position: center;
-                                border-radius: 1rem;">
+                                    background: url('{{ asset('images/blur_home.jpg') }}');
+                                    height: 550px;
+                                    background-size: cover;
+                                    background-position: center;
+                                    border-radius: 1rem;">
                             </div>
                         </div>
                         <div class="col-lg-6 d-flex flex-column justify-content-center">
@@ -405,37 +411,44 @@
             {{-- ====================================================== --}}
 
             @forelse($featuredPortfolios as $portfolio)
-            <div class="col">
-                <div class="card h-100 shadow-sm overflow-hidden" style="border-radius: 1rem; border: 1px solid #e9ecef;">
+                <div class="col">
+                    <div class="card h-100 shadow-sm overflow-hidden" style="border-radius: 1rem; border: 1px solid #e9ecef;">
 
-                    {{-- GAMBAR DINAMIS --}}
-                    <div style="
-                        height: 300px;
-                        background: url('{{ $portfolio->image ? asset('storage/' . $portfolio->image) : asset('images/blur_home.jpg') }}');
-                        background-size: cover;
-                        background-position: center;
-                    "></div>
+                        {{-- PERBAIKAN: Mengambil gambar pertama dari relasi images --}}
+                        @php
+                            $firstImage = $portfolio->images->first();
+                        @endphp
 
-                    <div class="card-body">
-                        <div class="mb-2">
-                            {{-- KATEGORI/TAG DINAMIS --}}
-                            <span class="badge rounded-pill bg-secondary fw-medium me-1 px-3 py-1">{{ $portfolio->category }}</span>
+                        <div style="
+                    height: 300px;
+                    background: url('{{ $firstImage ? asset('storage/' . $firstImage->image_path) : asset('images/blur_home.jpg') }}');
+                    background-size: cover;
+                    background-position: center;
+                "></div>
+
+                        <div class="card-body">
+                            <div class="mb-2">
+                                {{-- KATEGORI --}}
+                                <span
+                                    class="badge rounded-pill bg-secondary fw-medium me-1 px-3 py-1">{{ $portfolio->category }}</span>
+                            </div>
+
+                            {{-- PERBAIKAN: Nama project sekarang adalah 'title' --}}
+                            <h4 class="card-title fw-bold">{{ $portfolio->title }}</h4>
+
+                            {{-- NAMA BRAND (Bonus agar lebih pro) --}}
+                            <p class="text-primary small fw-bold mb-1">{{ $portfolio->brand->name ?? '' }}</p>
+
+                            <p class="card-text text-muted">
+                                {{ Str::limit($portfolio->description, 100) }}
+                            </p>
                         </div>
-
-                        {{-- NAMA PROYEK DINAMIS --}}
-                        <h4 class="card-title fw-bold">{{ $portfolio->project_name }}</h4>
-
-                        {{-- DESKRIPSI DINAMIS --}}
-                        <p class="card-text text-muted">
-                            {{ $portfolio->description }}
-                        </p>
                     </div>
                 </div>
-            </div>
             @empty
-            <div class="col-12 text-center">
-                <p class="lead text-muted">Belum ada portofolio yang ditampilkan.</p>
-            </div>
+                <div class="col-12 text-center">
+                    <p class="lead text-muted">Belum ada portofolio yang ditampilkan.</p>
+                </div>
             @endforelse
 
             {{-- ====================================================== --}}
@@ -445,7 +458,7 @@
         </div>
     </div>
 
-    {{-- PERUBAHAN: Menambahkan class 'animate-on-scroll' --}}
+    {{-- PERUBAHAN: Menambahkan class 'animat@e-on-scroll' --}}
     <div class="container my-5 py-5 animate-on-scroll">
         <div class="row justify-content-center">
             <div class="col-lg-8 text-center mb-5">
@@ -462,31 +475,39 @@
                     <div class="card border-0 shadow-sm" style="border-radius: 1.5rem;">
                         <div class="card-body p-5 text-center">
                             <div class="text-warning mb-4" style="font-size: 2rem;">
-                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                    class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                    class="bi bi-star-fill"></i>
                             </div>
                             <div class="p-5 rounded mb-4" style="background-color: #f1f3f5;">
                                 <p class="h2 fst-italic lh-base">
-                                    "Working with them was a game-changer. Our brand finally feels cohesive and professional. The results speak for themselves."
+                                    "Working with them was a game-changer. Our brand finally feels cohesive and
+                                    professional. The results speak for themselves."
                                 </p>
                             </div>
-                            <img src="https://i.pravatar.cc/100?img=11" class="rounded-circle mb-3" alt="Author 1" width="100" height="100">
+                            <img src="https://i.pravatar.cc/100?img=11" class="rounded-circle mb-3" alt="Author 1"
+                                width="100" height="100">
                             <p class="fw-bold mb-0 fs-4">Sarah L.</p>
                             <p class="text-muted fs-6">CEO + Fashione</p>
                         </div>
                     </div>
                 </div>
                 <div class="carousel-item">
-                     <div class="card border-0 shadow-sm" style="border-radius: 1.5rem;">
+                    <div class="card border-0 shadow-sm" style="border-radius: 1.5rem;">
                         <div class="card-body p-5 text-center">
                             <div class="text-warning mb-4" style="font-size: 2rem;">
-                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                    class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i
+                                    class="bi bi-star-fill"></i>
                             </div>
                             <div class="p-5 rounded mb-4" style="background-color: #f1f3f5;">
                                 <p class="h2 fst-italic lh-base">
-                                    "The creative process was seamless and incredibly insightful. They truly understood our vision and brought it to life."
+                                    "The creative process was seamless and incredibly insightful. They truly understood our
+                                    vision and brought it to life."
                                 </p>
                             </div>
-                            <img src="https://i.pravatar.cc/100?img=32" class="rounded-circle mb-3" alt="Author 2" width="100" height="100">
+                            <img src="https://i.pravatar.cc/100?img=32" class="rounded-circle mb-3" alt="Author 2"
+                                width="100" height="100">
                             <p class="fw-bold mb-0 fs-4">Michael B.</p>
                             <p class="text-muted fs-6">Founder + TechStart</p>
                         </div>
@@ -495,10 +516,12 @@
             </div>
         </div>
         <div class="d-flex justify-content-center mt-4">
-            <button class="btn btn-outline-dark rounded-circle carousel-control-btn mx-2" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="prev">
+            <button class="btn btn-outline-dark rounded-circle carousel-control-btn mx-2" type="button"
+                data-bs-target="#testimonialCarousel" data-bs-slide="prev">
                 <i class="bi bi-arrow-left"></i>
             </button>
-            <button class="btn btn-outline-dark rounded-circle carousel-control-btn mx-2" type="button" data-bs-target="#testimonialCarousel" data-bs-slide="next">
+            <button class="btn btn-outline-dark rounded-circle carousel-control-btn mx-2" type="button"
+                data-bs-target="#testimonialCarousel" data-bs-slide="next">
                 <i class="bi bi-arrow-right"></i>
             </button>
         </div>
@@ -514,7 +537,7 @@
         <div class="row justify-content-center align-items-center g-4">
             {{-- Isi Pricing Anda --}}
             <div class="col-lg-4">
-                 <div class="card pricing-card h-100 shadow-sm">
+                <div class="card pricing-card h-100 shadow-sm">
                     <div class="card-body p-4 p-md-5 text-center">
                         <h2 class="fw-normal">Basic</h2>
                         <h2 class="display-4 fw-bold my-3">
@@ -532,7 +555,8 @@
                 </div>
             </div>
             <div class="col-lg-4 position-relative">
-                <div class="card pricing-card h-100 shadow" style="border: 2px solid #ffc107; background-color: #fffbeb; transform: scale(1.05); z-index: 10;">
+                <div class="card pricing-card h-100 shadow"
+                    style="border: 2px solid #ffc107; background-color: #fffbeb; transform: scale(1.05); z-index: 10;">
                     <div class="most-popular-tag">Most Popular!</div>
                     <div class="card-body p-4 p-md-5 text-center">
                         <h2 class="fw-bold">Premium</h2>
@@ -551,7 +575,7 @@
                     </div>
                 </div>
             </div>
-             <div class="col-lg-4">
+            <div class="col-lg-4">
                 <div class="card pricing-card h-100 shadow-sm">
                     <div class="card-body p-4 p-md-5 text-center">
                         <h2 class="fw-normal">Ultimate</h2>
@@ -586,20 +610,23 @@
         </div>
         <div class="accordion custom-accordion" id="faqAccordion">
             {{-- Isi FAQ Anda --}}
-             @for ($i = 1; $i <= 5; $i++)
-            <div class="accordion-item">
-                <h2 class="accordion-header" id="heading{{ $i }}">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#collapse{{ $i }}" aria-expanded="false" aria-controls="collapse{{ $i }}">
-                        Question {{ $i }}: What is a branding kit?
-                    </button>
-                </h2>
-                <div id="collapse{{ $i }}" class="accordion-collapse collapse" aria-labelledby="heading{{ $i }}" data-bs-parent="#faqAccordion">
-                    <div class="accordion-body text-muted">
-                        A branding kit is a comprehensive package that includes all the visual and strategic elements of your brand identity, such as your logo, color palette, typography, and brand guidelines. It ensures consistency across all your marketing materials.
+            @for ($i = 1; $i <= 5; $i++)
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading{{ $i }}">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                            data-bs-target="#collapse{{ $i }}" aria-expanded="false" aria-controls="collapse{{ $i }}">
+                            Question {{ $i }}: What is a branding kit?
+                        </button>
+                    </h2>
+                    <div id="collapse{{ $i }}" class="accordion-collapse collapse" aria-labelledby="heading{{ $i }}"
+                        data-bs-parent="#faqAccordion">
+                        <div class="accordion-body text-muted">
+                            A branding kit is a comprehensive package that includes all the visual and strategic elements of
+                            your brand identity, such as your logo, color palette, typography, and brand guidelines. It ensures
+                            consistency across all your marketing materials.
+                        </div>
                     </div>
                 </div>
-            </div>
             @endfor
         </div>
         <div class="text-center mt-5">
@@ -613,33 +640,33 @@
 {{-- JAVASCRIPT BARU UNTUK MENGAKTIFKAN ANIMASI --}}
 {{-- ====================================================================== --}}
 @push('scripts')
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        // Pilih semua elemen yang ingin dianimasikan
-        const animatedElements = document.querySelectorAll('.animate-on-scroll');
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Pilih semua elemen yang ingin dianimasikan
+            const animatedElements = document.querySelectorAll('.animate-on-scroll');
 
-        // Buat observer
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                // Jika elemen masuk ke dalam viewport
-                if (entry.isIntersecting) {
-                    // Tambahkan class 'is-visible' untuk memicu transisi
-                    entry.target.classList.add('is-visible');
-                    // (Opsional) Hentikan observing elemen ini setelah animasi berjalan
-                    // agar tidak berjalan berulang kali
-                    observer.unobserve(entry.target);
-                }
+            // Buat observer
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    // Jika elemen masuk ke dalam viewport
+                    if (entry.isIntersecting) {
+                        // Tambahkan class 'is-visible' untuk memicu transisi
+                        entry.target.classList.add('is-visible');
+                        // (Opsional) Hentikan observing elemen ini setelah animasi berjalan
+                        // agar tidak berjalan berulang kali
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, {
+                // Opsi: Atur kapan animasi akan terpicu. 0.1 berarti saat 10%
+                // dari elemen terlihat, animasi akan dimulai.
+                threshold: 0.1
             });
-        }, {
-            // Opsi: Atur kapan animasi akan terpicu. 0.1 berarti saat 10%
-            // dari elemen terlihat, animasi akan dimulai.
-            threshold: 0.1
-        });
 
-        // Terapkan observer ke setiap elemen yang dipilih
-        animatedElements.forEach(el => {
-            observer.observe(el);
+            // Terapkan observer ke setiap elemen yang dipilih
+            animatedElements.forEach(el => {
+                observer.observe(el);
+            });
         });
-    });
-</script>
+    </script>
 @endpush

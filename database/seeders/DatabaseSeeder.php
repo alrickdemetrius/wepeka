@@ -18,6 +18,8 @@ class DatabaseSeeder extends Seeder
             BookingSeeder::class,
             JenisLayananSeeder::class,
             BookingDetailSeeder::class,
+            BrandSeeder::class,
+            PortfolioCategorySeeder::class
         ]);
         // \App\Models\User::factory(10)->create();
 

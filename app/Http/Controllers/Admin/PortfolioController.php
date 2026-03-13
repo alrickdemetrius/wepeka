@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Brand;
 use App\Models\Portfolio;
+use App\Models\PortfolioCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage; // Penting untuk mengelola file
 
@@ -14,8 +16,8 @@ class PortfolioController extends Controller
      */
     public function index()
     {
-        $portfolios = Portfolio::latest()->get();
-        // Anda perlu membuat view ini nanti
+        // Eager load 'brand' dan 'images' agar tidak kena N+1 Query Problem
+        $portfolios = Portfolio::with(['brand', 'images'])->latest()->get();
         return view('admin.portfolios.index', compact('portfolios'));
     }
 
@@ -24,8 +26,9 @@ class PortfolioController extends Controller
      */
     public function create()
     {
-        // Anda perlu membuat view ini nanti
-        return view('admin.portfolios.create');
+        $brands = Brand::all();
+        $categories = PortfolioCategory::all();
+        return view('admin.portfolios.create', compact('brands', 'categories'));
     }
 
     /**
@@ -34,26 +37,29 @@ class PortfolioController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'project_name' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
-            'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'brand_id'     => 'required|exists:brands,id',
+            'title'        => 'required|string|max:255',
+            'portfolio_category_id' => 'required|exists:portfolio_categories,id',
+            'description'  => 'nullable|string',
+            'images.*'     => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
-        $imagePath = null;
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('portfolios', 'public');
+        $portfolio = Portfolio::create([
+            'brand_id'    => $validated['brand_id'],
+            'title'       => $validated['title'],
+            'portfolio_category_id' => $validated['portfolio_category_id'],
+            'description' => $validated['description'],
+            'is_featured' => $request->has('is_featured'),
+        ]);
+
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $path = $file->store('portfolios', 'public');
+                $portfolio->images()->create(['image_path' => $path]);
+            }
         }
 
-        Portfolio::create([
-            'project_name' => $validated['project_name'],
-            'category' => $validated['category'],
-            'description' => $validated['description'],
-            'image' => $imagePath,
-            'is_featured' => $request->has('is_featured'), // Cek apakah checkbox "featured" dicentang
-        ]);
-
-        return redirect()->route('admin.portfolios.index')->with('success', 'Portfolio created successfully.');
+        return redirect()->route('admin.portfolios.index')->with('success', 'Project Brand Berhasil Ditambah!');
     }
 
     /**
@@ -61,9 +67,9 @@ class PortfolioController extends Controller
      */
     public function edit(Portfolio $portfolio)
     {
-        // $portfolio otomatis di-fetch berdasarkan ID dari route
-        // Anda perlu membuat view ini nanti
-        return view('admin.portfolios.edit', compact('portfolio'));
+        $brands = Brand::all();
+        $categories = PortfolioCategory::all();
+        return view('admin.portfolios.edit', compact('portfolio', 'brands', 'categories'));
     }
 
     /**
@@ -72,33 +78,36 @@ class PortfolioController extends Controller
     public function update(Request $request, Portfolio $portfolio)
     {
         $validated = $request->validate([
-            'project_name' => 'required|string|max:255',
-            'category' => 'required|string|max:255',
+            'brand_id'    => 'required|exists:brands,id',
+            'title'       => 'required|string|max:255',
+            'portfolio_category_id' => 'required|exists:portfolio_categories,id',
             'description' => 'nullable|string',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'images.*'    => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
-
-        $imagePath = $portfolio->image;
-
-        // Cek jika ada file gambar baru
-        if ($request->hasFile('image')) {
-            // Hapus gambar lama jika ada
-            if ($portfolio->image) {
-                Storage::disk('public')->delete($portfolio->image);
-            }
-            // Simpan gambar baru
-            $imagePath = $request->file('image')->store('portfolios', 'public');
-        }
 
         $portfolio->update([
-            'project_name' => $validated['project_name'],
-            'category' => $validated['category'],
+            'brand_id'    => $validated['brand_id'],
+            'title'       => $validated['title'],
+            'portfolio_category_id' => $validated['portfolio_category_id'],
             'description' => $validated['description'],
-            'image' => $imagePath,
-            'is_featured' => $request->has('is_featured'), // Update status "featured"
+            'is_featured' => $request->has('is_featured'),
         ]);
 
-        return redirect()->route('admin.portfolios.index')->with('success', 'Portfolio updated successfully.');
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $file) {
+                $path = $file->store('portfolios', 'public');
+                $portfolio->images()->create(['image_path' => $path]);
+            }
+        }
+
+        return redirect()->route('admin.portfolios.index')->with('success', 'Project Updated!');
+    }
+
+    public function show($id)
+    {
+        $portfolio = Portfolio::with(['brand', 'category', 'images'])->findOrFail($id);
+
+        return view('admin.portfolios.show', compact('portfolio'));
     }
 
     /**
@@ -106,14 +115,12 @@ class PortfolioController extends Controller
      */
     public function destroy(Portfolio $portfolio)
     {
-        // Hapus gambar dari storage
-        if ($portfolio->image) {
-            Storage::disk('public')->delete($portfolio->image);
+        foreach ($portfolio->images as $image) {
+            Storage::disk('public')->delete($image->image_path);
         }
 
-        // Hapus record dari database
         $portfolio->delete();
 
-        return redirect()->route('admin.portfolios.index')->with('success', 'Portfolio deleted successfully.');
+        return redirect()->route('admin.portfolios.index')->with('success', 'Portfolio Deleted!');
     }
 }

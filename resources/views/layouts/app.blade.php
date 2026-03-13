@@ -105,8 +105,7 @@
                     <div class="d-none d-xxl-flex align-items-center gap-2">
                         @auth
                             @if (Auth::user()->role === 'admin')
-                                <a class="nav-link"
-                                    href="{{ route('admin.bookings.index') }}">
+                                <a class="nav-link" href="{{ route('admin.bookings.index') }}">
                                     <i class="bi bi-calendar-check-fill me-2"></i> Bookings
                                 </a>
                             @else
@@ -128,6 +127,8 @@
                             @if (Auth::user()->role === 'admin')
                                 <a class="nav-link {{ request()->is('admin/dashboard') ? 'active' : '' }}"
                                     href="{{ url('/admin') }}">Dashboard</a>
+                                <a class="nav-link {{ request()->is('admin/portfolios*') ? 'active' : '' }}"
+                                    href="{{ route('admin.portfolios.index') }}">Portfolios</a>
                             @else
                                 <a class="nav-link {{ request()->is('client/headquarters') ? 'active' : '' }}"
                                     href="{{ route('client.headquarters') }}">Headquarters</a>
@@ -195,6 +196,7 @@
             @if (Auth::user()->role === 'admin')
                 <a href="{{ url('/admin') }}" class="nav-link">Dashboard</a>
                 <a href="{{ route('admin.bookings.index') }}" class="nav-link">Bookings</a>
+                <a href="{{ route('admin.portfolios.index') }}" class="nav-link">Portfolios</a>
             @else
                 <a href="{{ route('client.profile') }}" class="nav-link">Profile</a>
                 <a href="{{ route('client.link.view_link') }}" class="nav-link">Link Management</a>
