@@ -68,9 +68,11 @@
                                 <small class="text-primary">{{ $booking->email }}</small>
                             </td>
                             <td>
-                                @foreach($booking->jenisLayanans as $layanan)
-                                    <span class="badge badge-service">{{ $layanan->nama }}</span>
-                                @endforeach
+                                @forelse($booking->categories as $category)
+                                    <span class="badge badge-service">{{ $category->name }}</span>
+                                @empty
+                                    <span class="text-muted small">No services</span>
+                                @endforelse
                             </td>
                             <td>
                                 <p class="small mb-0 text-truncate" style="max-width: 150px;" title="{{ $booking->message }}">
@@ -137,9 +139,11 @@
                                 <small class="text-primary">{{ $booking->email }}</small>
                             </td>
                             <td>
-                                @foreach($booking->jenisLayanans as $layanan)
-                                    <span class="badge badge-service">{{ $layanan->nama }}</span>
-                                @endforeach
+                                @forelse($booking->categories as $category)
+                                    <span class="badge badge-service">{{ $category->name }}</span>
+                                @empty
+                                    <span class="text-muted small">No services</span>
+                                @endforelse
                             </td>
                             <td>
                                 <p class="small mb-0 text-truncate" style="max-width: 150px;" title="{{ $booking->message }}">

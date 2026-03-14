@@ -7,9 +7,9 @@ use App\Models\Booking;
 use App\Models\BookingDetail;
 use Illuminate\Http\Request;
 use App\Models\Portfolio;
-use App\Models\JenisLayanan;
 use Illuminate\Support\Facades\DB;
 use App\Mail\NewBookingNotification;
+use App\Models\PortfolioCategory;
 use Illuminate\Support\Facades\Mail;
 
 class BookingController extends Controller
@@ -21,9 +21,9 @@ class BookingController extends Controller
             ->take(3)
             ->get();
 
-        $jenisLayanans = JenisLayanan::all();
+        $categories = PortfolioCategory::all();
 
-        return view('client.booking', compact('featuredPortfolios', 'jenisLayanans'));
+        return view('client.booking', compact('featuredPortfolios', 'categories'));
     }
 
     public function store(Request $request)
@@ -34,7 +34,7 @@ class BookingController extends Controller
             'email'        => 'required|email',
             'phone'        => 'required|string|max:20',
             'service_type' => 'required|array|min:1',
-            'service_type.*' => 'exists:jenis_layanans,id',
+            'service_type.*' => 'exists:portfolio_categories,id',
             'message'      => 'required|string',
         ]);
 
@@ -51,10 +51,10 @@ class BookingController extends Controller
             ]);
 
             // Create booking details
-            foreach ($validated['service_type'] as $jenisLayananId) {
+            foreach ($validated['service_type'] as $categoryId) {
                 BookingDetail::create([
                     'booking_id' => $booking->id,
-                    'jenis_layanan_id' => $jenisLayananId,
+                    'portfolio_category_id' => $categoryId,
                 ]);
             }
 

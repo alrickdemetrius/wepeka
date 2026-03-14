@@ -16,7 +16,6 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             QrLinkSeeder::class,
             BookingSeeder::class,
-            JenisLayananSeeder::class,
             BookingDetailSeeder::class,
             BrandSeeder::class,
             PortfolioCategorySeeder::class

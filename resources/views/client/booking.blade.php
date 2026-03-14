@@ -291,12 +291,14 @@
 
                     <div class="mb-2">
                         <label class="form-label">Company Name*</label>
-                        <input type="text" name="company_name" class="form-control" value="{{ old('company_name') }}" required>
+                        <input type="text" name="company_name" class="form-control" value="{{ old('company_name') }}"
+                            required>
                     </div>
 
                     <div class="mb-2">
                         <label class="form-label">Contact Name*</label>
-                        <input type="text" name="contact_name" class="form-control" value="{{ old('contact_name') }}" required>
+                        <input type="text" name="contact_name" class="form-control" value="{{ old('contact_name') }}"
+                            required>
                     </div>
 
                     <div class="row">
@@ -318,15 +320,10 @@
                         <label class="form-label d-block">Service Type* <span class="small text-muted fw-normal">(Select one
                                 or more)</span></label>
                         <div class="service-selection">
-                            @foreach($jenisLayanans as $layanan)
-                                <input type="checkbox"
-                                       name="service_type[]"
-                                       value="{{ $layanan->id }}"
-                                       class="btn-check"
-                                       id="svc-{{ $layanan->id }}"
-                                       autocomplete="off"
-                                       {{ is_array(old('service_type')) && in_array($layanan->id, old('service_type')) ? 'checked' : '' }}>
-                                <label class="btn" for="svc-{{ $layanan->id }}">{{ $layanan->nama }}</label>
+                            @foreach($categories as $category)
+                                <input type="checkbox" name="service_type[]" value="{{ $category->id }}" class="btn-check"
+                                    id="svc-{{ $category->id }}" autocomplete="off">
+                                <label class="btn" for="svc-{{ $category->id }}">{{ $category->name }}</label>
                             @endforeach
                         </div>
                     </div>

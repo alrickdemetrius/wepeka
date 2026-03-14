@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('jenis_layanans', function (Blueprint $table) {
+        Schema::create('booking_details', function (Blueprint $table) {
             $table->id();
-            $table->string('nama');
-            $table->text('deskripsi')->nullable();
-            $table->string('gambar')->nullable();
+            $table->foreignId('booking_id')->constrained('bookings')->onDelete('cascade');
+            $table->foreignId('portfolio_category_id')->constrained('portfolio_categories')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('jenis_layanan');
+        Schema::dropIfExists('booking_detail');
     }
 };

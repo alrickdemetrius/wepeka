@@ -16,13 +16,13 @@ class AdminBookingController extends Controller
         $endOfWeek   = Carbon::now()->endOfWeek(Carbon::SUNDAY);
 
         // Booking minggu ini, terbaru ke terlama
-        $bookingsThisWeek = Booking::with('jenisLayanans')
+        $bookingsThisWeek = Booking::with('categories')
             ->whereBetween('created_at', [$startOfWeek, $endOfWeek])
             ->latest()
             ->get();
 
         // Semua booking, terbaru ke terlama
-        $bookings = Booking::with('jenisLayanans')->latest()->get();
+        $bookings = Booking::with('categories')->latest()->get();
 
         return view('admin.bookings.index', compact(
             'bookings',
@@ -34,7 +34,7 @@ class AdminBookingController extends Controller
 
     public function show($id)
     {
-        $booking = Booking::with('jenisLayanans')->findOrFail($id);
+        $booking = Booking::with('categories')->findOrFail($id);
 
         return view('admin.bookings.show', compact('booking'));
     }

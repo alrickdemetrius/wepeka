@@ -6,8 +6,8 @@
     <p><strong>Kontak:</strong> {{ $booking->contact_name }} ({{ $booking->phone }})</p>
     <p><strong>Layanan yang diminta:</strong></p>
     <ul>
-        @foreach($booking->jenisLayanans as $layanan)
-            <li>{{ $layanan->nama }}</li>
+        @foreach($booking->categories as $category)
+            <li>{{ $category->name }}</li>
         @endforeach
     </ul>
     <p><strong>Pesan:</strong></p>

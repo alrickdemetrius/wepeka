@@ -9,10 +9,7 @@ class BookingDetail extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'booking_id',
-        'jenis_layanan_id',
-    ];
+    protected $fillable = ['booking_id', 'portfolio_category_id'];
 
     /**
      * Get the booking that owns the booking detail.
@@ -25,8 +22,9 @@ class BookingDetail extends Model
     /**
      * Get the jenis layanan that owns the booking detail.
      */
-    public function jenisLayanan()
+    public function category()
     {
-        return $this->belongsTo(JenisLayanan::class);
+        // Sekarang relasinya ke PortfolioCategory
+        return $this->belongsTo(PortfolioCategory::class, 'portfolio_category_id');
     }
 }

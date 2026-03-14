@@ -29,8 +29,9 @@ class Booking extends Model
     /**
      * Get the jenis layanans for the booking.
      */
-    public function jenisLayanans()
+    public function categories()
     {
-        return $this->belongsToMany(JenisLayanan::class, 'booking_details', 'booking_id', 'jenis_layanan_id');
+        // Mengambil kategori melalui tabel booking_details
+        return $this->belongsToMany(PortfolioCategory::class, 'booking_details', 'booking_id', 'portfolio_category_id');
     }
 }

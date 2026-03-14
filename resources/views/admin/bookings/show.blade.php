@@ -150,8 +150,8 @@
         {{-- Services --}}
         <div class="mb-4">
             <div class="section-label mb-2">Services Requested</div>
-            @forelse($booking->jenisLayanans as $layanan)
-                <span class="badge-service">{{ $layanan->nama }}</span>
+            @forelse($booking->categories as $category)
+                <span class="badge-service">{{ $category->name }}</span>
             @empty
                 <span class="text-muted">No services selected.</span>
             @endforelse

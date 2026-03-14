@@ -20,7 +20,7 @@ class NewBookingNotification extends Mailable
      */
     public function __construct(Booking $booking)
     {
-        $this->booking = $booking->load('jenisLayanans');
+        $this->booking = $booking->load('categories');
     }
 
     public function build()
