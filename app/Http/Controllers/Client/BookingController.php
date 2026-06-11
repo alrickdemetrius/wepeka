@@ -33,7 +33,7 @@ class BookingController extends Controller
             'contact_name' => 'required|string|max:255',
             'email'        => 'required|email',
             'phone'        => 'required|string|max:20',
-            'service_type' => 'required|array|min:1',
+            'service_type' => 'required_if:inquiry_type,service|array',
             'service_type.*' => 'exists:portfolio_categories,id',
             'message'      => 'required|string',
         ]);

@@ -264,19 +264,15 @@
                     Join Us In Creating<br>Something Great
                 </h2>
 
-                <form action="{{ route('booking.store') }}" method="POST">
+                <form action="{{ route('booking.store') }}" method="POST" id="bookingForm">
                     @csrf
 
                     @if(session('success'))
-                        <div class="alert alert-success">
-                            {{ session('success') }}
-                        </div>
+                        <div class="alert alert-success">{{ session('success') }}</div>
                     @endif
 
                     @if(session('error'))
-                        <div class="alert alert-danger">
-                            {{ session('error') }}
-                        </div>
+                        <div class="alert alert-danger">{{ session('error') }}</div>
                     @endif
 
                     @if($errors->any())
@@ -289,16 +285,32 @@
                         </div>
                     @endif
 
+                    {{-- 1. LOGIC SATU PINTU: Pilihan Tujuan Booking --}}
+                    <div class="mb-4 p-3 rounded" style="background-color: #fffde7; border: 1px solid #FFD700;">
+                        <label class="form-label d-block fw-bold">Apa yang ingin Anda capai hari ini?*</label>
+                        <div class="form-check mb-2">
+                            <input class="form-check-input" type="radio" name="inquiry_type" id="typeConsultation" value="consultation" checked onchange="toggleServiceSelection()">
+                            <label class="form-check-label" for="typeConsultation">
+                                <strong>Brand Consultation</strong> (Ngobrol strategi & masalah brand)
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="inquiry_type" id="typeService" value="service" onchange="toggleServiceSelection()">
+                            <label class="form-check-label" for="typeService">
+                                <strong>Request Service / Product</strong> (Sudah tahu apa yang mau dibuat)
+                            </label>
+                        </div>
+                    </div>
+
+                    {{-- Data Klien --}}
                     <div class="mb-2">
                         <label class="form-label">Company Name*</label>
-                        <input type="text" name="company_name" class="form-control" value="{{ old('company_name') }}"
-                            required>
+                        <input type="text" name="company_name" class="form-control" value="{{ old('company_name') }}" required>
                     </div>
 
                     <div class="mb-2">
                         <label class="form-label">Contact Name*</label>
-                        <input type="text" name="contact_name" class="form-control" value="{{ old('contact_name') }}"
-                            required>
+                        <input type="text" name="contact_name" class="form-control" value="{{ old('contact_name') }}" required>
                     </div>
 
                     <div class="row">
@@ -316,27 +328,54 @@
                         </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label class="form-label d-block">Service Type* <span class="small text-muted fw-normal">(Select one
-                                or more)</span></label>
+                    {{-- 2. DYNAMIC SERVICES/PRODUCTS: Disembunyikan secara default --}}
+                    <div class="mb-3" id="serviceSelectionWrapper" style="display: none;">
+                        <label class="form-label d-block">Jasa / Produk yang Dibutuhkan* <span class="small text-muted fw-normal">(Pilih satu atau lebih)</span></label>
                         <div class="service-selection">
+                            {{-- Loop Jasa/Kategori yang sudah ada --}}
                             @foreach($categories as $category)
-                                <input type="checkbox" name="service_type[]" value="{{ $category->id }}" class="btn-check"
+                                <input type="checkbox" name="service_type[]" value="{{ $category->id }}" class="btn-check service-checkbox"
                                     id="svc-{{ $category->id }}" autocomplete="off">
                                 <label class="btn" for="svc-{{ $category->id }}">{{ $category->name }}</label>
                             @endforeach
+
+                            {{-- Placeholder untuk List Produk dari Winson Nanti --}}
+                            <!--
+                            <input type="checkbox" name="product_type[]" value="apparel_bundle" class="btn-check service-checkbox" id="prod-1" autocomplete="off">
+                            <label class="btn" for="prod-1">Corporate Apparel Bundle</label>
+                            -->
                         </div>
                     </div>
 
                     <div class="mb-4">
-                        <label class="form-label">Message*</label>
-                        <textarea name="message" class="form-control" rows="5" required>{{ old('message') }}</textarea>
+                        <label class="form-label">Ceritakan Detailnya*</label>
+                        <textarea name="message" class="form-control" rows="5" placeholder="Deskripsikan masalah brand atau detail project yang Anda inginkan..." required>{{ old('message') }}</textarea>
                     </div>
 
-                    <button type="submit" class="btn btn-send">
-                        Send Message
+                    <button type="submit" class="btn btn-send w-100">
+                        Kirim Permintaan
                     </button>
                 </form>
+
+                <script>
+                    function toggleServiceSelection() {
+                        const typeService = document.getElementById('typeService');
+                        const serviceWrapper = document.getElementById('serviceSelectionWrapper');
+                        const checkboxes = document.querySelectorAll('.service-checkbox');
+
+                        if (typeService.checked) {
+                            // Tampilkan pilihan jasa/produk
+                            serviceWrapper.style.display = 'block';
+                        } else {
+                            // Sembunyikan dan uncheck semua pilihan jika ganti ke konsultasi
+                            serviceWrapper.style.display = 'none';
+                            checkboxes.forEach(cb => cb.checked = false);
+                        }
+                    }
+
+                    // Jalankan saat halaman pertama kali diload
+                    document.addEventListener("DOMContentLoaded", toggleServiceSelection);
+                </script>
             </div>
 
             {{-- Kanan: Info Box Kuning - MODIFIED --}}
